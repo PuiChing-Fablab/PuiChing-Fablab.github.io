@@ -24,9 +24,9 @@
         <style>
             .feature-images a {
                 display: block;
-                filter: brightness(30%);
             }
-            .feature-images a:hover {
+            .feature-images img { filter: brightness(30%); }
+            .feature-images a:hover img {
                 filter: brightness(100%);
             }
         </style>
@@ -61,24 +61,30 @@
                         <div class="col" style="margin: 0; padding: 0;">
                             <div class="bg-body-tertiary feature-images" style="height: auto;">
                                 <div class="container-fluid" style="padding: 0;">
-                                    <a href="./home"><img src="./images/ServiceRobot.jpg" style="width: 100%;"/>
-                                    <h1 class="display-5 fw-bold">Service Robot</h1></a>
+                                    <a href="./home">
+                                        <img src="./images/ServiceRobot.jpg" style="width: 100%;"/>
+                                        <h1 class="display-5 fw-bold">Service Robot</h1>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <div class="col" style="margin: 0; padding: 0;">
                             <div class="bg-body-tertiary feature-images" style="height: auto;">
                                 <div class="container-fluid" style="padding: 0;">
-                                    <a href="./rov"><img src="./images/ROV.png" style="width: 100%;"/>
-                                        <h1 class="display-5 fw-bold">ROV</h1></a>
+                                    <a href="./rov">
+                                        <img src="./images/ROV.png" style="width: 100%;"/>
+                                        <h1 class="display-5 fw-bold">ROV</h1>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <div class="col" style="margin: 0; padding: 0;">
                             <div class="bg-body-tertiary feature-images" style="height: auto;">
                                 <div class="container-fluid" style="padding: 0;">
-                                    <a href="./humanoid"><img src="./images/Humanoid.jpg" style="width: 100%;"/>
-                                        <h1 class="display-5 fw-bold">Humanoid</h1></a>
+                                    <a href="./humanoid">
+                                        <img src="./images/Humanoid.jpg" style="width: 100%;"/>
+                                        <h1 class="display-5 fw-bold">Humanoid</h1>
+                                    </a>
                                 </div>
                             </div>
                         </div>
