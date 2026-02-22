@@ -447,7 +447,7 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     font-size: 1.2rem;
     margin-top: 0.6rem;
     margin-bottom: 1.5rem;
-    max-width: 850px;
+    max-width: 1200px;
     line-height: 1.8;
 }
 .section-divider {
@@ -589,21 +589,20 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     border-color: rgba(0, 240, 255, 0.4);
 }
 .coach-icon {
-    font-size: 2.8rem;
-    color: var(--neon-cyan);
-    margin-bottom: 0.75rem;
-    filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.4));
+    font-size: 4rem;
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.4));
 }
 .coach-name {
     font-family: var(--font-tech);
-    font-size: 1.1rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 0.25rem;
     letter-spacing: 0.5px;
 }
 .coach-role {
-    font-size: 0.95rem;
+    font-size: 1.25rem;
     color: var(--text-muted);
     margin-bottom: 0.75rem;
     font-style: italic;
@@ -648,12 +647,12 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     border-color: rgba(0, 240, 255, 0.4);
 }
 .member-icon {
-    font-size: 2.2rem;
+    font-size: 3rem;
     color: var(--neon-blue);
     filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.4));
 }
 .member-name {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.3;
@@ -992,6 +991,147 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     .tab-btn { padding: 0.65rem 0.75rem; font-size: 0.82rem; }
     .social-link-named span { display: none; }
     .timeline-card { padding: 0.6rem 0.8rem; }
+}
+
+/* ---------- Connect Page — Coach Contact Cards (Cyberpunk) ---------- */
+@keyframes holoBorder {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes scanCard {
+    0%   { top: -60px; }
+    100% { top: 110%; }
+}
+@keyframes avatarPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0.4), 0 0 20px rgba(0,240,255,0.2); }
+    50%       { box-shadow: 0 0 0 8px rgba(0,240,255,0), 0 0 35px rgba(0,240,255,0.4); }
+}
+
+.contact-coach-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(26,32,53,0.95), rgba(10,14,23,0.98));
+    border-radius: 14px;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+    /* Gradient border via box-shadow + outline trick */
+    box-shadow: 0 0 0 2px rgba(0,240,255,0.3), 0 8px 30px rgba(0,0,0,0.4);
+}
+.contact-coach-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple), var(--neon-blue), var(--neon-cyan));
+    background-size: 300% 300%;
+    animation: holoBorder 4s ease infinite;
+    opacity: 0.12;
+    z-index: 0;
+    pointer-events: none;
+}
+.contact-coach-card::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, rgba(0,240,255,0.05), transparent);
+    z-index: 1;
+    pointer-events: none;
+    animation: scanCard 5s linear infinite;
+}
+.contact-coach-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 0 0 2px var(--neon-cyan), 0 16px 50px rgba(0,240,255,0.25);
+}
+.contact-coach-card:hover::before { opacity: 0.22; animation-duration: 1.5s; }
+
+.contact-coach-inner {
+    position: relative;
+    z-index: 2;
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.contact-coach-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,240,255,0.12), rgba(168,85,247,0.12));
+    border: 2px solid rgba(0,240,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 2.2rem;
+    color: var(--neon-cyan);
+    animation: avatarPulse 3s ease-in-out infinite;
+    transition: transform 0.3s, border-color 0.3s;
+    filter: drop-shadow(0 0 10px rgba(0,240,255,0.3));
+}
+.contact-coach-card:hover .contact-coach-avatar {
+    transform: scale(1.12);
+    border-color: var(--neon-cyan);
+}
+
+.contact-coach-name {
+    font-family: var(--font-tech);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 12px rgba(0,240,255,0.25);
+}
+.contact-coach-role {
+    font-family: var(--font-tech);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--neon-cyan);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: 1.25rem;
+    opacity: 0.8;
+}
+.contact-coach-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,240,255,0.5), transparent);
+    margin-bottom: 1.25rem;
+}
+.contact-coach-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+.contact-coach-info li {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    transition: background 0.2s;
+    margin-bottom: 0.2rem;
+}
+.contact-coach-info li:hover { background: rgba(0,240,255,0.06); }
+.contact-coach-info li > .bi { color: var(--neon-cyan); flex-shrink: 0; margin-top: 3px; }
+.contact-coach-info a {
+    color: var(--neon-cyan);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    word-break: break-all;
+    width: 100%;
+}
+.contact-coach-info a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(0,240,255,0.5);
+    text-decoration: none;
 }
 
 /* ---------- Game Page — Glossary ---------- */
