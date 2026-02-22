@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+    <head>
+        <script src="../assets/js/color-modes.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="PCMS-HRG Robot Decode — a cyberpunk robotics mini-game challenge.">
+        <title>Robot Decode – PCMS-HRG</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link href="../assets/css/style.css" rel="stylesheet">
+        <style>
+            /* ---- GAME SPECIFIC STYLES ---- */
+            .game-container {
+                max-width: 700px;
+                margin: 0 auto;
+                text-align: center;
+            }
+            .game-title {
+                font-family: var(--font-tech);
+                font-size: 2.2rem;
+                font-weight: 900;
+                background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.4));
+                margin-bottom: 0.5rem;
+            }
+            .game-subtitle {
+                color: var(--text-secondary);
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            .game-screen {
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                padding: 2rem;
+                position: relative;
+                overflow: hidden;
+                min-height: 350px;
+            }
+            .game-screen::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-cyan));
+                background-size: 200% 100%;
+                animation: gradientShift 3s linear infinite;
+            }
+
+            /* Matrix rain background */
+            .matrix-rain {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                opacity: 0.08;
+                pointer-events: none;
+                font-family: monospace;
+                font-size: 14px;
+                color: var(--neon-cyan);
+                line-height: 1.2;
+                z-index: 0;
+            }
+            .matrix-col {
+                position: absolute;
+                top: -100%;
+                animation: matrixFall linear infinite;
+                white-space: pre;
+            }
+            @keyframes matrixFall {
+                0% { top: -100%; }
+                100% { top: 100%; }
+            }
+
+            .game-content { position: relative; z-index: 1; }
+
+            /* Scrambled display */
+            .scramble-display {
+                font-family: 'Courier New', monospace;
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: var(--neon-cyan);
+                background: rgba(0, 240, 255, 0.05);
+                border: 1px solid rgba(0, 240, 255, 0.2);
+                border-radius: 8px;
+                padding: 1rem;
+                margin: 1.5rem 0;
+                letter-spacing: 4px;
+                text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: border-color 0.3s;
+            }
+            .scramble-display.correct {
+                border-color: #22c55e;
+                color: #22c55e;
+                text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+            }
+            .scramble-display.wrong {
+                border-color: var(--neon-red);
+                color: var(--neon-red);
+                text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+                animation: shake 0.4s ease-in-out;
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-8px); }
+                75% { transform: translateX(8px); }
+            }
+
+            /* Hint text */
+            .hint-text {
+                font-family: var(--font-tech);
+                font-size: 0.85rem;
+                color: var(--text-muted);
+                letter-spacing: 1px;
+                margin-bottom: 0.5rem;
+            }
+            .hint-word {
+                font-size: 1.1rem;
+                color: var(--neon-purple);
+                font-weight: 600;
+            }
+
+            /* Input */
+            .game-input {
+                background: var(--bg-secondary);
+                border: 2px solid var(--border-color);
+                border-radius: 8px;
+                color: var(--neon-cyan);
+                font-family: 'Courier New', monospace;
+                font-size: 1.3rem;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-align: center;
+                padding: 0.8rem;
+                width: 100%;
+                max-width: 400px;
+                outline: none;
+                transition: border-color 0.3s, box-shadow 0.3s;
+                text-transform: uppercase;
+            }
+            .game-input:focus {
+                border-color: var(--neon-cyan);
+                box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            }
+            .game-input::placeholder {
+                color: var(--text-muted);
+                letter-spacing: 1px;
+                font-size: 0.9rem;
+            }
+
+            /* Timer bar */
+            .timer-bar-container {
+                width: 100%;
+                height: 6px;
+                background: var(--bg-secondary);
+                border-radius: 3px;
+                margin: 1.5rem 0 1rem;
+                overflow: hidden;
+            }
+            .timer-bar {
+                height: 100%;
+                background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
+                border-radius: 3px;
+                transition: width 0.1s linear;
+                box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+            }
+            .timer-bar.danger {
+                background: linear-gradient(90deg, var(--neon-red), #f97316);
+            }
+
+            /* Score display */
+            .game-stats {
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                margin-bottom: 1.5rem;
+            }
+            .stat-item {
+                text-align: center;
+            }
+            .stat-value {
+                font-family: var(--font-tech);
+                font-size: 2rem;
+                font-weight: 800;
+                color: var(--neon-cyan);
+                text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+                line-height: 1;
+            }
+            .stat-value.combo { color: var(--neon-purple); text-shadow: 0 0 10px rgba(168, 85, 247, 0.4); }
+            .stat-label-game {
+                font-family: var(--font-tech);
+                font-size: 0.65rem;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-top: 0.3rem;
+            }
+
+            /* Buttons */
+            .btn-game {
+                font-family: var(--font-tech);
+                font-size: 1rem;
+                font-weight: 700;
+                letter-spacing: 2px;
+                padding: 0.7rem 2rem;
+                border-radius: 8px;
+                border: 2px solid var(--neon-cyan);
+                background: rgba(0, 240, 255, 0.1);
+                color: var(--neon-cyan);
+                cursor: pointer;
+                transition: all 0.3s;
+                text-transform: uppercase;
+            }
+            .btn-game:hover {
+                background: var(--neon-cyan);
+                color: var(--bg-primary);
+                box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            }
+
+            /* Game over overlay */
+            .game-over {
+                display: none;
+                position: absolute;
+                inset: 0;
+                background: rgba(10, 14, 23, 0.95);
+                z-index: 10;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-radius: 12px;
+            }
+            .game-over.show { display: flex; }
+            .game-over-title {
+                font-family: var(--font-tech);
+                font-size: 1.8rem;
+                font-weight: 900;
+                color: var(--neon-red);
+                text-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+                margin-bottom: 0.5rem;
+            }
+            .game-over-score {
+                font-family: var(--font-tech);
+                font-size: 3rem;
+                font-weight: 900;
+                color: var(--neon-cyan);
+                text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            }
+            .game-over-label {
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+                margin-bottom: 1.5rem;
+            }
+            .game-over-high {
+                font-family: var(--font-tech);
+                font-size: 0.8rem;
+                color: var(--neon-purple);
+                letter-spacing: 1px;
+                margin-bottom: 1rem;
+            }
+
+            /* Level indicator */
+            .level-badge {
+                font-family: var(--font-tech);
+                font-size: 0.7rem;
+                font-weight: 700;
+                color: var(--bg-primary);
+                background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+                border-radius: 20px;
+                padding: 0.2rem 0.8rem;
+                letter-spacing: 1.5px;
+                display: inline-block;
+                margin-bottom: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="particle-canvas"></canvas>
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="container d-flex align-items-center justify-content-between">
+                <a href="../" class="d-flex align-items-center gap-2 text-decoration-none">
+                    <img src="../assets/images/隊伍徽章.png" alt="PCMS-HRG Badge" class="top-bar-badge">
+                    <span class="top-bar-title">PCMS-HRG</span>
+                </a>
+                <div class="d-flex gap-2 align-items-center flex-wrap">
+                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-instagram"></i> <span>Instagram</span></a>
+                    <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-youtube"></i> <span>YouTube Channel</span></a>
+                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-journal-text"></i> <span>Learning Notes</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- Tab Navigation -->
+        <nav class="tab-nav" aria-label="Page sections">
+            <div class="container">
+                <ul class="tab-list" role="tablist">
+                    <li><a href="../" class="tab-btn"><i class="bi bi-house-fill me-1"></i>Home</a></li>
+                    <li><a href="about.html" class="tab-btn"><i class="bi bi-info-circle-fill me-1"></i>About</a></li>
+                    <li><a href="activities.html" class="tab-btn"><i class="bi bi-calendar-event-fill me-1"></i>Activities</a></li>
+                    <li><a href="connect.html" class="tab-btn"><i class="bi bi-link-45deg me-1"></i>Connect</a></li>
+                    <li><a href="../../" class="tab-btn tab-btn-back"><i class="bi bi-arrow-left me-1"></i>Main Site</a></li>
+                    <li class="ms-auto"><a href="game.html" class="tab-btn active"><i class="bi bi-robot me-1"></i>Robot Decode</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Game Content -->
+        <main id="page-main">
+            <div class="container page-content">
+                <div class="game-container">
+                    <h1 class="game-title">ROBOT DECODE</h1>
+                    <p class="game-subtitle">Decode the scrambled robotics terms before time runs out. How far can you go?</p>
+
+                    <div class="game-screen" id="gameScreen">
+                        <!-- Matrix rain background -->
+                        <div class="matrix-rain" id="matrixRain"></div>
+
+                        <div class="game-content">
+                            <!-- Stats -->
+                            <div class="game-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="scoreDisplay">0</div>
+                                    <div class="stat-label-game">Score</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value combo" id="comboDisplay">0x</div>
+                                    <div class="stat-label-game">Combo</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="levelDisplay">1</div>
+                                    <div class="stat-label-game">Level</div>
+                                </div>
+                            </div>
+
+                            <!-- Level badge -->
+                            <div class="level-badge" id="levelBadge">LEVEL 1 — INITIATE</div>
+
+                            <!-- Timer -->
+                            <div class="timer-bar-container">
+                                <div class="timer-bar" id="timerBar" style="width: 100%"></div>
+                            </div>
+
+                            <!-- Hint -->
+                            <div class="hint-text">DECODE THIS TERM:</div>
+
+                            <!-- Scrambled display -->
+                            <div class="scramble-display" id="scrambleDisplay">PRESS START</div>
+
+                            <!-- Input -->
+                            <div class="mt-3">
+                                <input type="text" class="game-input" id="gameInput" placeholder="Type your answer..." autocomplete="off" disabled>
+                            </div>
+
+                            <!-- Start button -->
+                            <div class="mt-4">
+                                <button class="btn-game" id="startBtn">
+                                    <i class="bi bi-play-fill me-1"></i> START DECODE
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Game Over Overlay -->
+                        <div class="game-over" id="gameOver">
+                            <div class="game-over-title">DECODE FAILED</div>
+                            <div class="game-over-score" id="finalScore">0</div>
+                            <div class="game-over-label">Final Score</div>
+                            <div class="game-over-high" id="highScoreDisplay">HIGH SCORE: 0</div>
+                            <button class="btn-game" id="restartBtn">
+                                <i class="bi bi-arrow-clockwise me-1"></i> TRY AGAIN
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glossary / Terminology Table -->
+                <div class="mt-5">
+                    <h2 class="section-title">Robotics Glossary</h2>
+                    <p class="section-intro">Learn the terms used in the game — essential vocabulary for humanoid robotics and RoboCup competition.</p>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="glossary-table-wrap">
+                                <table class="table table-dark table-borderless mb-0 glossary-table">
+                                    <thead>
+                                        <tr><th class="glossary-th">TERM</th><th class="glossary-th">DEFINITION</th></tr>
+                                    </thead>
+                                    <tbody class="glossary-tbody">
+                                        <tr><td><strong class="glossary-term">Robot</strong></td><td>A programmable machine capable of autonomous actions</td></tr>
+                                        <tr><td><strong class="glossary-term">Servo</strong></td><td>A motor with precise position control for robot joints</td></tr>
+                                        <tr><td><strong class="glossary-term">Motor</strong></td><td>An electric actuator that converts energy into motion</td></tr>
+                                        <tr><td><strong class="glossary-term">LiDAR</strong></td><td>Light Detection and Ranging — a laser-based distance sensor</td></tr>
+                                        <tr><td><strong class="glossary-term">Gyro</strong></td><td>Gyroscope sensor measuring angular velocity and orientation</td></tr>
+                                        <tr><td><strong class="glossary-term">Joint</strong></td><td>A connection point between robot body segments allowing movement</td></tr>
+                                        <tr><td><strong class="glossary-term">Sensor</strong></td><td>A device that detects physical properties (light, distance, force)</td></tr>
+                                        <tr><td><strong class="glossary-term">Vision</strong></td><td>Computer vision — enabling robots to interpret visual data</td></tr>
+                                        <tr><td><strong class="glossary-term">Neural</strong></td><td>Related to neural networks — AI models inspired by the brain</td></tr>
+                                        <tr><td><strong class="glossary-term">Torque</strong></td><td>Rotational force applied by a motor to a joint</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="glossary-table-wrap">
+                                <table class="table table-dark table-borderless mb-0 glossary-table">
+                                    <thead>
+                                        <tr><th class="glossary-th">TERM</th><th class="glossary-th">DEFINITION</th></tr>
+                                    </thead>
+                                    <tbody class="glossary-tbody">
+                                        <tr><td><strong class="glossary-term">Humanoid</strong></td><td>A robot with a human-like body structure</td></tr>
+                                        <tr><td><strong class="glossary-term">RoboCup</strong></td><td>International robot soccer competition promoting AI research</td></tr>
+                                        <tr><td><strong class="glossary-term">Actuator</strong></td><td>A component that converts control signals into physical motion</td></tr>
+                                        <tr><td><strong class="glossary-term">Dynamics</strong></td><td>The study of forces and motion in mechanical systems</td></tr>
+                                        <tr><td><strong class="glossary-term">Firmware</strong></td><td>Low-level software embedded directly in hardware</td></tr>
+                                        <tr><td><strong class="glossary-term">Protocol</strong></td><td>A set of rules for data communication between devices</td></tr>
+                                        <tr><td><strong class="glossary-term">Algorithm</strong></td><td>A step-by-step procedure for solving a computational problem</td></tr>
+                                        <tr><td><strong class="glossary-term">Kinematic</strong></td><td>The study of motion without considering forces</td></tr>
+                                        <tr><td><strong class="glossary-term">Python</strong></td><td>A popular programming language used in robotics and AI</td></tr>
+                                        <tr><td><strong class="glossary-term">Binary</strong></td><td>Base-2 number system (0s and 1s) used by computers</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                        <img src="../assets/images/隊伍徽章.png" alt="PCMS-HRG Badge" height="48" class="me-2">
+                        <span class="footer-brand">PCMS-HRG</span>
+                    </div>
+                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                        <div class="footer-social">
+                            <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" title="YouTube"><i class="bi bi-youtube"></i></a>
+                            <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" title="Notion"><i class="bi bi-journal-text"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center text-md-end">
+                        <p class="footer-copy mb-0">&copy; 2026 Pui Ching Middle School (Macau)<br>Humanoid Robot Group</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../assets/js/animations.js"></script>
+        <script>
+        // ============================================================
+        // HACKER DECODE GAME
+        // ============================================================
+        (function () {
+            'use strict';
+
+            var words = [
+                // Level 1 — Easy (4-5 letters)
+                { word: 'ROBOT', category: 'Robotics' },
+                { word: 'SERVO', category: 'Hardware' },
+                { word: 'MOTOR', category: 'Hardware' },
+                { word: 'LIDAR', category: 'Sensor' },
+                { word: 'JOINT', category: 'Mechanics' },
+                { word: 'GYRO', category: 'Sensor' },
+                { word: 'KICK', category: 'Soccer' },
+                { word: 'WALK', category: 'Motion' },
+                { word: 'BALL', category: 'Soccer' },
+                { word: 'GOAL', category: 'Soccer' },
+                // Level 2 — Medium (5-7 letters)
+                { word: 'SENSOR', category: 'Hardware' },
+                { word: 'VISION', category: 'AI' },
+                { word: 'NEURAL', category: 'AI' },
+                { word: 'TORQUE', category: 'Physics' },
+                { word: 'STRIDE', category: 'Motion' },
+                { word: 'CAMERA', category: 'Sensor' },
+                { word: 'PYTHON', category: 'Code' },
+                { word: 'MATRIX', category: 'Math' },
+                { word: 'DECODE', category: 'Hacking' },
+                { word: 'BINARY', category: 'Code' },
+                // Level 3 — Hard (7-10 letters)
+                { word: 'HUMANOID', category: 'Robotics' },
+                { word: 'ROBOCUP', category: 'Competition' },
+                { word: 'BALANCE', category: 'Motion' },
+                { word: 'INVERSE', category: 'Math' },
+                { word: 'ACTUATOR', category: 'Hardware' },
+                { word: 'DYNAMICS', category: 'Physics' },
+                { word: 'FIRMWARE', category: 'Code' },
+                { word: 'PROTOCOL', category: 'Network' },
+                { word: 'ALGORITHM', category: 'Code' },
+                { word: 'KINEMATIC', category: 'Robotics' }
+            ];
+
+            var levelNames = ['INITIATE', 'OPERATIVE', 'ELITE', 'MASTER', 'LEGENDARY'];
+            var score = 0, combo = 0, level = 1, highScore = parseInt(localStorage.getItem('pcmshrg_highscore') || '0');
+            var currentWord = null, timer = null, timeLeft = 0, maxTime = 0;
+            var isPlaying = false;
+
+            var scoreEl = document.getElementById('scoreDisplay');
+            var comboEl = document.getElementById('comboDisplay');
+            var levelEl = document.getElementById('levelDisplay');
+            var levelBadge = document.getElementById('levelBadge');
+            var timerBar = document.getElementById('timerBar');
+            var scrambleEl = document.getElementById('scrambleDisplay');
+            var inputEl = document.getElementById('gameInput');
+            var startBtn = document.getElementById('startBtn');
+            var restartBtn = document.getElementById('restartBtn');
+            var gameOver = document.getElementById('gameOver');
+            var finalScoreEl = document.getElementById('finalScore');
+            var highScoreEl = document.getElementById('highScoreDisplay');
+
+            // Matrix rain
+            var matrixRain = document.getElementById('matrixRain');
+            function initMatrix() {
+                var chars = '01アイウエオカキクケコ';
+                for (var i = 0; i < 20; i++) {
+                    var col = document.createElement('div');
+                    col.className = 'matrix-col';
+                    col.style.left = (Math.random() * 100) + '%';
+                    col.style.animationDuration = (3 + Math.random() * 5) + 's';
+                    col.style.animationDelay = (Math.random() * 3) + 's';
+                    var text = '';
+                    for (var j = 0; j < 30; j++) text += chars.charAt(Math.floor(Math.random() * chars.length)) + '\n';
+                    col.textContent = text;
+                    matrixRain.appendChild(col);
+                }
+            }
+            initMatrix();
+
+            function scrambleWord(word) {
+                var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+                var result = '';
+                for (var i = 0; i < word.length; i++) {
+                    if (Math.random() < 0.4) {
+                        result += word[i];
+                    } else {
+                        result += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                }
+                return result;
+            }
+
+            function getTimeForLevel() {
+                return Math.max(3000, 8000 - (level - 1) * 800);
+            }
+
+            function getWordsForLevel() {
+                if (level <= 2) return words.filter(function (w) { return w.word.length <= 5; });
+                if (level <= 4) return words.filter(function (w) { return w.word.length <= 7; });
+                return words;
+            }
+
+            function updateDisplay() {
+                scoreEl.textContent = score;
+                comboEl.textContent = combo + 'x';
+                levelEl.textContent = level;
+                var lvlName = levelNames[Math.min(level - 1, levelNames.length - 1)];
+                levelBadge.textContent = 'LEVEL ' + level + ' — ' + lvlName;
+            }
+
+            function nextWord() {
+                var pool = getWordsForLevel();
+                currentWord = pool[Math.floor(Math.random() * pool.length)];
+                maxTime = getTimeForLevel();
+                timeLeft = maxTime;
+
+                // Animate scramble reveal
+                var revealCount = 0;
+                var revealInterval = setInterval(function () {
+                    scrambleEl.textContent = scrambleWord(currentWord.word);
+                    scrambleEl.className = 'scramble-display';
+                    revealCount++;
+                    if (revealCount > 8) {
+                        clearInterval(revealInterval);
+                        scrambleEl.textContent = scrambleWord(currentWord.word);
+                    }
+                }, 60);
+
+                inputEl.value = '';
+                inputEl.focus();
+
+                // Start timer
+                clearInterval(timer);
+                timer = setInterval(function () {
+                    timeLeft -= 50;
+                    var pct = (timeLeft / maxTime) * 100;
+                    timerBar.style.width = pct + '%';
+                    timerBar.className = pct < 25 ? 'timer-bar danger' : 'timer-bar';
+
+                    // Keep scrambling
+                    if (Math.random() < 0.3) {
+                        scrambleEl.textContent = scrambleWord(currentWord.word);
+                    }
+
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }, 50);
+            }
+
+            function checkAnswer() {
+                if (!currentWord || !isPlaying) return;
+                var answer = inputEl.value.trim().toUpperCase();
+                if (answer === currentWord.word) {
+                    // Correct!
+                    combo++;
+                    var points = 100 + (combo * 20) + Math.floor(timeLeft / 100);
+                    score += points;
+
+                    // Level up every 3 correct
+                    if (combo % 3 === 0) level++;
+
+                    scrambleEl.textContent = currentWord.word;
+                    scrambleEl.className = 'scramble-display correct';
+
+                    updateDisplay();
+
+                    setTimeout(function () {
+                        nextWord();
+                    }, 400);
+                }
+            }
+
+            function startGame() {
+                score = 0;
+                combo = 0;
+                level = 1;
+                isPlaying = true;
+                gameOver.classList.remove('show');
+                startBtn.style.display = 'none';
+                inputEl.disabled = false;
+                updateDisplay();
+                nextWord();
+            }
+
+            function endGame() {
+                isPlaying = false;
+                clearInterval(timer);
+                inputEl.disabled = true;
+
+                scrambleEl.textContent = currentWord.word;
+                scrambleEl.className = 'scramble-display wrong';
+
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem('pcmshrg_highscore', highScore.toString());
+                }
+
+                finalScoreEl.textContent = score;
+                highScoreEl.textContent = 'HIGH SCORE: ' + highScore;
+
+                setTimeout(function () {
+                    gameOver.classList.add('show');
+                }, 600);
+            }
+
+            // Event listeners
+            startBtn.addEventListener('click', startGame);
+            restartBtn.addEventListener('click', startGame);
+            inputEl.addEventListener('input', checkAnswer);
+            inputEl.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') checkAnswer();
+            });
+
+            // Show high score on load
+            highScoreEl.textContent = 'HIGH SCORE: ' + highScore;
+        })();
+        </script>
+    </body>
+</html>

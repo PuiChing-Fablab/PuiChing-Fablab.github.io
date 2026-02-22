@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+    <head>
+        <script src="../assets/js/color-modes.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="PCMS-HRG Activities – community outreach, training camps, and RoboCup 2026 preparation activities.">
+        <title>Activities – PCMS-HRG</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link href="../assets/css/style.css" rel="stylesheet">
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSS0BVTYRK"></script>
+        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-SSS0BVTYRK');</script>
+    </head>
+    <body>
+        <canvas id="particle-canvas"></canvas>
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="container d-flex align-items-center justify-content-between">
+                <a href="../" class="d-flex align-items-center gap-2 text-decoration-none">
+                    <img src="../assets/images/隊伍徽章.png" alt="PCMS-HRG Badge" class="top-bar-badge">
+                    <span class="top-bar-title">PCMS-HRG</span>
+                </a>
+                <div class="d-flex gap-2 align-items-center flex-wrap">
+                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-instagram"></i> <span>Instagram</span></a>
+                    <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-youtube"></i> <span>YouTube Channel</span></a>
+                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-journal-text"></i> <span>Learning Notes</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- Tab Navigation -->
+        <nav class="tab-nav" aria-label="Page sections">
+            <div class="container">
+                <ul class="tab-list" role="tablist">
+                    <li><a href="../" class="tab-btn"><i class="bi bi-house-fill me-1"></i>Home</a></li>
+                    <li><a href="about.html" class="tab-btn"><i class="bi bi-info-circle-fill me-1"></i>About</a></li>
+                    <li><a href="activities.html" class="tab-btn active"><i class="bi bi-calendar-event-fill me-1"></i>Activities</a></li>
+                    <li><a href="connect.html" class="tab-btn"><i class="bi bi-link-45deg me-1"></i>Connect</a></li>
+                    <li><a href="../../" class="tab-btn tab-btn-back"><i class="bi bi-arrow-left me-1"></i>Main Site</a></li>
+                    <li class="ms-auto"><a href="game.html" class="tab-btn"><i class="bi bi-robot me-1"></i>Robot Decode</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Page Content -->
+        <main id="page-main">
+            <div class="container page-content">
+
+                <h2 class="section-title">Activities</h2>
+                <p class="section-intro">From community outreach to intensive training camps, PCMS-HRG is actively preparing for RoboCup 2026 while sharing the joy of robotics with others.</p>
+
+                <!-- ===== Activity Timeline Overview ===== -->
+                <div class="activity-timeline">
+                    <div class="timeline-item">
+                        <a href="#act-school" class="timeline-card">
+                            <img src="../assets/images/202512_小學早操表演_介紹.jpg" alt="Primary School Performance" class="timeline-card-img">
+                            <div class="timeline-card-body">
+                                <div class="timeline-card-date">December 2025</div>
+                                <p class="timeline-card-name">Primary School Morning Exercise Performance</p>
+                            </div>
+                            <i class="bi bi-chevron-right timeline-arrow"></i>
+                        </a>
+                    </div>
+                    <div class="timeline-item">
+                        <a href="#act-training" class="timeline-card">
+                            <img src="../assets/images/202601_課堂記錄.jpg" alt="Regular Training Sessions" class="timeline-card-img">
+                            <div class="timeline-card-body">
+                                <div class="timeline-card-date">January 2026</div>
+                                <p class="timeline-card-name">Regular Training Sessions</p>
+                            </div>
+                            <i class="bi bi-chevron-right timeline-arrow"></i>
+                        </a>
+                    </div>
+                    <div class="timeline-item">
+                        <a href="#act-newyear" class="timeline-card">
+                            <img src="../assets/images/202602_新年表演.jpg" alt="Chinese New Year Performance" class="timeline-card-img">
+                            <div class="timeline-card-body">
+                                <div class="timeline-card-date">February 2026</div>
+                                <p class="timeline-card-name">Chinese New Year Performance</p>
+                            </div>
+                            <i class="bi bi-chevron-right timeline-arrow"></i>
+                        </a>
+                    </div>
+                    <div class="timeline-item">
+                        <a href="#act-beijing" class="timeline-card">
+                            <img src="../assets/images/202602_北京培訓_首日到達場地.jpg" alt="Beijing Training Camp" class="timeline-card-img">
+                            <div class="timeline-card-body">
+                                <div class="timeline-card-date">February 2026</div>
+                                <p class="timeline-card-name">Beijing Intensive Training Camp</p>
+                            </div>
+                            <i class="bi bi-chevron-right timeline-arrow"></i>
+                        </a>
+                    </div>
+                    <div class="timeline-item">
+                        <a href="#act-robocup" class="timeline-card">
+                            <img src="../assets/images/Booster-T1.png" alt="RoboCup 2026 Qualification" class="timeline-card-img timeline-card-img-contain">
+                            <div class="timeline-card-body">
+                                <div class="timeline-card-date">2026</div>
+                                <p class="timeline-card-name">RoboCup 2026 Qualification Video</p>
+                            </div>
+                            <i class="bi bi-chevron-right timeline-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ===== Detailed Activity Blocks ===== -->
+
+                <!-- Activity: Primary School Morning Exercise Performance -->
+                <div class="activity-block" id="act-school">
+                    <div class="activity-header">
+                        <span class="activity-date">December 2025</span>
+                        <h3 class="activity-title">Guiding the Next Generation — Primary School Morning Exercise Performance</h3>
+                    </div>
+                    <p>Our humanoid robot team visited the affiliated primary school to share the world of humanoid robots with younger students. During the morning assembly, the team introduced the robots, demonstrated dances, and led interactive activities. The goal was to guide the next generation into today's "AI society," helping students born after 2010 understand the trends and development of modern robotics — inspiring them to become the pillars of tomorrow's society.</p>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202512_小學早操表演_介紹.jpg" alt="Team introducing humanoid robots to primary school students" class="img-fluid activity-img">
+                                <figcaption>Team members introducing the humanoid robot to primary school students</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202512_小學早操表演_動作講解.jpg" alt="Explaining robot movements to students" class="img-fluid activity-img">
+                                <figcaption>Explaining the robot's movements and capabilities to curious students</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202512_小學早操表演_陪伴早操.jpg" alt="Robot accompanying students during morning exercise" class="img-fluid activity-img">
+                                <figcaption>The humanoid robot joins students for their morning exercise routine</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202512_肌肉衣機器人.jpg" alt="Muscle suit robot demonstration" class="img-fluid activity-img">
+                                <figcaption>Demonstration of the muscle-suit robot — showcasing wearable robotics technology</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202512_小學早操表演_大合照_1.jpg" alt="Group photo with primary school students and robots" class="img-fluid activity-img">
+                                <figcaption>Group photo — PCMS-HRG team with primary school students and the humanoid robots</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202512_小學早操表演_大合照_2.jpg" alt="Second group photo from the primary school event" class="img-fluid activity-img">
+                                <figcaption>Another memorable group photo from the primary school outreach event</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity: New Year Performance -->
+                <div class="activity-block" id="act-newyear">
+                    <div class="activity-header">
+                        <span class="activity-date">February 2026</span>
+                        <h3 class="activity-title">Chinese New Year Performance</h3>
+                    </div>
+                    <p>To celebrate the Chinese New Year, PCMS-HRG presented a special humanoid robot performance, bringing festive cheer and showcasing the team's progress in robot motion programming and choreography.</p>
+                    <div class="row g-3">
+                        <div class="col-md-8 mx-auto">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_新年表演.jpg" alt="Humanoid robot Chinese New Year performance" class="img-fluid activity-img">
+                                <figcaption>PCMS-HRG humanoid robot performing a special Chinese New Year dance</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity: Regular Training -->
+                <div class="activity-block" id="act-training">
+                    <div class="activity-header">
+                        <span class="activity-date">January 2026</span>
+                        <h3 class="activity-title">Regular Training Sessions</h3>
+                    </div>
+                    <p>Consistent weekly training sessions are the backbone of PCMS-HRG's RoboCup preparation. Members work on robot programming, motion tuning, soccer strategy, and hardware maintenance — building the skills needed for international competition.</p>
+                    <div class="row g-3">
+                        <div class="col-md-8 mx-auto">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202601_課堂記錄.jpg" alt="Regular training session record" class="img-fluid activity-img">
+                                <figcaption>A regular training session — members working on robot programming and motion tuning</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity: Beijing Training Camp -->
+                <div class="activity-block" id="act-beijing">
+                    <div class="activity-header">
+                        <span class="activity-date">February 2026</span>
+                        <h3 class="activity-title">Beijing Intensive Training Camp</h3>
+                    </div>
+                    <p>In February 2026, the team traveled to Beijing for an intensive training camp, working alongside expert coaches and engineers to accelerate our technical development ahead of the upcoming RoboCup 2026 competition season. The camp covered advanced robot programming, motion optimization, and competition strategy — and also gave the team a chance to bond and grow together.</p>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_首日路上.jpg" alt="Team on the way to Beijing training camp" class="img-fluid activity-img">
+                                <figcaption>On the way to Beijing training camp</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_首日到達場地.jpg" alt="Team arriving at the Beijing training venue" class="img-fluid activity-img">
+                                <figcaption>Arriving at the Beijing training venue on the first day</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_上課_1.jpg" alt="Beijing training camp class session 1" class="img-fluid activity-img">
+                                <figcaption>Intensive training session — learning advanced robot control techniques</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_上課_2.jpg" alt="Beijing training camp class session 2" class="img-fluid activity-img">
+                                <figcaption>Hands-on programming workshop during the Beijing training camp</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_上課_3.jpg" alt="Beijing training camp class session 3" class="img-fluid activity-img">
+                                <figcaption>Team members collaborating on robot motion optimization</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_上課_4.jpg" alt="Beijing training camp class session 4" class="img-fluid activity-img">
+                                <figcaption>Deep focus during a technical lecture at the Beijing training camp</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_合照.jpg" alt="Team group photo at Beijing training camp" class="img-fluid activity-img">
+                                <figcaption>Team group photo during the Beijing training camp</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-4">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_聚餐.jpg" alt="Team dinner during Beijing training camp" class="img-fluid activity-img">
+                                <figcaption>Team dinner — bonding over a meal after a long day of training</figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-4">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_生日慶祝.jpg" alt="Birthday celebration during Beijing training camp" class="img-fluid activity-img">
+                                <figcaption>Celebrating a team member's birthday during the camp</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-10 mx-auto">
+                            <figure class="activity-figure">
+                                <img src="../assets/images/202602_北京培訓_完訓合照.jpeg" alt="Completion group photo at Beijing training camp" class="img-fluid activity-img activity-img-large">
+                                <figcaption>Completion ceremony group photo — marking the successful end of the Beijing training camp</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RoboCup Qualification Video -->
+                <div class="activity-block" id="act-robocup">
+                    <div class="activity-header">
+                        <span class="activity-date">2026</span>
+                        <h3 class="activity-title">RoboCup 2026 Qualification Video</h3>
+                    </div>
+                    <p>Watch our official RoboCup 2026 qualification submission video, showcasing the team's technical capabilities and readiness for the upcoming competition.</p>
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <div class="ratio ratio-16x9">
+                                <iframe src="https://www.youtube.com/embed/8BllwcbI_Wo?si=R4wlLBrHvDdOH5gn" title="PCMS-HRG RoboCup 2026 Qualification Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            </div>
+                            <p class="img-caption text-center mt-2"><em>PCMS-HRG RoboCup 2026 Qualification Submission Video</em></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                        <img src="../assets/images/隊伍徽章.png" alt="PCMS-HRG Badge" height="48" class="me-2">
+                        <span class="footer-brand">PCMS-HRG</span>
+                    </div>
+                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                        <div class="footer-social">
+                            <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" title="YouTube"><i class="bi bi-youtube"></i></a>
+                            <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" title="Notion"><i class="bi bi-journal-text"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center text-md-end">
+                        <p class="footer-copy mb-0">&copy; 2026 Pui Ching Middle School (Macau)<br>Humanoid Robot Group</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../assets/js/animations.js"></script>
+    </body>
+</html>
