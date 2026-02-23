@@ -40,7 +40,18 @@ body {
     overflow-x: hidden;
 }
 
-p { font-size: 1.15rem; line-height: 1.85; text-align: justify; }
+p {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    text-align: left;
+}
+
+@media (min-width: 992px) {
+    p {
+        text-align: justify;
+        text-justify: inter-ideograph;
+    }
+}
 
 a {
     font-size: inherit;
