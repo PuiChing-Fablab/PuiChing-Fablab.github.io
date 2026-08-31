@@ -434,7 +434,7 @@
             function measure() {
                 width = grid.clientWidth;
                 if (width <= 0) return false;
-                height = Math.max(280, Math.min(430, Math.round(width * 0.82)));
+                height = Math.max(230, Math.min(330, Math.round(width * 0.66)));
                 grid.style.height = height + 'px';
                 return true;
             }
