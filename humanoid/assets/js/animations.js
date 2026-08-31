@@ -374,7 +374,196 @@
     }
 
     // ============================================================
-    // 9. AUTO-TAG ANIMATION CLASSES
+    // 9. TEAM PREVIEW — DRIFTING CLUSTER OVER A METEOR SHOWER
+    // ============================================================
+    function initTeamPreviewDrift() {
+        document.querySelectorAll('.team-preview-grid').forEach(function (grid) {
+            var items = Array.prototype.slice.call(grid.querySelectorAll('.team-preview-item'));
+            if (items.length < 2) return;
+
+            var drifters = [];
+            var frame = null;
+            var lastTime = 0;
+            var resizeTimer = null;
+            var isPaused = false;
+            var isVisible = true;
+            var width = 0;
+            var height = 0;
+
+            // The shower is decoration only: aria-hidden spans, appended after
+            // the links, so they never reach the tab order or the a11y tree.
+            function buildMeteors(count) {
+                for (var i = 0; i < count; i++) {
+                    var meteor = document.createElement('span');
+                    meteor.className = 'team-preview-meteor';
+                    meteor.setAttribute('aria-hidden', 'true');
+                    meteor.style.setProperty('--meteor-top', (Math.random() * 96).toFixed(1) + '%');
+                    meteor.style.setProperty('--meteor-left', (-14 + Math.random() * 46).toFixed(1) + '%');
+                    meteor.style.setProperty('--meteor-len', (70 + Math.random() * 95).toFixed(0) + 'px');
+                    meteor.style.setProperty('--meteor-dur', (2.6 + Math.random() * 3.6).toFixed(2) + 's');
+                    meteor.style.setProperty('--meteor-delay', (Math.random() * 9).toFixed(2));
+                    grid.appendChild(meteor);
+                }
+            }
+
+            function build() {
+                drifters = items.map(function (item) {
+                    var angle = Math.random() * Math.PI * 2;
+                    var speed = 10 + Math.random() * 16;
+                    return {
+                        el: item,
+                        // Size spread gives the cluster depth. The robots sit at
+                        // the top of the range so the full-body cut-outs stay
+                        // legible, but not so large that they dominate.
+                        scale: (item.classList.contains('is-robot') ? 0.94 : 0.76) + Math.random() * 0.3,
+                        size: 0,
+                        r: 0,
+                        x: 0,
+                        y: 0,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed
+                    };
+                });
+            }
+
+            function write(d) {
+                d.el.style.setProperty('--drift-x', (d.x - d.r) + 'px');
+                d.el.style.setProperty('--drift-y', (d.y - d.r) + 'px');
+            }
+
+            function measure() {
+                width = grid.clientWidth;
+                if (width <= 0) return false;
+                height = Math.max(280, Math.min(430, Math.round(width * 0.82)));
+                grid.style.height = height + 'px';
+                return true;
+            }
+
+            // Diameters come from a target fill of the panel, not a fixed pixel
+            // value: below ~30% coverage the items have room to drift, above it
+            // they spend the whole time colliding.
+            function place(keepPositions) {
+                var base = Math.sqrt((width * height * 0.3 / drifters.length) / Math.PI) * 2;
+                base = Math.max(38, Math.min(84, base));
+
+                drifters.forEach(function (d) {
+                    d.size = Math.round(base * d.scale);
+                    d.r = d.size / 2;
+                    d.el.style.setProperty('--drift-size', d.size + 'px');
+
+                    if (keepPositions) {
+                        d.x = Math.min(Math.max(d.x, d.r), width - d.r);
+                        d.y = Math.min(Math.max(d.y, d.r), height - d.r);
+                    } else {
+                        d.x = d.r + Math.random() * Math.max(1, width - d.size);
+                        d.y = d.r + Math.random() * Math.max(1, height - d.size);
+                    }
+                    write(d);
+                });
+            }
+
+            // Equal-mass elastic bounce, resolved exactly. Fifteen items is 105
+            // pairs a frame — cheap enough to skip a spatial index, and it keeps
+            // the portraits from stacking into an unreadable pile.
+            function collide() {
+                for (var i = 0; i < drifters.length; i++) {
+                    for (var j = i + 1; j < drifters.length; j++) {
+                        var a = drifters[i];
+                        var b = drifters[j];
+                        var dx = b.x - a.x;
+                        var dy = b.y - a.y;
+                        var min = a.r + b.r;
+                        var d2 = dx * dx + dy * dy;
+                        if (d2 >= min * min || d2 === 0) continue;
+
+                        var d = Math.sqrt(d2);
+                        var nx = dx / d;
+                        var ny = dy / d;
+                        var push = (min - d) / 2;
+                        a.x -= nx * push;
+                        a.y -= ny * push;
+                        b.x += nx * push;
+                        b.y += ny * push;
+
+                        var approach = (b.vx * nx + b.vy * ny) - (a.vx * nx + a.vy * ny);
+                        if (approach >= 0) continue;
+                        a.vx += nx * approach;
+                        a.vy += ny * approach;
+                        b.vx -= nx * approach;
+                        b.vy -= ny * approach;
+                    }
+                }
+            }
+
+            function step(now) {
+                // A backgrounded tab resumes with a huge delta; clamping keeps
+                // the cluster from teleporting across the panel on return.
+                var dt = Math.min(0.05, (now - lastTime) / 1000);
+                lastTime = now;
+
+                drifters.forEach(function (d) {
+                    d.x += d.vx * dt;
+                    d.y += d.vy * dt;
+
+                    if (d.x < d.r) { d.x = d.r; d.vx = Math.abs(d.vx); }
+                    else if (d.x > width - d.r) { d.x = width - d.r; d.vx = -Math.abs(d.vx); }
+                    if (d.y < d.r) { d.y = d.r; d.vy = Math.abs(d.vy); }
+                    else if (d.y > height - d.r) { d.y = height - d.r; d.vy = -Math.abs(d.vy); }
+                });
+
+                collide();
+                drifters.forEach(write);
+                frame = requestAnimationFrame(step);
+            }
+
+            function start() {
+                if (frame || isPaused || !isVisible) return;
+                lastTime = performance.now();
+                frame = requestAnimationFrame(step);
+            }
+
+            function stop() {
+                if (!frame) return;
+                cancelAnimationFrame(frame);
+                frame = null;
+            }
+
+            grid.classList.add('is-drifting');
+            build();
+            if (!measure()) return;
+            place(false);
+            buildMeteors(9);
+            start();
+
+            grid.addEventListener('pointerenter', function () { isPaused = true; stop(); });
+            grid.addEventListener('pointerleave', function () { isPaused = false; start(); });
+            grid.addEventListener('focusin', function () { isPaused = true; stop(); });
+            grid.addEventListener('focusout', function () {
+                setTimeout(function () {
+                    if (!grid.contains(document.activeElement)) { isPaused = false; start(); }
+                }, 0);
+            });
+
+            if ('IntersectionObserver' in window) {
+                var visibilityObserver = new IntersectionObserver(function (entries) {
+                    isVisible = entries[0].isIntersecting;
+                    if (isVisible) start();
+                    else stop();
+                }, { threshold: 0.15 });
+                visibilityObserver.observe(grid);
+            }
+
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    if (measure()) place(true);
+                }, 120);
+            }, { passive: true });
+        });
+    }
+
+    // ============================================================
+    // 10. AUTO-TAG ANIMATION CLASSES
     // ============================================================
     function autoTag() {
         document.querySelectorAll('.activity-block').forEach(function (el, i) {
@@ -430,7 +619,7 @@
     }
 
     // ============================================================
-    // 10. SCANLINE
+    // 11. SCANLINE
     // ============================================================
     function initScanline() {
         document.body.classList.add('scanline-overlay');
@@ -456,6 +645,7 @@
         initParallax();
         initPageTransitions();
         initRipple();
+        initTeamPreviewDrift();
         initScanline();
 
         // Delay typewriter slightly for page load effect

@@ -1721,6 +1721,25 @@ button:focus-visible,
     gap: 0.85rem;
     margin-bottom: 0.35rem;
 }
+.line-robot-thumb {
+    width: 74px;
+    height: 112px;
+    margin-left: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.line-robot-thumb img {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.22));
+}
+.line-card.is-k1 .line-robot-thumb img {
+    filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.24));
+}
 .line-badge {
     flex-shrink: 0;
     width: 54px;
@@ -1796,41 +1815,27 @@ button:focus-visible,
     margin-bottom: 0.6rem;
 }
 
-/* ---------- Fleet ---------- */
-.fleet-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.85rem;
-}
-.fleet-unit {
-    text-align: center;
-    padding: 1.1rem 0.85rem;
-    border-radius: var(--r-md);
+/* ---------- Shared software stack ---------- */
+.software-stack {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
     border: 1px solid var(--hairline);
-    background: var(--bg-card);
+    border-radius: var(--r-lg);
+    background:
+        linear-gradient(120deg, rgba(0, 240, 255, 0.045), rgba(139, 92, 246, 0.035)),
+        var(--bg-card);
 }
-.fleet-count {
-    font-family: var(--font-tech);
-    font-size: 1.9rem;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--accent-k1);
-    text-shadow: 0 0 16px rgba(251, 191, 36, 0.3);
+.software-stack .subsection-title { margin-bottom: 0.55rem; }
+.software-stack > p {
+    max-width: 880px;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    text-align: left;
 }
-.fleet-unit.is-t1 .fleet-count { color: var(--accent-t1); text-shadow: 0 0 16px rgba(0, 240, 255, 0.3); }
-.fleet-name {
-    display: block;
-    margin-top: 0.45rem;
+.stack-pills .pill { padding: 0.42rem 0.78rem; }
+.stack-pills .bi {
     font-size: 0.88rem;
-    color: var(--text-primary);
-    font-weight: 500;
-}
-.fleet-note {
-    display: block;
-    margin-top: 0.2rem;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    line-height: 1.45;
+    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.28));
 }
 
 /* ---------- Line tag on member cards ---------- */
@@ -1908,6 +1913,8 @@ button:focus-visible,
 @media (max-width: 575.98px) {
     .line-card { padding: 1.35rem 1.1rem; }
     .line-badge { width: 46px; height: 46px; font-size: 0.95rem; }
+    .line-robot-thumb { width: 58px; height: 88px; }
+    .software-stack { padding: 1.2rem 1rem; }
     .roster { padding: 1rem 1rem; }
 }
 
@@ -2183,6 +2190,9 @@ a.line-card:hover { color: inherit; }
 .i18n-pending body { visibility: hidden; }
 
 .lang-switch { position: relative; flex-shrink: 0; }
+/* The language switch is the one control a reader who cannot read the page
+   has to find first, so it runs amber against an otherwise all-cyan header
+   rather than blending into it. */
 .lang-toggle {
     display: inline-flex;
     align-items: center;
@@ -2193,16 +2203,17 @@ a.line-card:hover { color: inherit; }
     letter-spacing: 1px;
     padding: 0.3rem 0.7rem;
     border-radius: var(--r-pill);
-    border: 1px solid rgba(0, 240, 255, 0.28);
-    background: rgba(0, 240, 255, 0.07);
-    color: var(--neon-cyan);
+    border: 1px solid rgba(251, 191, 36, 0.55);
+    background: rgba(251, 191, 36, 0.14);
+    color: #fbbf24;
+    box-shadow: var(--glow-amber);
     cursor: pointer;
     transition: all 0.22s ease;
 }
 .lang-toggle:hover {
-    background: rgba(0, 240, 255, 0.15);
-    border-color: var(--neon-cyan);
-    box-shadow: var(--glow-cyan);
+    background: rgba(251, 191, 36, 0.24);
+    border-color: #fbbf24;
+    box-shadow: 0 0 24px rgba(251, 191, 36, 0.45);
 }
 .lang-toggle i { font-size: 0.95rem; }
 
@@ -2252,42 +2263,196 @@ a.line-card:hover { color: inherit; }
     .lang-menu { min-width: 140px; }
 }
 
-/* ---------- Group-photo thumbnails (About intro) ---------- */
-.photo-thumbs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.7rem;
+/* ---------- Team and robot preview (About intro) ---------- */
+.team-preview {
+    padding: 1rem;
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    background:
+        radial-gradient(circle at 90% 10%, rgba(139, 92, 246, 0.09), transparent 35%),
+        radial-gradient(circle at 10% 90%, rgba(0, 240, 255, 0.07), transparent 38%),
+        var(--bg-card);
 }
-.photo-thumb {
+.team-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+.team-preview-item {
     display: block;
-    border-radius: var(--r-md);
+    aspect-ratio: 1;
+    border-radius: 50%;
     overflow: hidden;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    aspect-ratio: 4 / 3;
+    border: 1px solid rgba(0, 240, 255, 0.28);
+    background: #fff;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.photo-thumb img {
+.team-preview-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: brightness(0.92);
-    transition: filter 0.25s ease, transform 0.4s ease;
+    transition: transform 0.3s ease;
 }
-.photo-thumb:hover {
+.team-preview-item.is-robot {
+    border-radius: var(--r-md);
+    padding: 0.42rem;
+    background: rgba(0, 240, 255, 0.07);
+}
+.team-preview-item.is-robot.is-k1 {
+    border-color: rgba(251, 191, 36, 0.34);
+    background: rgba(251, 191, 36, 0.08);
+}
+.team-preview-item.is-robot img { object-fit: contain; }
+.team-preview-item:hover {
     transform: translateY(-3px);
-    border-color: rgba(0, 240, 255, 0.42);
+    border-color: rgba(0, 240, 255, 0.62);
     box-shadow: var(--shadow-2), var(--glow-cyan);
 }
-.photo-thumb:hover img { filter: brightness(1.05); transform: scale(1.05); }
-.photo-thumbs-note {
-    margin-top: 0.7rem;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    text-align: center;
+.team-preview-item.is-k1:hover {
+    border-color: rgba(251, 191, 36, 0.62);
+    box-shadow: var(--shadow-2), var(--glow-amber);
 }
-.photo-thumbs-note a { color: var(--neon-cyan); }
+.team-preview-item:hover img { transform: scale(1.05); }
+
+/* JavaScript promotes the static, accessible grid into a free-drifting cluster
+   over a meteor shower. DOM order stays unchanged while only visual positions
+   move, so keyboard and screen-reader navigation remain predictable. A rAF
+   loop writes --drift-x/y every frame, so nothing here may transition on
+   transform — a transition would fight the per-frame writes and smear it. */
+.team-preview-grid.is-drifting {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--r-md);
+    background:
+        radial-gradient(circle at 50% 42%, rgba(0, 240, 255, 0.10), transparent 60%),
+        radial-gradient(circle at 16% 84%, rgba(139, 92, 246, 0.13), transparent 52%),
+        #05070f;
+}
+
+/* Starfield. Three tiled dot layers on one element, panned by a multiple of
+   every tile size (600px) so the loop is seamless without shipping an image. */
+.team-preview-grid.is-drifting::before {
+    content: '';
+    position: absolute;
+    inset: -600px 0 0 -600px;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1.1px 1.1px at 20% 30%, rgba(255, 255, 255, 0.55), transparent 100%),
+        radial-gradient(1px 1px at 68% 62%, rgba(148, 163, 184, 0.42), transparent 100%),
+        radial-gradient(1.6px 1.6px at 44% 78%, rgba(0, 240, 255, 0.38), transparent 100%);
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    animation: teamStarDrift 120s linear infinite;
+}
+
+/* Meteors. Each is one hairline gradient rotated to the shower's angle and
+   translated along its own length, so the streak always travels head-first.
+   Transform and opacity only — the whole shower stays on the compositor. */
+.team-preview-meteor {
+    position: absolute;
+    top: var(--meteor-top, 0);
+    left: var(--meteor-left, 0);
+    z-index: 0;
+    width: var(--meteor-len, 120px);
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.75) 62%, rgba(226, 250, 255, 0.95));
+    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.6));
+    opacity: 0;
+    animation: teamMeteorFall var(--meteor-dur, 3.4s) linear infinite;
+    animation-delay: calc(var(--meteor-delay, 0) * -1s);
+}
+
+.team-preview-grid.is-drifting .team-preview-item {
+    --drift-x: 0px;
+    --drift-y: 0px;
+    --drift-size: 64px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--drift-size);
+    height: var(--drift-size);
+    aspect-ratio: auto;
+    transform: translate3d(var(--drift-x), var(--drift-y), 0);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    will-change: transform;
+    z-index: 1;
+}
+
+/* Hover restates the drift transform: the base .team-preview-item:hover lift
+   would otherwise replace translate3d() and snap the item to the origin. */
+.team-preview-grid.is-drifting .team-preview-item:hover,
+.team-preview-grid.is-drifting .team-preview-item:focus-visible {
+    transform: translate3d(var(--drift-x), var(--drift-y), 0);
+    z-index: 5;
+}
+
+@keyframes teamStarDrift {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(600px, 600px, 0); }
+}
+
+@keyframes teamMeteorFall {
+    0% { opacity: 0; transform: rotate(32deg) translate3d(-160px, 0, 0); }
+    10% { opacity: 1; }
+    72% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(32deg) translate3d(560px, 0, 0); }
+}
+
+.team-preview-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem 1rem;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--hairline);
+}
+.team-preview-links a {
+    font-family: var(--font-tech);
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    color: var(--neon-cyan);
+}
+/* Who We Are is the team's one-screen pitch, so it reads a step above body
+   copy rather than at it: the opening paragraph carries the weight behind a
+   gradient rule borrowed from the section dividers, and the league name is
+   picked out in cyan so the eye lands on it before reading the sentence. */
+#who-we-are .subsection-title {
+    font-size: clamp(1.45rem, 2.9vw, 1.95rem);
+    letter-spacing: 1px;
+    text-shadow: 0 0 24px rgba(0, 240, 255, 0.28);
+}
+#who-we-are p {
+    text-align: left;
+    font-size: clamp(1rem, 1.25vw, 1.08rem);
+    line-height: 1.82;
+    color: var(--text-secondary);
+}
+#who-we-are p:first-of-type {
+    font-size: clamp(1.08rem, 1.5vw, 1.24rem);
+    line-height: 1.72;
+    color: var(--text-primary);
+    padding-left: 1rem;
+    border-left: 2px solid transparent;
+    border-image: linear-gradient(180deg, var(--neon-cyan), rgba(139, 92, 246, 0.75) 55%, transparent) 1;
+}
+#who-we-are strong {
+    color: var(--neon-cyan);
+    font-weight: 600;
+    text-shadow: 0 0 14px rgba(0, 240, 255, 0.42);
+}
+
+@media (max-width: 575.98px) {
+    #who-we-are p:first-of-type { padding-left: 0.7rem; }
+}
+
+@media (max-width: 575.98px) {
+    .team-preview { padding: 0.8rem; }
+    .team-preview-grid { gap: 0.45rem; }
+    .team-preview-item.is-robot { padding: 0.3rem; }
+}
 
 /* A panoramic photo cropped into a 4:3 tile loses most of its subject, so
    wide items take the whole gallery row and carry their own aspect ratio
@@ -2295,4 +2460,18 @@ a.line-card:hover { color: inherit; }
 .gallery-item.is-wide {
     grid-column: 1 / -1;
     cursor: zoom-in;
+}
+
+/* A block that ships one photo has nothing to sit beside it, so a single
+   column strands it as a thumbnail. A lone tile — whether it is the only item
+   in the gallery or the one 4:3 frame standing next to a full-width panorama
+   — takes two tracks instead: half the row on desktop, the whole row once the
+   grid collapses to one column. */
+.gallery:has(.gallery-item:only-child) .gallery-item,
+.gallery-item.is-feature {
+    grid-column: span 2;
+}
+@media (max-width: 575.98px) {
+    .gallery:has(.gallery-item:only-child) .gallery-item,
+    .gallery-item.is-feature { grid-column: 1 / -1; }
 }

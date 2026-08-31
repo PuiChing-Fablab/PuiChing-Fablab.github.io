@@ -16,7 +16,7 @@ T = {
     "Connect": "Contatti",
     "Contact": "Contatti",
     "Robot Decode": "Robot Decode",
-    "Fablab PuiChing": "Fablab PuiChing",
+    "puiching-fablab": "puiching-fablab",
     "Skip to main content": "Vai al contenuto principale",
     "Change language": "Cambia lingua",
     "PCMS-HRG home": "Home di PCMS-HRG",
@@ -50,10 +50,10 @@ T = {
 
     # ---------- home: hero & stats ----------
     "Pui Ching Middle School &middot; Macau": "Pui Ching Middle School &middot; Macao",
-    "Humanoid Robots,<br><span>Built by Students</span>":
-        "Robot umanoidi,<br><span>costruiti dagli studenti</span>",
-    "PCMS-HRG designs, programmes and competes with autonomous humanoid robots &mdash; from the school lab in Macau to the RoboCup Humanoid Soccer League and the World Humanoid Robot Games.":
-        "PCMS-HRG progetta e programma robot umanoidi autonomi e con essi gareggia &mdash; dal laboratorio scolastico di Macao alla RoboCup Humanoid Soccer League e ai World Humanoid Robot Games.",
+    "Humanoid Robots,<br><span>Driven by Students</span>":
+        "Robot umanoidi,<br><span>guidati dagli studenti</span>",
+    "PCMS-HRG programmes and competes with autonomous humanoid robots &mdash; from the school lab in Macau to the RoboCup Humanoid Soccer League and the World Humanoid Robot Games.":
+        "PCMS-HRG programma robot umanoidi autonomi e con essi gareggia &mdash; dal laboratorio scolastico di Macao alla RoboCup Humanoid Soccer League e ai World Humanoid Robot Games.",
     "2026 Results": "Risultati 2026",
     "Our Activities": "Le nostre attività",
     "About the Team": "La squadra",
@@ -62,7 +62,7 @@ T = {
         "RoboCup 2026 &mdash; Humanoid Soccer League, Large Division",
     "RCAP Beijing Masters &mdash; Humanoid OnStage U12":
         "RCAP Beijing Masters &mdash; Humanoid OnStage U12",
-    "World Humanoid Robot Games &mdash; Football 3v3 U19":
+    "World Humanoid Robot Games &mdash; Soccer 3v3 U19":
         "World Humanoid Robot Games &mdash; Calcio 3v3 U19",
     "Competitions &amp; training camps in the 2026 season":
         "Gare e ritiri di allenamento nella stagione 2026",
@@ -74,13 +74,13 @@ T = {
     # ---------- home: welcome ----------
     "Who we are": "Chi siamo",
     "Welcome to PCMS-HRG": "Benvenuti in PCMS-HRG",
-    "We are the <strong>Pui Ching Middle School (Macau) Humanoid Robot Group</strong> &mdash; a student team that builds, programmes and competes with autonomous humanoid robots.":
-        "Siamo l'<strong>Humanoid Robot Group della Pui Ching Middle School (Macao)</strong> &mdash; una squadra studentesca che costruisce, programma e fa gareggiare robot umanoidi autonomi.",
+    "We are the <strong>Pui Ching Middle School (Macau) Humanoid Robot Group</strong> &mdash; a student team that programmes and competes with autonomous humanoid robots.":
+        "Siamo l'<strong>Humanoid Robot Group della Pui Ching Middle School (Macao)</strong> &mdash; una squadra studentesca che programma e fa gareggiare robot umanoidi autonomi.",
     "Our robots have to do what a human player does: see the ball with their own cameras, work out where they are on the pitch, decide what to do next, and stay on their feet while doing it. No remote control, no external sensors, no adult driving from the sideline &mdash; every decision on the field comes from code the students wrote themselves.":
         "I nostri robot devono fare ciò che fa un giocatore umano: vedere il pallone con le proprie telecamere, capire dove si trovano in campo, decidere la mossa successiva e restare in piedi mentre lo fanno. Nessun telecomando, nessun sensore esterno, nessun adulto che li guidi dalla linea laterale &mdash; ogni decisione in campo nasce dal codice scritto dagli studenti stessi.",
     "In a single season the team went from unboxing its first robot to a fifth place at the <strong>RoboCup Humanoid Soccer League</strong> world finals in Incheon, a quarter-final finish at the <strong>World Humanoid Robot Games</strong> in Beijing, and a first place at the <strong>RCAP Asia-Pacific Beijing Masters</strong>.":
         "In una sola stagione la squadra è passata dall'aprire la scatola del primo robot a un quinto posto nelle finali mondiali della <strong>RoboCup Humanoid Soccer League</strong> a Incheon, ai quarti di finale dei <strong>World Humanoid Robot Games</strong> a Pechino e al primo posto ai <strong>RCAP Asia-Pacific Beijing Masters</strong>.",
-    "We now run <strong>two programme lines</strong> &mdash; the full-size Booster T1 for league soccer, and the compact Booster K1 for 3v3 football, stage performance and endurance events.":
+    "We now run <strong>two programme lines</strong> &mdash; the full-size Booster T1 for league soccer, and the compact Booster K1 for 3v3 soccer, stage performance and endurance events.":
         "Oggi portiamo avanti <strong>due linee di programma</strong> &mdash; il Booster T1 a grandezza naturale per il calcio di lega e il compatto Booster K1 per il calcio 3v3, le esibizioni sul palco e le prove di resistenza.",
     "Meet the Team": "Conosci la squadra",
     "Work With Us": "Collabora con noi",
@@ -89,7 +89,15 @@ T = {
     "<em>Booster T1 &mdash; humanoid robot platform</em>": "<em>Booster T1 &mdash; piattaforma robotica umanoide</em>",
 
     # ---------- programme lines ----------
+    "PCMS-HRG is a student team at Pui Ching Middle School (Macau), founded in November 2025. We programme autonomous humanoid robots for RoboCup and other international competitions.":
+        "PCMS-HRG è una squadra studentesca della Pui Ching Middle School (Macao), fondata nel novembre 2025. Programmiamo robot umanoidi autonomi per la RoboCup e altre competizioni internazionali.",
+    "In the <strong>RoboCup Humanoid Soccer League</strong>, robots see, decide and move without remote control. Students build the perception, motion, match strategy and multi-robot coordination that make every play possible.":
+        "Nella <strong>RoboCup Humanoid Soccer League</strong>, i robot percepiscono, decidono e si muovono senza telecomando. Gli studenti sviluppano percezione, movimento, strategia di gara e coordinamento multi-robot che rendono possibile ogni azione.",
     "Team structure": "Struttura della squadra",
+    "Programme Lines &amp; Robots": "Linee di programma e robot",
+    "Two platforms, one team: Booster T1 for full-size league soccer and Booster K1 for agile multi-robot competitions.":
+        "Due piattaforme, una squadra: Booster T1 per il calcio di lega a grandezza naturale e Booster K1 per competizioni agili con più robot.",
+    "T1 + K1": "T1 + K1",
     "Two Programme Lines": "Due linee di programma",
     "Two robot platforms, two classes of competition, one shared toolchain.":
         "Due piattaforme robotiche, due categorie di gara, un'unica toolchain condivisa.",
@@ -101,11 +109,11 @@ T = {
     "Agile multi-robot play": "Gioco agile con più robot",
     "Booster T1 in the RoboCup Humanoid Soccer League, Large Division &mdash; the Major bracket, against university and research teams. Eight students, 5th in the world in 2026.":
         "Booster T1 nella RoboCup Humanoid Soccer League, Large Division &mdash; il tabellone Major, contro squadre universitarie e di ricerca. Otto studenti, quinti al mondo nel 2026.",
-    "Booster K1 in 3v3 football, Humanoid OnStage and the half marathon. Light, quick and tough enough to fall repeatedly &mdash; and small enough that the whole squad can train at once.":
+    "Booster K1 in 3v3 soccer, Humanoid OnStage and the half marathon. Light, quick and tough enough to fall repeatedly &mdash; and small enough that the whole squad can train at once.":
         "Booster K1 nel calcio 3v3, in Humanoid OnStage e nella mezza maratona. Leggero, veloce e abbastanza robusto da cadere più volte &mdash; e abbastanza piccolo da permettere a tutta la squadra di allenarsi insieme.",
     "The full-size track. Booster T1 is our RoboCup platform &mdash; the Humanoid Soccer League's Large Division, where we play the Major bracket against university and research laboratory teams. Everything here is about robustness at scale: gait stability on a big biped, fall recovery, and holding a strategy together across a full match.":
         "Il binario dei robot grandi. Booster T1 è la nostra piattaforma per la RoboCup &mdash; la Large Division della Humanoid Soccer League, dove giochiamo nel tabellone Major contro squadre universitarie e di laboratori di ricerca. Qui conta la robustezza su larga scala: stabilità dell'andatura su un grande bipede, rialzarsi dopo le cadute e tenere insieme una strategia per tutta la partita.",
-    "The compact track. Booster K1 is light, quick and tough enough to take repeated falls, which makes it the right machine for 3v3 football, stage performance and long-distance road events. It is also where the team grows: a smaller robot means more of them, so more students get hands on a real platform at the same time.":
+    "The compact track. Booster K1 is light, quick and tough enough to take repeated falls, which makes it the right machine for 3v3 soccer, stage performance and long-distance road events. It is also where the team grows: a smaller robot means more of them, so more students get hands on a real platform at the same time.":
         "Il binario compatto. Booster K1 è leggero, veloce e robusto abbastanza da reggere cadute ripetute: la macchina giusta per il calcio 3v3, le esibizioni sul palco e le gare su strada di lunga distanza. È anche il binario su cui la squadra cresce: un robot più piccolo significa averne di più, quindi più studenti mettono le mani su una piattaforma vera nello stesso momento.",
     "Platform": "Piattaforma",
     "Main competition": "Gara principale",
@@ -122,7 +130,7 @@ T = {
     "RoboCup HSL &mdash; Large Division": "RoboCup HSL &mdash; Large Division",
     "5th in the world, 2026": "Quinti al mondo, 2026",
     "WHRG quarter-finals · RCAP 1st Place": "Quarti di finale WHRG · 1º posto RCAP",
-    "Football 3v3 U19 · Humanoid OnStage · half marathon":
+    "Soccer 3v3 U19 · Humanoid OnStage · half marathon":
         "Calcio 3v3 U19 · Humanoid OnStage · mezza maratona",
     "3 &times; Booster T1": "3 &times; Booster T1",
     "8 &times; K1 &mdash; 7 Education, 1 Geek": "8 &times; K1 &mdash; 7 Education, 1 Geek",
@@ -161,7 +169,7 @@ T = {
         "CoSpace Humanoid OnStage U12 &mdash; una vittoria in coreografia, programmazione ed esibizione dal vivo.",
     "Large Division, our first appearance in the Major bracket. Knocked out in the quarter-finals against university and research teams.":
         "Large Division, la nostra prima apparizione nel tabellone Major. Eliminati ai quarti di finale contro squadre universitarie e di ricerca.",
-    "Football 3v3 U19 at the &ldquo;Ice Ribbon&rdquo; National Speed Skating Oval &mdash; 666 teams, 16 countries, 51 events.":
+    "Soccer 3v3 U19 at the &ldquo;Ice Ribbon&rdquo; National Speed Skating Oval &mdash; 666 teams, 16 countries, 51 events.":
         "Calcio 3v3 U19 all'ovale nazionale di pattinaggio di velocità &ldquo;Ice Ribbon&rdquo; &mdash; 666 squadre, 16 Paesi, 51 gare.",
     "See the full record": "Vedi il palmarès completo",
     "How we got here": "Come siamo arrivati qui",
@@ -182,7 +190,7 @@ T = {
     "Humanoid Soccer League, Large Division, Incheon. The team also cleared qualification at Booster Champion Night.":
         "Humanoid Soccer League, Large Division, Incheon. La squadra ha inoltre superato le qualificazioni alla Booster Champion Night.",
     "Two Beijing podiums": "Due podi a Pechino",
-    "RCAP Humanoid OnStage U12 champions, and the WHRG football quarter-finals.":
+    "RCAP Humanoid OnStage U12 champions, and the WHRG soccer quarter-finals.":
         "Vincitori di RCAP Humanoid OnStage U12 e quarti di finale nel calcio ai WHRG.",
     "Next season": "Prossima stagione",
     "The K1 fleet grows to eight": "La flotta K1 sale a otto",
@@ -206,7 +214,7 @@ T = {
     "Who We Are": "Chi siamo",
     "The <strong>Pui Ching Middle School (Macau) Humanoid Robot Group</strong> (PCMS-HRG) is a student robotics team dedicated to the research, development and competition of autonomous humanoid robots. The group was formed in November 2025; five months later it was competing in Beijing, and eight months later at the RoboCup world finals.":
         "L'<strong>Humanoid Robot Group della Pui Ching Middle School (Macao)</strong> (PCMS-HRG) è una squadra studentesca di robotica dedicata alla ricerca, allo sviluppo e alla competizione con robot umanoidi autonomi. Il gruppo è nato nel novembre 2025; cinque mesi dopo gareggiava a Pechino e otto mesi dopo alle finali mondiali della RoboCup.",
-    "We compete in the <strong>RoboCup Humanoid Soccer League</strong>, where robots with a human-like body plan and human-like senses play football against each other. Unlike other robot leagues, the Humanoid League does not simplify perception with non-human-like range sensors &mdash; our robots must see, think and act the way a human player would.":
+    "We compete in the <strong>RoboCup Humanoid Soccer League</strong>, where robots with a human-like body plan and human-like senses play soccer against each other. Unlike other robot leagues, the Humanoid League does not simplify perception with non-human-like range sensors &mdash; our robots must see, think and act the way a human player would.":
         "Gareggiamo nella <strong>RoboCup Humanoid Soccer League</strong>, dove robot con una struttura corporea e sensi simili a quelli umani giocano a calcio l'uno contro l'altro. A differenza di altre leghe robotiche, la Humanoid League non semplifica la percezione con sensori di distanza non umani &mdash; i nostri robot devono vedere, pensare e agire come farebbe un giocatore umano.",
     "Everything on the pitch is autonomous. Once a match starts, no one on the team may steer the robots; the only thing that plays is the code the students wrote.":
         "In campo tutto è autonomo. Una volta iniziata la partita, nessuno della squadra può guidare i robot: a giocare è soltanto il codice scritto dagli studenti.",
@@ -234,7 +242,7 @@ T = {
         "Un bipede a grandezza naturale per il calcio di lega e una macchina compatta per il gioco con più robot e le prove di resistenza.",
     "The T1 line's competition platform &mdash; a full-size bipedal humanoid used for the RoboCup Humanoid Soccer League, Large Division. Three units are in service.":
         "La piattaforma da gara della linea T1 &mdash; un umanoide bipede a grandezza naturale usato nella RoboCup Humanoid Soccer League, Large Division. Tre unità in servizio.",
-    "The K1 line's platform &mdash; compact and robust, light enough to survive repeated falls and quick enough for a lifelike running gait. Used for 3v3 football, stage performance and the humanoid half marathon.":
+    "The K1 line's platform &mdash; compact and robust, light enough to survive repeated falls and quick enough for a lifelike running gait. Used for 3v3 soccer, stage performance and the humanoid half marathon.":
         "La piattaforma della linea K1 &mdash; compatta e robusta, leggera abbastanza da sopportare cadute ripetute e veloce abbastanza per una corsa dall'aspetto naturale. Usata per il calcio 3v3, le esibizioni sul palco e la mezza maratona umanoide.",
     "Form": "Forma",
     "Line": "Linea",
@@ -246,7 +254,7 @@ T = {
     "0.95&nbsp;m": "0,95&nbsp;m",
     "19.5&nbsp;kg": "19,5&nbsp;kg",
     "Full-size bipedal humanoid": "Umanoide bipede a grandezza naturale",
-    "Football 3v3 U19, OnStage, marathon": "Calcio 3v3 U19, OnStage, maratona",
+    "Soccer 3v3 U19, OnStage, marathon": "Calcio 3v3 U19, OnStage, maratona",
     "Growing the K1 Fleet": "La flotta K1 cresce",
     "Next year the K1 line expands to <strong>eight robots</strong> &mdash; seven Education Edition units for training, classroom work and squad-wide practice, plus one Geek Edition for the deeper development work the competition code needs.":
         "Il prossimo anno la linea K1 salirà a <strong>otto robot</strong> &mdash; sette unità Education Edition per allenamento, lavoro in classe ed esercitazioni di tutta la rosa, più una Geek Edition per il lavoro di sviluppo più approfondito richiesto dal codice di gara.",
@@ -359,7 +367,7 @@ T.update({
     "<i class=\"bi bi-calendar-event-fill me-1\"></i>Activities": "<i class=\"bi bi-calendar-event-fill me-1\"></i>Attività",
     "<i class=\"bi bi-trophy-fill me-1\"></i>Achievements": "<i class=\"bi bi-trophy-fill me-1\"></i>Risultati",
     "<i class=\"bi bi-link-45deg me-1\"></i>Connect": "<i class=\"bi bi-link-45deg me-1\"></i>Contatti",
-    "<i class=\"bi bi-arrow-left me-1\"></i>Fablab PuiChing": "<i class=\"bi bi-arrow-left me-1\"></i>Fablab PuiChing",
+    "<i class=\"bi bi-arrow-left me-1\"></i>puiching-fablab": "<i class=\"bi bi-arrow-left me-1\"></i>puiching-fablab",
     "<i class=\"bi bi-robot me-1\"></i>Robot Decode": "<i class=\"bi bi-robot me-1\"></i>Robot Decode",
     "<i class=\"bi bi-trophy me-1\"></i>2026 Results": "<i class=\"bi bi-trophy me-1\"></i>Risultati 2026",
     "<i class=\"bi bi-calendar-event me-1\"></i>Our Activities": "<i class=\"bi bi-calendar-event me-1\"></i>Le nostre attività",
@@ -406,16 +414,16 @@ T.update({
     "Demonstration": "Dimostrazione",
     "Invited by Booster Robotics": "Su invito di Booster Robotics",
 
-    "2nd World Humanoid Robot Games — Football 3v3 U19": "2ª edizione dei World Humanoid Robot Games — Calcio 3v3 U19",
-    "<strong>Quarter-finals (Top 8)</strong> in Football 3v3 U19 &mdash; Macau's first team at the World Humanoid Robot Games.":
+    "2nd World Humanoid Robot Games — Soccer 3v3 U19": "2ª edizione dei World Humanoid Robot Games — Calcio 3v3 U19",
+    "<strong>Quarter-finals (Top 8)</strong> in Soccer 3v3 U19 &mdash; Macau's first team at the World Humanoid Robot Games.":
         "<strong>Quarti di finale (Top 8)</strong> nel calcio 3v3 U19 &mdash; la prima squadra di Macao ai World Humanoid Robot Games.",
-    "The second World Humanoid Robot Games brought <strong>666 teams and 2,056 robots from 16 countries across six continents</strong> to Beijing to compete in 51 events. Pui Ching entered two teams &mdash; PCMS-HRG in the Football 3v3 U19 competition, and FAMBOT in the Retail Service scenario event &mdash; making this Macau's first appearance at the Games.":
+    "The second World Humanoid Robot Games brought <strong>666 teams and 2,056 robots from 16 countries across six continents</strong> to Beijing to compete in 51 events. Pui Ching entered two teams &mdash; PCMS-HRG in the Soccer 3v3 U19 competition, and FAMBOT in the Retail Service scenario event &mdash; making this Macau's first appearance at the Games.":
         "La seconda edizione dei World Humanoid Robot Games ha portato a Pechino <strong>666 squadre e 2.056 robot da 16 Paesi e sei continenti</strong>, in gara in 51 discipline. Pui Ching ha schierato due squadre &mdash; PCMS-HRG nel calcio 3v3 U19 e FAMBOT nella prova di scenario Servizio al dettaglio &mdash; segnando la prima presenza di Macao ai Giochi.",
-    "Football 3v3 U19 was new this year and set aside specifically for secondary school students. Robots must move, find the ball, choose between attacking and defending, and coordinate with teammates entirely on their own. PCMS-HRG kept its nerve through the group stage and reached the quarter-finals, adjusting robot settings and match strategy between games against far more experienced opposition.":
+    "Soccer 3v3 U19 was new this year and set aside specifically for secondary school students. Robots must move, find the ball, choose between attacking and defending, and coordinate with teammates entirely on their own. PCMS-HRG kept its nerve through the group stage and reached the quarter-finals, adjusting robot settings and match strategy between games against far more experienced opposition.":
         "Il calcio 3v3 U19 era una novità di quest'anno, riservata agli studenti delle scuole superiori. I robot devono muoversi, trovare il pallone, scegliere fra attacco e difesa e coordinarsi con i compagni in totale autonomia. PCMS-HRG ha tenuto i nervi saldi nella fase a gironi e ha raggiunto i quarti di finale, correggendo impostazioni dei robot e strategia di gara fra una partita e l'altra contro avversari ben più esperti.",
     "In the parallel Retail Service scenario event, FAMBOT's robot had to pick products, restock shelves and patrol back to its station in sequence &mdash; a test of perception, navigation, grasping, system integration and sustained task execution. Sixty-six teams entered and only the top 16 advanced; competing as school students against corporate and university entries, the team held its own and gained rare experience under pressure. During the Games both teams were interviewed by Beijing Radio and Television Station.":
         "Nella prova parallela di scenario Servizio al dettaglio, il robot di FAMBOT doveva prelevare prodotti, rifornire gli scaffali e rientrare in postazione in sequenza &mdash; una verifica di percezione, navigazione, presa, integrazione di sistema ed esecuzione prolungata dei compiti. Si sono iscritte 66 squadre e solo le prime 16 sono passate; da studenti contro squadre aziendali e universitarie, il team ha tenuto botta e ha acquisito una rara esperienza sotto pressione. Durante i Giochi entrambe le squadre sono state intervistate dall'emittente radiotelevisiva di Pechino.",
-    "PCMS-HRG entry — Football 3v3 U19": "Formazione PCMS-HRG — Calcio 3v3 U19",
+    "PCMS-HRG entry — Soccer 3v3 U19": "Formazione PCMS-HRG — Calcio 3v3 U19",
     "Also representing Pui Ching": "In rappresentanza di Pui Ching anche",
     "Students": "Studenti",
     "Retail Service scenario": "Scenario Servizio al dettaglio",
@@ -430,14 +438,14 @@ T.update({
         "Ogni squadra junior doveva inoltre partecipare alla sfida Humanoid OnStage SuperTeam, creando ed eseguendo una performance congiunta con squadre di altre regioni. Lavorare fra lingue e toolchain diverse sotto pressione si è rivelato istruttivo quanto la gara stessa.",
     "PCMS-HRG entry — CoSpace Humanoid OnStage U12": "Formazione PCMS-HRG — CoSpace Humanoid OnStage U12",
 
-    "Booster Champion Night Season 1 — 3v3 Simulated Football": "Booster Champion Night, stagione 1 — calcio simulato 3v3",
+    "Booster Champion Night Season 1 — 3v3 Simulated Soccer": "Booster Champion Night, stagione 1 — calcio simulato 3v3",
     "Qualified": "Qualificati",
     "Passed qualification": "Qualificazioni superate",
     "<strong>Cleared the qualifying round</strong> &mdash; PCMS-HRG beat the AI benchmark team to pass qualification for Season 1 of the 3v3 championship.":
         "<strong>Turno di qualificazione superato</strong> &mdash; PCMS-HRG ha battuto la squadra di riferimento basata sull'IA superando le qualificazioni per la stagione 1 del campionato 3v3.",
-    "Cleared the qualifying round of this 3v3 simulated football championship by beating the AI benchmark team. Played in Booster Studio &mdash; strategy, behaviour-tree design and role assignment, with no hardware to hide behind.":
+    "Cleared the qualifying round of this 3v3 simulated soccer championship by beating the AI benchmark team. Played in Booster Studio &mdash; strategy, behaviour-tree design and role assignment, with no hardware to hide behind.":
         "Turno di qualificazione di questo campionato di calcio simulato 3v3 superato battendo la squadra di riferimento basata sull'IA. Si gioca in Booster Studio &mdash; strategia, progettazione degli alberi di comportamento e assegnazione dei ruoli, senza hardware dietro cui nascondersi.",
-    "Between the RoboCup finals and the summer competitions in Beijing, the team entered Booster Robotics' first Champion Night season &mdash; a 3v3 simulated football league played entirely in Booster Studio, with code submitted for automated matches.":
+    "Between the RoboCup finals and the summer competitions in Beijing, the team entered Booster Robotics' first Champion Night season &mdash; a 3v3 simulated soccer league played entirely in Booster Studio, with code submitted for automated matches.":
         "Fra le finali della RoboCup e le gare estive di Pechino, la squadra ha partecipato alla prima stagione della Champion Night di Booster Robotics &mdash; un campionato di calcio simulato 3v3 giocato interamente in Booster Studio, con il codice inviato per partite automatiche.",
     "Simulation strips away hardware failures and battery limits and leaves nothing but strategy: behaviour-tree design, role assignment, positioning and ball pursuit. It is the cheapest place to fail, and the fastest place to iterate, so improvements found here fed straight back into the physical robots' match code.":
         "La simulazione elimina guasti hardware e limiti di batteria e lascia solo la strategia: progettazione degli alberi di comportamento, assegnazione dei ruoli, posizionamento e inseguimento del pallone. È il posto più economico dove sbagliare e il più rapido dove iterare, così i miglioramenti trovati qui sono confluiti direttamente nel codice di gara dei robot reali.",
@@ -545,11 +553,11 @@ T.update({
     "Major, Large Division": "Major, Large Division",
     "Major &mdash; Large Division": "Major &mdash; Large Division",
     "Training camp": "Ritiro di allenamento",
-    "5-a-side autonomous football": "Calcio autonomo a cinque",
+    "5-a-side autonomous soccer": "Calcio autonomo a cinque",
     "21.0975 km road event": "Gara su strada di 21,0975 km",
-    "3v3 simulated football": "Calcio simulato 3v3",
+    "3v3 simulated soccer": "Calcio simulato 3v3",
     "CoSpace Humanoid OnStage U12": "CoSpace Humanoid OnStage U12",
-    "Football 3v3 U19": "Calcio 3v3 U19",
+    "Soccer 3v3 U19": "Calcio 3v3 U19",
     "Middle School Humanoid Soccer League — training &amp; invitational":
         "Humanoid Soccer League delle scuole medie — allenamenti e torneo su invito",
     "Completed with 70+ teams": "Completata con oltre 70 squadre",
@@ -589,11 +597,11 @@ T.update({
         "Proseguire il modello delle squadre congiunte con la Macau University of Science and Technology e i partner in Portogallo e Brasile, ampliandolo ulteriormente.",
     "Turning one season of hard-won experience into a curriculum, so the next intake of students starts where this one finished.":
         "Trasformare una stagione di esperienza sudata in un percorso didattico, così che la prossima leva di studenti parta da dove questa è arrivata.",
-    "Five-a-side fully autonomous humanoid football through eligibility checks, Swiss-round qualifiers, group stage and finals.":
+    "Five-a-side fully autonomous humanoid soccer through eligibility checks, Swiss-round qualifiers, group stage and finals.":
         "Calcio umanoide completamente autonomo a cinque, fra verifica dei requisiti, qualificazioni con sistema svizzero, fase a gironi e finali.",
     "Large Division, Major bracket. The team's first appearance against university and research laboratory opposition; eliminated in the quarter-finals.":
         "Large Division, tabellone Major. La prima apparizione della squadra contro avversari universitari e di laboratori di ricerca; eliminata ai quarti di finale.",
-    "Football 3v3 U19 quarter-finalists. 666 teams and 2,056 robots from 16 countries competed across 51 events; this was Macau's first entry to the Games.":
+    "Soccer 3v3 U19 quarter-finalists. 666 teams and 2,056 robots from 16 countries competed across 51 events; this was Macau's first entry to the Games.":
         "Quarti di finale nel calcio 3v3 U19. In gara 666 squadre e 2.056 robot da 16 Paesi in 51 discipline; per Macao era la prima partecipazione ai Giochi.",
     "CoSpace Humanoid OnStage U12. Judged on programming, motion choreography, creative expression and teamwork, against 24 international teams from 16 countries and regions.":
         "CoSpace Humanoid OnStage U12. Valutati programmazione, coreografia dei movimenti, espressione creativa e lavoro di squadra, contro 24 squadre internazionali da 16 Paesi e regioni.",
@@ -686,7 +694,7 @@ T.update({
     "FAMBOT working through the Retail Service scenario tasks": "FAMBOT svolge i compiti dello scenario Servizio al dettaglio",
     "Celebrating after advancing through the group stage": "Festeggiamenti dopo il superamento della fase a gironi",
     "Between matches in the pit area": "Fra una partita e l'altra nell'area box",
-    "Setting robots up on the 3v3 football pitch": "Sistemazione dei robot sul campo da calcio 3v3",
+    "Setting robots up on the 3v3 soccer pitch": "Sistemazione dei robot sul campo da calcio 3v3",
     "The FAMBOT entry with competition number 482": "Il robot di FAMBOT con il numero di gara 482",
     "Close-up of the humanoid platform used in the scenario event": "Primo piano della piattaforma umanoide usata nella prova di scenario",
     "First place announced for PCMS-HRG in Humanoid OnStage U12": "L'annuncio del primo posto di PCMS-HRG in Humanoid OnStage U12",
@@ -763,4 +771,9 @@ T.update({
 T.update({
     "The team with all three Booster T1 robots on the day they were unboxed":
         "La squadra con tutti e tre i robot Booster T1 il giorno in cui furono tolti dalle scatole",
+})
+
+T.update({
+    "1.18&nbsp;m": "1,18&nbsp;m",
+    "30&nbsp;kg": "30&nbsp;kg",
 })
