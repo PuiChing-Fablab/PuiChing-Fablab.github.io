@@ -1,177 +1,514 @@
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en" data-bs-theme="dark">
     <head>
-        <script src="../assets/js/color-modes.js"></script>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="About PCMS-HRG – team mission, coaches, and members of the Pui Ching Middle School (Macau) Humanoid Robot Group.">
-        <title>About – PCMS-HRG</title>
+        <title data-i18n="6bca6480">About — PCMS-HRG</title>
+        <meta name="description" content="The team behind PCMS-HRG: two programme lines built on the Booster T1 and Booster K1 humanoid platforms, ten students, three coaches and the software stack they share." data-i18n-content="d0153af8">
+        <meta name="author" content="PCMS-HRG — Pui Ching Middle School (Macau) Humanoid Robot Group">
+        <meta name="theme-color" content="#0a0e17">
+        <link rel="canonical" href="https://puiching-fablab.github.io/humanoid/pages/about.html">
+
+        <!-- Open Graph / social -->
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="PCMS-HRG">
+        <meta property="og:title" content="About — PCMS-HRG" data-i18n-content="6bca6480">
+        <meta property="og:description" content="The team behind PCMS-HRG: two programme lines built on the Booster T1 and Booster K1 humanoid platforms, ten students, three coaches and the software stack they share." data-i18n-content="d0153af8">
+        <meta property="og:url" content="https://puiching-fablab.github.io/humanoid/pages/about.html">
+        <meta property="og:image" content="https://puiching-fablab.github.io/humanoid/assets/img/brand/網站橫幅.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="About — PCMS-HRG">
+        <meta name="twitter:description" content="The team behind PCMS-HRG: two programme lines built on the Booster T1 and Booster K1 humanoid platforms, ten students, three coaches and the software stack they share.">
+        <meta name="twitter:image" content="https://puiching-fablab.github.io/humanoid/assets/img/brand/網站橫幅.jpg">
+
+        <link rel="icon" href="../assets/img/brand/網站圖示.png" type="image/png">
+        <link rel="apple-touch-icon" href="../assets/img/brand/網站圖示.png">
+
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
         <link href="../assets/css/style.css" rel="stylesheet">
+        <script>
+        (function(){try{var l=localStorage.getItem('pcms-hrg-lang');
+        if(l&&l!=='en'){document.documentElement.classList.add('i18n-pending');}}catch(e){}})();
+        </script>
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSS0BVTYRK"></script>
         <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-SSS0BVTYRK');</script>
     </head>
     <body>
-        <canvas id="particle-canvas"></canvas>
+        <a class="skip-link" href="#page-main" data-i18n="be504f61">Skip to main content</a>
+        <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
         <!-- Top Bar -->
         <div class="top-bar">
             <div class="container d-flex align-items-center justify-content-between">
-                <a href="../" class="d-flex align-items-center gap-2 text-decoration-none">
-                    <img src="../assets/images/隊伍徽章.png" alt="PCMS-HRG Badge" class="top-bar-badge">
-                    <span class="top-bar-title">PCMS-HRG</span>
+                <a href="home.html" class="brand-link" aria-label="PCMS-HRG home" data-i18n-aria-label="e88b7979">
+                    <img src="../assets/img/brand/隊伍標誌.png" width="900" height="322"
+                         alt="PCMS-HRG — Pui Ching Middle School (Macau) Humanoid Robot Group" class="brand-logo" data-i18n-alt="6a5567c9">
                 </a>
                 <div class="d-flex gap-2 align-items-center flex-wrap">
-                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-instagram"></i> <span>Instagram</span></a>
-                    <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-youtube"></i> <span>YouTube Channel</span></a>
-                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-journal-text"></i> <span>Learning Notes</span></a>
+                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-instagram"></i> <span data-i18n="5721bbef">Instagram</span></a>
+                    <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-youtube"></i> <span data-i18n="d5633ec1">YouTube Channel</span></a>
+                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-journal-text"></i> <span data-i18n="bab7f859">Learning Notes</span></a>
+                    <div class="lang-switch">
+                        <button type="button" class="lang-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Change language" data-i18n-aria-label="789b14df">
+                            <i class="bi bi-translate" aria-hidden="true"></i><span class="lang-current">EN</span>
+                        </button>
+                        <div class="lang-menu" role="menu"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Tab Navigation -->
-        <nav class="tab-nav" aria-label="Page sections">
+
+        <!-- Primary Navigation -->
+        <nav class="tab-nav" aria-label="Primary" data-i18n-aria-label="a9a96ec0">
             <div class="container">
-                <ul class="tab-list" role="tablist">
-                    <li><a href="../" class="tab-btn"><i class="bi bi-house-fill me-1"></i>Home</a></li>
-                    <li><a href="about.html" class="tab-btn active"><i class="bi bi-info-circle-fill me-1"></i>About</a></li>
-                    <li><a href="activities.html" class="tab-btn"><i class="bi bi-calendar-event-fill me-1"></i>Activities</a></li>
-                    <li><a href="connect.html" class="tab-btn"><i class="bi bi-link-45deg me-1"></i>Connect</a></li>
-                    <li><a href="../../" class="tab-btn tab-btn-back"><i class="bi bi-arrow-left me-1"></i>Main Site</a></li>
-                    <li class="ms-auto"><a href="game.html" class="tab-btn"><i class="bi bi-robot me-1"></i>Robot Decode</a></li>
+                <ul class="tab-list">
+                    <li><a href="home.html" class="tab-btn" data-i18n="cd56f8e3"><i class="bi bi-house-fill me-1"></i>Home</a></li>
+                    <li><a href="about.html" class="tab-btn active" aria-current="page" data-i18n="c6ad7d1d"><i class="bi bi-info-circle-fill me-1"></i>About</a></li>
+                    <li><a href="activities.html" class="tab-btn" data-i18n="0bff6f79"><i class="bi bi-calendar-event-fill me-1"></i>Activities</a></li>
+                    <li><a href="achievements.html" class="tab-btn" data-i18n="6fe0150e"><i class="bi bi-trophy-fill me-1"></i>Achievements</a></li>
+                    <li><a href="connect.html" class="tab-btn" data-i18n="b6f46901"><i class="bi bi-link-45deg me-1"></i>Connect</a></li>
+                    <li><a href="../../" class="tab-btn tab-btn-back" data-i18n="a88be206"><i class="bi bi-arrow-left me-1"></i>Fablab PuiChing</a></li>
+                    <li class="ms-auto"><a href="game.html" class="tab-btn" data-i18n="d368b28a"><i class="bi bi-robot me-1"></i>Robot Decode</a></li>
                 </ul>
             </div>
         </nav>
-        <!-- Page Content -->
+
         <main id="page-main">
             <div class="container page-content">
 
-                <h2 class="section-title">About PCMS-HRG</h2>
-                <p class="section-intro">Learn about our team, our mission, our coaches, and our members.</p>
+                <span class="section-eyebrow" data-i18n="6b21fb79">About</span>
+                <h1 class="section-title" data-i18n="9509a3b4">About PCMS-HRG</h1>
+                <p class="section-intro" data-i18n="27bb4362">A student humanoid robot team from Macau &mdash; the people, the platforms and the problems we are working on.</p>
 
-                <!-- Who We Are -->
-                <div class="row align-items-start g-4 mb-4">
-                    <div class="col-lg-7">
-                        <h3 class="subsection-title">Who We Are</h3>
-                        <p>The <strong>Pui Ching Middle School (Macau) Humanoid Robot Group</strong> (PCMS-HRG) is a student robotics team dedicated to the research, development, and competition of autonomous humanoid robots.</p>
-                        <p>We are preparing to compete in the <strong>RoboCup Humanoid League</strong>, where autonomous robots with a human-like body plan and human-like senses play soccer against each other. Unlike other robot leagues, the Humanoid League does not simplify perception by using non-human-like range sensors — our robots must see, think, and act just as a human player would.</p>
-                        <p>Key research challenges we are working on include:</p>
-                        <ul class="about-list">
-                            <li><i class="bi bi-check-circle-fill text-danger me-2"></i>Dynamic walking, running, and kicking while maintaining balance</li>
-                            <li><i class="bi bi-check-circle-fill text-danger me-2"></i>Visual perception of the ball, other players, and the field</li>
-                            <li><i class="bi bi-check-circle-fill text-danger me-2"></i>Self-localization and autonomous decision-making</li>
-                            <li><i class="bi bi-check-circle-fill text-danger me-2"></i>Team coordination and multi-robot communication</li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="robot-showcase">
-                            <img src="../assets/images/Booster-T1.png" alt="Booster T1 Humanoid Robot" class="img-fluid robot-img">
-                            <p class="img-caption text-center mt-2"><em>Booster T1 — Humanoid Robot Platform</em></p>
+                <!-- ============ WHO WE ARE ============ -->
+                <section class="section" id="who-we-are">
+                    <div class="row align-items-start g-4">
+                        <div class="col-lg-7">
+                            <h2 class="subsection-title" data-i18n="ac280d89">Who We Are</h2>
+                            <p data-i18n="14b6967e">The <strong>Pui Ching Middle School (Macau) Humanoid Robot Group</strong> (PCMS-HRG) is a student robotics team dedicated to the research, development and competition of autonomous humanoid robots. The group was formed in November 2025; five months later it was competing in Beijing, and eight months later at the RoboCup world finals.</p>
+                            <p data-i18n="ececed72">We compete in the <strong>RoboCup Humanoid Soccer League</strong>, where robots with a human-like body plan and human-like senses play football against each other. Unlike other robot leagues, the Humanoid League does not simplify perception with non-human-like range sensors &mdash; our robots must see, think and act the way a human player would.</p>
+                            <p data-i18n="84469db9">Everything on the pitch is autonomous. Once a match starts, no one on the team may steer the robots; the only thing that plays is the code the students wrote.</p>
+                            <h3 class="subsection-title mt-4" data-i18n="4258fbb6">Research Challenges</h3>
+                            <ul class="about-list">
+                                <li data-i18n="d04d95e7"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Dynamic walking, running and kicking while keeping balance</li>
+                                <li data-i18n="c738ac2f"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Visual perception of the ball, other players and the field</li>
+                                <li data-i18n="a52fe002"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Self-localisation and autonomous decision-making</li>
+                                <li data-i18n="4007e3b9"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Fall detection and standing back up without human help</li>
+                                <li data-i18n="ccce0ade"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Team coordination and multi-robot communication</li>
+                            </ul>
                         </div>
-                        <div class="highlight-card mt-3">
-                            <div class="row g-0 align-items-center">
-                                <div class="col-5">
-                                    <img src="../assets/images/202511_開箱.jpg" alt="Unboxing the Booster T1 robot" class="img-fluid rounded-start highlight-img">
+                        <div class="col-lg-5">
+                            <div class="photo-thumbs">
+                                <a href="#group-photos" class="photo-thumb">
+                                    <img src="../assets/img/team/thumb/2526_人形機器人實驗小組_合照.jpg" width="640" height="427"
+                                         alt="The 2025–26 Humanoid Robot Group with its coaches and a Booster T1"
+                                         loading="lazy" decoding="async" data-i18n-alt="22838edc">
+                                </a>
+                                <a href="#group-photos" class="photo-thumb">
+                                    <img src="../assets/img/team/thumb/2526_設科聯課_合照.jpg" width="640" height="360"
+                                         alt="The 2025–26 Design and Technology co-curricular group with their competition robots"
+                                         loading="lazy" decoding="async" data-i18n-alt="e89eb411">
+                                </a>
+                            </div>
+                            <p class="photo-thumbs-note" data-i18n="6493d5f5">The 2025&ndash;26 squad, and the programme it belongs to. <a href="#group-photos">See both in full</a></p>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="section-divider">
+
+                <!-- ============ PROGRAMME LINES ============ -->
+                <section class="section" id="lines">
+                    <span class="section-eyebrow" data-i18n="df950f71">Team structure</span>
+                    <h2 class="section-title" data-i18n="9137637e">Two Programme Lines</h2>
+                    <p class="section-intro" data-i18n="c7e99d2b">PCMS-HRG runs on two parallel tracks, each built around a different robot platform and a different class of competition. The founding eight students work across both; two more joined for the K1 line.</p>
+
+                    <div class="line-grid">
+                        <div class="line-card">
+                            <div class="line-head">
+                                <span class="line-badge">T1</span>
+                                <div>
+                                    <h3 class="line-name" data-i18n="6a65bfc2">T1 Line</h3>
+                                    <p class="line-focus" data-i18n="80d27946">Full-size league soccer</p>
                                 </div>
-                                <div class="col-7">
-                                    <div class="highlight-body">
-                                        <span class="highlight-date">November 2025</span>
-                                        <h4 class="highlight-heading">Robot Unboxing</h4>
-                                        <p class="small mb-0">We received and powered on our three Booster T1 robots for the first time</p>
-                                    </div>
+                            </div>
+                            <p data-i18n="0915239c">The full-size track. Booster T1 is our RoboCup platform &mdash; the Humanoid Soccer League's Large Division, where we play the Major bracket against university and research laboratory teams. Everything here is about robustness at scale: gait stability on a big biped, fall recovery, and holding a strategy together across a full match.</p>
+                            <ul class="line-facts">
+                                <li><span class="fact-key" data-i18n="123a7f2f">Platform</span><span class="fact-val" data-i18n="46be4d8c">Booster T1</span></li>
+                                <li><span class="fact-key" data-i18n="98d5fb7a">Main competition</span><span class="fact-val" data-i18n="d160d46f">RoboCup HSL &mdash; Large Division</span></li>
+                                <li><span class="fact-key" data-i18n="acad9081">Best result</span><span class="fact-val" data-i18n="414795f6">5th in the world, 2026</span></li>
+                                <li><span class="fact-key" data-i18n="67c451a5">Squad</span><span class="fact-val" data-i18n="7404d1a7">8 students</span></li>
+                            </ul>
+                            <div class="line-roster">
+                                <p class="line-roster-title">T1 squad</p>
+                                <ul class="roster-names"><li>Wu Iat Cheng<span class="rn-cn">胡溢晴</span></li><li>Lam Si Ioi<span class="rn-cn">林思睿</span></li><li>Hoi Wai Kio<span class="rn-cn">許惠喬</span></li><li>Yao Yi Chen<span class="rn-cn">姚怡辰</span></li><li>Lei Pui Weng<span class="rn-cn">李沛穎</span></li><li>Lei Ut Ieng<span class="rn-cn">李悅瑩</span></li><li>Mui Lek Hou<span class="rn-cn">梅力昊</span></li><li>Kwan Chi Cheng<span class="rn-cn">關芷晴</span></li></ul>
+                            </div>
+                        </div>
+
+                        <div class="line-card is-k1">
+                            <div class="line-head">
+                                <span class="line-badge">K1</span>
+                                <div>
+                                    <h3 class="line-name" data-i18n="ab8a20dd">K1 Line</h3>
+                                    <p class="line-focus" data-i18n="83a75125">Agile multi-robot play</p>
                                 </div>
+                            </div>
+                            <p data-i18n="a4b622f0">The compact track. Booster K1 is light, quick and tough enough to take repeated falls, which makes it the right machine for 3v3 football, stage performance and long-distance road events. It is also where the team grows: a smaller robot means more of them, so more students get hands on a real platform at the same time.</p>
+                            <ul class="line-facts">
+                                <li><span class="fact-key" data-i18n="123a7f2f">Platform</span><span class="fact-val" data-i18n="c777843f">Booster K1</span></li>
+                                <li><span class="fact-key" data-i18n="db2d05e2">Main competitions</span><span class="fact-val" data-i18n="f902ff99">Football 3v3 U19 · Humanoid OnStage · half marathon</span></li>
+                                <li><span class="fact-key" data-i18n="ca8442e3">Best results</span><span class="fact-val" data-i18n="51c87ac7">WHRG quarter-finals · RCAP 1st Place</span></li>
+                                <li><span class="fact-key" data-i18n="67c451a5">Squad</span><span class="fact-val" data-i18n="d290c96a">10 students</span></li>
+                            </ul>
+                            <div class="line-roster">
+                                <p class="line-roster-title">K1 squad</p>
+                                <ul class="roster-names"><li>Wu Iat Cheng<span class="rn-cn">胡溢晴</span></li><li>Lam Si Ioi<span class="rn-cn">林思睿</span></li><li>Hoi Wai Kio<span class="rn-cn">許惠喬</span></li><li>Yao Yi Chen<span class="rn-cn">姚怡辰</span></li><li>Lei Pui Weng<span class="rn-cn">李沛穎</span></li><li>Lei Ut Ieng<span class="rn-cn">李悅瑩</span></li><li>Mui Lek Hou<span class="rn-cn">梅力昊</span></li><li>Kwan Chi Cheng<span class="rn-cn">關芷晴</span></li><li>Kong Ngai Lam<span class="rn-cn">江艾霖</span></li><li>U Hong Nei<span class="rn-cn">余康妮</span></li></ul>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 <hr class="section-divider">
 
-                <!-- Coaches -->
-                <h3 class="subsection-title" id="coaches">Coaches</h3>
-                <p class="section-intro">Our team is guided by three dedicated coaches who bring expertise in robotics, programming, and engineering.</p>
-                <div class="row g-4 mb-4">
-                    <div class="col-md-4">
-                        <div class="coach-card">
-                            <i class="bi bi-person-fill coach-icon"></i>
-                            <h4 class="coach-name">Lao Kun Wa</h4>
-                            <p class="coach-role text-center">Head Coach</p>
-                            <a href="mailto:thomaslao@gmail.com" class="coach-email"><i class="bi bi-envelope-fill me-1"></i>thomaslao@gmail.com</a>
+                <!-- ============ PLATFORM ============ -->
+                <section class="section" id="platform">
+                    <span class="section-eyebrow" data-i18n="b76ab659">Hardware</span>
+                    <h2 class="section-title" data-i18n="292248f3">Our Robots</h2>
+                    <p class="section-intro" data-i18n="02fd1505">A full-size biped for league soccer, and a compact machine for multi-robot play and endurance events.</p>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="tech-card">
+                                <div class="tech-card-icon"><i class="bi bi-robot"></i></div>
+                                <h3 class="tech-card-title" data-i18n="46be4d8c">Booster T1</h3>
+                                <p class="mb-3" data-i18n="602d11cb">The T1 line's competition platform &mdash; a full-size bipedal humanoid used for the RoboCup Humanoid Soccer League, Large Division. Three units are in service.</p>
+                                <ul class="spec-list">
+                                    <li><span class="spec-key" data-i18n="80446347">Form</span><span class="spec-val" data-i18n="c4a77c22">Full-size bipedal humanoid</span></li>
+                                    <li><span class="spec-key" data-i18n="ea967600">Line</span><span class="spec-val">T1</span></li>
+                                    <li><span class="spec-key" data-i18n="12748281">Units</span><span class="spec-val">3</span></li>
+                                    <li><span class="spec-key" data-i18n="b3131d72">In service since</span><span class="spec-val" data-i18n="07c9a056">November 2025</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="tech-card">
+                                <div class="tech-card-icon"><i class="bi bi-lightning-charge"></i></div>
+                                <h3 class="tech-card-title" data-i18n="c777843f">Booster K1</h3>
+                                <p class="mb-3" data-i18n="9503308d">The K1 line's platform &mdash; compact and robust, light enough to survive repeated falls and quick enough for a lifelike running gait. Used for 3v3 football, stage performance and the humanoid half marathon.</p>
+                                <ul class="spec-list">
+                                    <li><span class="spec-key" data-i18n="3f608b49">Height</span><span class="spec-val" data-i18n="8be0da7a">0.95&nbsp;m</span></li>
+                                    <li><span class="spec-key" data-i18n="69c0b815">Weight</span><span class="spec-val" data-i18n="1ec8bf75">19.5&nbsp;kg</span></li>
+                                    <li><span class="spec-key" data-i18n="ea967600">Line</span><span class="spec-val">K1</span></li>
+                                    <li><span class="spec-key" data-i18n="d678e1d1">Used for</span><span class="spec-val" data-i18n="c35bb782">Football 3v3 U19, OnStage, marathon</span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="coach-card">
-                            <i class="bi bi-person-fill coach-icon"></i>
-                            <h4 class="coach-name">Lam Kin Un</h4>
-                            <p class="coach-role text-center">Technical Coach</p>
-                            <a href="mailto:lamkinun@gmail.com" class="coach-email"><i class="bi bi-envelope-fill me-1"></i>lamkinun@gmail.com</a>
+
+                    <h3 class="subsection-title mt-4" data-i18n="71c28079">Growing the K1 Fleet</h3>
+                    <p data-i18n="e3a29e50">Next year the K1 line expands to <strong>eight robots</strong> &mdash; seven Education Edition units for training, classroom work and squad-wide practice, plus one Geek Edition for the deeper development work the competition code needs.</p>
+                    <div class="fleet-grid">
+                        <div class="fleet-unit is-t1">
+                            <div class="fleet-count">3</div>
+                            <span class="fleet-name" data-i18n="46be4d8c">Booster T1</span>
+                            <span class="fleet-note" data-i18n="a8a9d5fa">In service since November 2025</span>
+                        </div>
+                        <div class="fleet-unit">
+                            <div class="fleet-count">7</div>
+                            <span class="fleet-name" data-i18n="9c2e5c57">K1 Education Edition</span>
+                            <span class="fleet-note" data-i18n="297b9fb2">Arriving next year &mdash; training and squad practice</span>
+                        </div>
+                        <div class="fleet-unit">
+                            <div class="fleet-count">1</div>
+                            <span class="fleet-name" data-i18n="48fa8327">K1 Geek Edition</span>
+                            <span class="fleet-note" data-i18n="56daf543">Arriving next year &mdash; development platform</span>
+                        </div>
+                        <div class="fleet-unit">
+                            <div class="fleet-count">8</div>
+                            <span class="fleet-name" data-i18n="30c34fee">K1 fleet total</span>
+                            <span class="fleet-note" data-i18n="db0869fa">Enough robots for a full squad to work in parallel</span>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="coach-card">
-                            <i class="bi bi-person-fill coach-icon"></i>
-                            <h4 class="coach-name">Lei Mou Hong</h4>
-                            <p class="coach-role text-center">Technical Coach</p>
-                            <a href="mailto:mrleimouhong@gmail.com" class="coach-email"><i class="bi bi-envelope-fill me-1"></i>mrleimouhong@gmail.com</a>
-                        </div>
+
+                    <h3 class="subsection-title mt-4" data-i18n="cfb20731">Software Stack</h3>
+                    <p data-i18n="97730018">Both lines share one toolchain, so what a student learns on K1 carries straight over to T1. The team runs the full engineering loop &mdash; algorithm design, simulation, then deployment on the real robot.</p>
+                    <div class="pill-row">
+                        <span class="pill">C++</span>
+                        <span class="pill">Python</span>
+                        <span class="pill">ROS&nbsp;2</span>
+                        <span class="pill">OpenCV</span>
+                        <span class="pill">YOLO</span>
+                        <span class="pill">Behaviour Trees</span>
+                        <span class="pill">Gait &amp; Motion Control</span>
+                        <span class="pill">Self-Localisation</span>
+                        <span class="pill">Multi-Robot Comms</span>
+                        <span class="pill">Simulation</span>
                     </div>
-                </div>
+                </section>
 
                 <hr class="section-divider">
 
-                <!-- Team Members -->
-                <h3 class="subsection-title" id="members">Team Members</h3>
-                <p class="section-intro">PCMS-HRG is made up of eight talented and passionate student members who work together to design, build, program, and compete with our humanoid robots.</p>
-                <div class="row g-3 justify-content-center mb-4">
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Hoi Wai Kio</span></div>
+                <!-- ============ COACHES ============ -->
+                <section class="section" id="coaches">
+                    <span class="section-eyebrow" data-i18n="b37554f6">People</span>
+                    <h2 class="section-title" data-i18n="181feb68">Coaches</h2>
+                    <p class="section-intro" data-i18n="068c6884">Three teachers guide both lines across robotics, programming and engineering practice.</p>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="coach-card">
+                                <img src="../assets/img/avatars/劉冠華.jpg" width="440" height="440" alt="Illustrated portrait of Lao Kun Wa" class="coach-avatar" loading="lazy" decoding="async" data-i18n-alt="a118d4fd">
+                                <h3 class="coach-name" data-i18n="522d22ff">Lao Kun Wa</h3>
+                                <p class="coach-role text-center" data-i18n="4a832dd8">Head Coach</p>
+                                <p class="member-cn text-center mb-2">劉冠華</p>
+                                <a href="mailto:thomaslao@gmail.com" class="coach-email"><i class="bi bi-envelope-fill me-1"></i>thomaslao@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="coach-card">
+                                <img src="../assets/img/avatars/林建源.jpg" width="440" height="440" alt="Illustrated portrait of Lam Kin Un" class="coach-avatar" loading="lazy" decoding="async" data-i18n-alt="a26bb80e">
+                                <h3 class="coach-name" data-i18n="e952f03a">Lam Kin Un</h3>
+                                <p class="coach-role text-center" data-i18n="98a32995">Technical Coach</p>
+                                <p class="member-cn text-center mb-2">林建源</p>
+                                <a href="mailto:lamkinun@gmail.com" class="coach-email"><i class="bi bi-envelope-fill me-1"></i>lamkinun@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="coach-card">
+                                <img src="../assets/img/avatars/李武鴻.jpg" width="440" height="440" alt="Illustrated portrait of Lei Mou Hong" class="coach-avatar" loading="lazy" decoding="async" data-i18n-alt="b4f32512">
+                                <h3 class="coach-name" data-i18n="4ddbfe03">Lei Mou Hong</h3>
+                                <p class="coach-role text-center" data-i18n="98a32995">Technical Coach</p>
+                                <p class="member-cn text-center mb-2">李武鴻</p>
+                                <a href="mailto:mhlei@g.puiching.edu.mo" class="coach-email"><i class="bi bi-envelope-fill me-1"></i>mhlei@g.puiching.edu.mo</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Kwan Chi Cheng</span></div>
+                </section>
+
+                <hr class="section-divider">
+
+                <!-- ============ MEMBERS ============ -->
+                <section class="section" id="members">
+                    <span class="section-eyebrow" data-i18n="b37554f6">People</span>
+                    <h2 class="section-title" data-i18n="a12f4a2e">Team Members</h2>
+                    <p class="section-intro" data-i18n="6ad71cc9">Ten students share the work &mdash; C++ development, computer vision, strategy design, robot maintenance and match-day operation. Tags show which programme line each member runs.</p>
+
+                    <div class="row g-3 justify-content-center">
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/胡溢晴.jpg" width="440" height="440" alt="Illustrated portrait of Wu Iat Cheng" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="905cf2ce">
+                                <span class="member-name" data-i18n="ca6e9404">Wu Iat Cheng</span>
+                                <span class="member-cn">胡溢晴</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/林思睿.jpg" width="440" height="440" alt="Illustrated portrait of Lam Si Ioi" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="5bffd680">
+                                <span class="member-name" data-i18n="21b679c8">Lam Si Ioi</span>
+                                <span class="member-cn">林思睿</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/許惠喬.jpg" width="440" height="440" alt="Illustrated portrait of Hoi Wai Kio" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="1a9b4589">
+                                <span class="member-name" data-i18n="848165cd">Hoi Wai Kio</span>
+                                <span class="member-cn">許惠喬</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/姚怡辰.jpg" width="440" height="440" alt="Illustrated portrait of Yao Yi Chen" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="2f43e8eb">
+                                <span class="member-name" data-i18n="491d80f4">Yao Yi Chen</span>
+                                <span class="member-cn">姚怡辰</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/李沛穎.jpg" width="440" height="440" alt="Illustrated portrait of Lei Pui Weng" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="399ee2fe">
+                                <span class="member-name" data-i18n="a96cea4f">Lei Pui Weng</span>
+                                <span class="member-cn">李沛穎</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/李悅瑩.jpg" width="440" height="440" alt="Illustrated portrait of Lei Ut Ieng" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="6b75cd82">
+                                <span class="member-name" data-i18n="1c0edfbd">Lei Ut Ieng</span>
+                                <span class="member-cn">李悅瑩</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/梅力昊.jpg" width="440" height="440" alt="Illustrated portrait of Mui Lek Hou" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="c2483314">
+                                <span class="member-name" data-i18n="bf27d1f4">Mui Lek Hou</span>
+                                <span class="member-cn">梅力昊</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/關芷晴.jpg" width="440" height="440" alt="Illustrated portrait of Kwan Chi Cheng" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="355560b6">
+                                <span class="member-name" data-i18n="a505e9fc">Kwan Chi Cheng</span>
+                                <span class="member-cn">關芷晴</span>
+                                <span class="member-lines"><span class="line-tag">T1</span><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/江艾霖.jpg" width="440" height="440" alt="Illustrated portrait of Kong Ngai Lam" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="71624142">
+                                <span class="member-name" data-i18n="896bed8c">Kong Ngai Lam</span>
+                                <span class="member-cn">江艾霖</span>
+                                <span class="member-lines"><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-3">
+                            <div class="member-card">
+                                <img src="../assets/img/avatars/余康妮.jpg" width="440" height="440" alt="Illustrated portrait of U Hong Nei" class="member-avatar" loading="lazy" decoding="async" data-i18n-alt="b8521093">
+                                <span class="member-name" data-i18n="1dca3ef8">U Hong Nei</span>
+                                <span class="member-cn">余康妮</span>
+                                <span class="member-lines"><span class="line-tag is-k1">K1</span></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Lam Si Ioi</span></div>
+                </section>
+
+                <hr class="section-divider">
+
+
+                <!-- ============ MILESTONES ============ -->
+                <section class="section" id="milestones">
+                    <span class="section-eyebrow" data-i18n="90ccd649">History</span>
+                    <h2 class="section-title" data-i18n="6c1dc0f0">Team Milestones</h2>
+                    <div class="journey">
+                        <div class="journey-item">
+                            <div class="journey-date" data-i18n="07c9a056">November 2025</div>
+                            <p class="journey-title" data-i18n="d485d1e8">Group founded &mdash; three Booster T1 robots delivered</p>
+                            <p class="journey-note" data-i18n="4661a670">First power-on, first walk, first fall.</p>
+                        </div>
+                        <div class="journey-item">
+                            <div class="journey-date" data-i18n="cfd4a9bc">December 2025 &ndash; January 2026</div>
+                            <p class="journey-title" data-i18n="1fa801c6">Weekly lab sessions begin</p>
+                            <p class="journey-note" data-i18n="e2cc8685">Motion tuning, vision pipeline and the first public demonstration at the affiliated primary school.</p>
+                        </div>
+                        <div class="journey-item">
+                            <div class="journey-date" data-i18n="c2ebaba7">February 2026</div>
+                            <p class="journey-title" data-i18n="4a4e1eec">Invited to Beijing by Booster Robotics</p>
+                            <p class="journey-note" data-i18n="c02a40f4">Systematic training on ROS&nbsp;2 deployment, YOLO inference, behaviour-tree strategy and multi-robot play &mdash; the team's first work on K1 hardware.</p>
+                        </div>
+                        <div class="journey-item">
+                            <div class="journey-date" data-i18n="b3ca6199">April 2026</div>
+                            <p class="journey-title" data-i18n="95e8d7c0">First official competitions</p>
+                            <p class="journey-note" data-i18n="26fb08ca">The Beijing Middle School Humanoid Soccer League, then the Beijing Yizhuang Humanoid Robot Half Marathon as the only middle school in the field.</p>
+                        </div>
+                        <div class="journey-item is-gold">
+                            <div class="journey-date" data-i18n="431dacac">July 2026</div>
+                            <p class="journey-title" data-i18n="5f6d7292">RoboCup 2026, Incheon &mdash; 5th in the world</p>
+                            <p class="journey-note" data-i18n="05ce628a">The T1 line's debut in the Major bracket of the Humanoid Soccer League, Large Division.</p>
+                        </div>
+                        <div class="journey-item is-gold">
+                            <div class="journey-date" data-i18n="bd8aae60">August 2026</div>
+                            <p class="journey-title" data-i18n="05b49075">RCAP champions and WHRG quarter-finalists</p>
+                            <p class="journey-note" data-i18n="73ee9692">Two K1-line results in one month, and Macau's first appearance at the World Humanoid Robot Games.</p>
+                        </div>
+                        <div class="journey-item">
+                            <div class="journey-date" data-i18n="c0263a85">Next season</div>
+                            <p class="journey-title" data-i18n="e7631a45">The K1 fleet grows to eight</p>
+                            <p class="journey-note" data-i18n="6c511e83">Seven Education Edition units plus one Geek Edition &mdash; enough robots for the whole squad to train in parallel.</p>
+                        </div>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Lei Pui Weng</span></div>
+                    <div class="text-center mt-4">
+                        <a href="activities.html" class="btn btn-tab-link" data-i18n="98e22ac8"><i class="bi bi-calendar-event me-1"></i>Browse the full activity log</a>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Lei Ut Ieng</span></div>
+                </section>
+
+                <hr class="section-divider">
+
+                <!-- ============ GROUP PHOTOS ============ -->
+                <section class="section" id="group-photos">
+                    <span class="section-eyebrow">2025&ndash;26</span>
+                    <h2 class="section-title" data-i18n="ee1b64f9">Group Photos</h2>
+                    <p class="section-intro" data-i18n="52534bdb">The team, and the programme it belongs to. Select either photo to see it full size.</p>
+
+                    <div class="group-photo-grid">
+                        <figure class="group-photo">
+                            <button type="button" class="photo-feature" data-gallery="group-photos"
+                                    data-full="../assets/img/team/2526_人形機器人實驗小組_合照.jpg"
+                                    data-caption="The 2025–26 Humanoid Robot Group with its coaches and a Booster T1"
+                                    aria-label="Enlarge the 2025–26 Humanoid Robot Group photo" data-i18n-aria-label="046bcdd7" data-i18n-data-caption="22838edc">
+                                <img src="../assets/img/team/2526_人形機器人實驗小組_合照.jpg" width="1800" height="1200"
+                                     alt="The 2025–26 PCMS-HRG students and coaches on stage with a Booster T1 robot"
+                                     loading="lazy" decoding="async" data-i18n-alt="008ebba8">
+                            </button>
+                            <figcaption>
+                                <span class="group-photo-year" data-i18n="c84726d1">Humanoid Robot Group</span>
+                                <p class="group-photo-title" data-i18n="6c21950f">人形機器人實驗小組</p>
+                                <p data-i18n="a69968bb">The squad that ran both programme lines through the 2026 season, with its three coaches and a Booster T1.</p>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="group-photo">
+                            <button type="button" class="photo-feature" data-gallery="group-photos"
+                                    data-full="../assets/img/team/2526_設科聯課_合照.jpg"
+                                    data-caption="The 2025–26 Design &amp; Technology co-curricular programme with its competition robots"
+                                    aria-label="Enlarge the 2025–26 Design and Technology co-curricular group photo" data-i18n-aria-label="266dcbe5" data-i18n-data-caption="ed20c8ad">
+                                <img src="../assets/img/team/2526_設科聯課_合照.jpg" width="1800" height="1012"
+                                     alt="The full 2025–26 Design and Technology co-curricular group on stage with their competition robots"
+                                     loading="lazy" decoding="async" data-i18n-alt="afd137fb">
+                            </button>
+                            <figcaption>
+                                <span class="group-photo-year" data-i18n="5d17a5da">Design &amp; Technology Co-curricular</span>
+                                <p class="group-photo-title">設科聯課</p>
+                                <p data-i18n="2c8f7def">PCMS-HRG is one team inside this programme &mdash; the same one that sends teams to RoboCupJunior Soccer and Rescue, and to RoboCup@Home. Techniques travel between them: a vision trick from Junior Soccer, a mechanical fix from Rescue, a navigation idea from @Home.</p>
+                                <a href="achievements.html#robocup-delegation" data-i18n="eeea922c">See the full RoboCup delegation results <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>
+                            </figcaption>
+                        </figure>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Mui Lek Hou</span></div>
-                    </div>
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Wu Iat Cheng</span></div>
-                    </div>
-                    <div class="col-6 col-sm-4 col-md-3">
-                        <div class="member-card"><i class="bi bi-person-fill member-icon"></i><span class="member-name">Yao Yi Chen</span></div>
-                    </div>
-                </div>
+                </section>
 
             </div>
         </main>
+
         <!-- Footer -->
         <footer class="site-footer">
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-                        <img src="../assets/images/隊伍徽章.png" alt="PCMS-HRG Badge" height="48" class="me-2">
-                        <span class="footer-brand">PCMS-HRG</span>
+                <div class="row align-items-center gy-3">
+                    <div class="col-md-4 text-center text-md-start">
+                        <img src="../assets/img/brand/隊伍標誌.png" width="900" height="322"
+                             alt="PCMS-HRG" class="footer-logo">
                     </div>
-                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                    <div class="col-md-4 text-center">
+                        <ul class="footer-nav">
+                            <li><a href="home.html" data-i18n="70f8bb9a">Home</a></li>
+                            <li><a href="about.html" data-i18n="6b21fb79">About</a></li>
+                            <li><a href="activities.html" data-i18n="e58f7f88">Activities</a></li>
+                            <li><a href="achievements.html" data-i18n="a6634f24">Achievements</a></li>
+                            <li><a href="connect.html" data-i18n="b65463cb">Connect</a></li>
+                        </ul>
                         <div class="footer-social">
-                            <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram"></i></a>
-                            <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" title="YouTube"><i class="bi bi-youtube"></i></a>
-                            <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" title="Notion"><i class="bi bi-journal-text"></i></a>
+                            <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" aria-label="YouTube Channel" title="YouTube Channel"><i class="bi bi-youtube"></i></a>
+                            <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" aria-label="Learning Notes" title="Learning Notes"><i class="bi bi-journal-text"></i></a>
                         </div>
                     </div>
                     <div class="col-md-4 text-center text-md-end">
-                        <p class="footer-copy mb-0">&copy; 2026 Pui Ching Middle School (Macau)<br>Humanoid Robot Group</p>
+                        <p class="footer-copy mb-0" data-i18n="579e5093">&copy; 2026 Pui Ching Middle School (Macau)<br>Humanoid Robot Group</p>
                     </div>
                 </div>
             </div>
         </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="../assets/js/animations.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous" defer></script>
+        <script src="../assets/js/i18n.js" defer></script>
+        <script src="../assets/js/animations.js" defer></script>
+        <script src="../assets/js/site.js" defer></script>
     </body>
 </html>

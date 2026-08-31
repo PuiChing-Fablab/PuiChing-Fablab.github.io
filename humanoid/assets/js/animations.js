@@ -28,32 +28,68 @@
     // 2. TYPEWRITER EFFECT — INFINITE LOOP WITH BACKSPACE
     // ============================================================
     function initTypewriter() {
-        // One-shot typewriter for section titles
-        document.querySelectorAll('.section-title').forEach(function (el) {
-            var text = el.textContent;
-            el.textContent = '';
-            el.style.visibility = 'visible';
-            el.classList.add('typewriter-active');
-            var i = 0;
+        // One-shot typewriter for the page heading only. Section sub-headings stay
+        // static: on long pages, a heading that never crosses the observer
+        // threshold would otherwise be left permanently blank.
+        // One-shot typewriter for the page heading. It renders from the text
+        // i18n stashed on the element, and re-renders on a language change —
+        // otherwise switching mid-type leaves the old and new text concatenated.
+        document.querySelectorAll('h1.section-title').forEach(function (el) {
+            var iv = null;
+            var started = false;
+
+            function intended() {
+                return el.__i18nText != null ? el.__i18nText : el.textContent;
+            }
+
+            function render(text) {
+                if (iv) { clearInterval(iv); iv = null; }
+                var i = 0;
+                el.textContent = '';
+                el.classList.remove('typewriter-done');
+                el.classList.add('typewriter-active');
+                iv = setInterval(function () {
+                    if (i < text.length) { el.textContent += text.charAt(i); i++; }
+                    else {
+                        clearInterval(iv); iv = null;
+                        el.classList.remove('typewriter-active');
+                        el.classList.add('typewriter-done');
+                    }
+                }, 50);
+            }
+
+            function start() {
+                if (started) return;
+                started = true;
+                render(intended());
+            }
+
+            document.addEventListener('i18n:applied', function () {
+                if (started) render(intended());
+            });
+
+            if (!('IntersectionObserver' in window)) { start(); return; }
             var obs = new IntersectionObserver(function (entries) {
-                if (entries[0].isIntersecting && i === 0) {
-                    var iv = setInterval(function () {
-                        if (i < text.length) { el.textContent += text.charAt(i); i++; }
-                        else { clearInterval(iv); el.classList.remove('typewriter-active'); el.classList.add('typewriter-done'); }
-                    }, 50);
-                    obs.disconnect();
-                }
+                if (entries[0].isIntersecting) { obs.disconnect(); start(); }
             }, { threshold: 0.3 });
             obs.observe(el);
+            // Safety net: never leave the heading unwritten.
+            setTimeout(function () { obs.disconnect(); start(); }, 4000);
         });
 
         // Infinite cycling typewriter for home intro title
         document.querySelectorAll('.home-intro-title').forEach(function (el) {
-            var phrases = [
-                el.textContent,
-                'Humanoid Intelligence',
-                'From Macau to the World Stage'
-            ];
+            // Alternate phrases live in the markup (data-phrases, pipe
+            // separated) so that they are translatable like everything else.
+            function phraseList() {
+                var base = el.__i18nText != null ? el.__i18nText : el.getAttribute('data-base') || el.textContent;
+                var extra = (el.getAttribute('data-phrases') || '').split('|')
+                                .map(function (t) { return t.trim(); })
+                                .filter(Boolean);
+                return [base].concat(extra);
+            }
+            if (!el.getAttribute('data-base')) el.setAttribute('data-base', el.textContent.trim());
+            var phrases = phraseList();
             el.textContent = '';
             el.style.visibility = 'visible';
             el.classList.add('typewriter-active');
@@ -96,6 +132,13 @@
                     setTimeout(tick, deleteSpeed);
                 }
             }
+
+            document.addEventListener('i18n:applied', function () {
+                phrases = phraseList();
+                phraseIdx = 0;
+                charIdx = 0;
+                isDeleting = false;
+            });
 
             var obs = new IntersectionObserver(function (entries) {
                 if (entries[0].isIntersecting) {
@@ -243,9 +286,10 @@
     // 5. 3D TILT ON HOVER (cards)
     // ============================================================
     function initTilt() {
-        var cards = document.querySelectorAll('.coach-card, .member-card, .connect-card, .timeline-card');
+        var cards = document.querySelectorAll('.coach-card, .member-card, .connect-card');
         cards.forEach(function (card) {
             card.addEventListener('mousemove', function (e) {
+                card.classList.add('is-tilting');
                 var rect = card.getBoundingClientRect();
                 var x = e.clientX - rect.left;
                 var y = e.clientY - rect.top;
@@ -256,6 +300,7 @@
                 card.style.transform = 'perspective(600px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
             });
             card.addEventListener('mouseleave', function () {
+                card.classList.remove('is-tilting');
                 card.style.transform = '';
             });
         });
@@ -265,12 +310,23 @@
     // 6. PARALLAX SCROLLING
     // ============================================================
     function initParallax() {
-        var hero = document.querySelector('.hero-photo');
+        var hero = document.querySelector('.hero-bg');
         if (!hero) return;
+        // The image fills its container, so the drift has to stay inside the
+        // headroom that scale() creates — otherwise an edge is exposed.
+        var MAX = 26;
+        var ticking = false;
+        function update() {
+            var offset = Math.min(window.pageYOffset * 0.18, MAX);
+            hero.style.transform = 'translateY(' + offset + 'px) scale(1.12)';
+            ticking = false;
+        }
         window.addEventListener('scroll', function () {
-            var scrollY = window.pageYOffset;
-            hero.style.transform = 'translateY(' + (scrollY * 0.3) + 'px) scale(1.05)';
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(update);
         }, { passive: true });
+        update();
     }
 
     // ============================================================
@@ -337,22 +393,38 @@
             el.classList.add('animate-scale');
             el.classList.add('delay-' + (i + 1));
         });
-        document.querySelectorAll('.timeline-item').forEach(function (el, i) {
+        document.querySelectorAll('.journey-item').forEach(function (el, i) {
             el.classList.add('animate-slide-left');
             el.classList.add('delay-' + ((i % 5) + 1));
+        });
+        document.querySelectorAll('.stat-card').forEach(function (el, i) {
+            el.classList.add('animate-on-scroll');
+            el.classList.add('delay-' + ((i % 5) + 1));
+        });
+        document.querySelectorAll('.line-card').forEach(function (el, i) {
+            el.classList.add('animate-scale');
+            el.classList.add('delay-' + (i + 1));
+        });
+        document.querySelectorAll('.tech-card').forEach(function (el, i) {
+            el.classList.add('animate-on-scroll');
+            el.classList.add('delay-' + ((i % 3) + 1));
+        });
+        document.querySelectorAll('.honour-card').forEach(function (el, i) {
+            el.classList.add('animate-on-scroll');
+            el.classList.add('delay-' + ((i % 3) + 1));
+        });
+        document.querySelectorAll('.fleet-unit').forEach(function (el, i) {
+            el.classList.add('animate-scale');
+            el.classList.add('delay-' + ((i % 4) + 1));
+        });
+        document.querySelectorAll('.result-table-wrap, .roster').forEach(function (el) {
+            el.classList.add('animate-on-scroll');
         });
         document.querySelectorAll('.robot-showcase').forEach(function (el) {
             el.classList.add('animate-scale');
         });
-        document.querySelectorAll('.highlight-card').forEach(function (el) {
-            el.classList.add('animate-slide-right');
-        });
-        document.querySelectorAll('.school-link-item').forEach(function (el, i) {
+        document.querySelectorAll('.press-link').forEach(function (el, i) {
             el.classList.add('animate-on-scroll');
-            el.classList.add('delay-' + ((i % 4) + 1));
-        });
-        document.querySelectorAll('.activity-figure').forEach(function (el, i) {
-            el.classList.add('animate-scale');
             el.classList.add('delay-' + ((i % 4) + 1));
         });
     }
