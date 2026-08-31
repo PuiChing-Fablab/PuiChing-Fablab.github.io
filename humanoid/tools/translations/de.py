@@ -88,10 +88,10 @@ T = {
     "<em>Booster T1 &mdash; humanoid robot platform</em>": "<em>Booster T1 &mdash; humanoide Roboterplattform</em>",
 
     # ---------- programme lines ----------
-    "PCMS-HRG is a student team at Pui Ching Middle School (Macau), founded in November 2025. We programme autonomous humanoid robots for RoboCup and other international competitions.":
-        "PCMS-HRG ist ein Schülerteam der Pui Ching Middle School (Macau), gegründet im November 2025. Wir programmieren autonome humanoide Roboter für RoboCup und andere internationale Wettbewerbe.",
-    "In the <strong>RoboCup Humanoid Soccer League</strong>, robots see, decide and move without remote control. Students build the perception, motion, match strategy and multi-robot coordination that make every play possible.":
-        "In der <strong>RoboCup Humanoid Soccer League</strong> nehmen Roboter ihre Umgebung wahr, entscheiden und bewegen sich ohne Fernsteuerung. Die Schülerinnen und Schüler entwickeln Wahrnehmung, Bewegung, Spielstrategie und Mehrroboter-Koordination, die jeden Spielzug ermöglichen.",
+    "PCMS-HRG is a student team at Pui Ching Middle School (Macau), founded in November 2025. We programme autonomous humanoid robots for the <strong>RoboCup Humanoid Soccer League</strong>, the <strong>World Humanoid Robot Games</strong> and <strong>RoboCup Asia-Pacific (RCAP)</strong>.":
+        "PCMS-HRG ist ein Schülerteam der Pui Ching Middle School (Macau), gegründet im November 2025. Wir programmieren autonome humanoide Roboter für die <strong>RoboCup Humanoid Soccer League</strong>, die <strong>World Humanoid Robot Games</strong> und <strong>RoboCup Asia-Pacific (RCAP)</strong>.",
+    "Across every event &mdash; <strong>league soccer, 3v3, Humanoid OnStage and the half marathon</strong> &mdash; the robots see, decide and move without remote control. Students build the perception, motion, match strategy and multi-robot coordination that make every play possible.":
+        "Bei jedem Wettbewerb &mdash; <strong>Liga-Fußball, 3v3, Humanoid OnStage und Halbmarathon</strong> &mdash; nehmen die Roboter ihre Umgebung wahr, entscheiden und bewegen sich ohne Fernsteuerung. Die Schülerinnen und Schüler entwickeln Wahrnehmung, Bewegung, Spielstrategie und Mehrroboter-Koordination, die jeden Spielzug ermöglichen.",
     "Team structure": "Teamstruktur",
     "Programme Lines &amp; Robots": "Programmlinien &amp; Roboter",
     "Two platforms, one team: Booster T1 for full-size league soccer and Booster K1 for agile multi-robot competitions.":

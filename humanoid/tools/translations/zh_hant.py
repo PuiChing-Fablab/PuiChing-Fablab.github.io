@@ -89,10 +89,10 @@ T = {
     "<em>Booster T1 &mdash; humanoid robot platform</em>": "<em>Booster T1&mdash;&mdash;人形機器人平台</em>",
 
     # ---------- programme lines ----------
-    "PCMS-HRG is a student team at Pui Ching Middle School (Macau), founded in November 2025. We programme autonomous humanoid robots for RoboCup and other international competitions.":
-        "PCMS-HRG 是澳門培正中學的學生隊伍，於 2025 年 11 月成立。我們為自主式人形機器人編程，參與 RoboCup 及其他國際賽事。",
-    "In the <strong>RoboCup Humanoid Soccer League</strong>, robots see, decide and move without remote control. Students build the perception, motion, match strategy and multi-robot coordination that make every play possible.":
-        "在<strong>RoboCup 人形機器人足球聯賽</strong>中，機器人毋須遙控，自行感知、決策和移動。學生編寫感知、運動、比賽策略及多機器人協調程式，讓每一次場上動作成為可能。",
+    "PCMS-HRG is a student team at Pui Ching Middle School (Macau), founded in November 2025. We programme autonomous humanoid robots for the <strong>RoboCup Humanoid Soccer League</strong>, the <strong>World Humanoid Robot Games</strong> and <strong>RoboCup Asia-Pacific (RCAP)</strong>.":
+        "PCMS-HRG 是澳門培正中學的學生隊伍，於 2025 年 11 月成立。我們為自主式人形機器人編程，參與<strong>RoboCup 人形機器人足球聯賽</strong>、<strong>世界人形機器人運動會</strong>及 <strong>RoboCup 亞太賽（RCAP）</strong>。",
+    "Across every event &mdash; <strong>league soccer, 3v3, Humanoid OnStage and the half marathon</strong> &mdash; the robots see, decide and move without remote control. Students build the perception, motion, match strategy and multi-robot coordination that make every play possible.":
+        "無論是<strong>聯賽足球、3v3、人形機器人舞台賽還是半程馬拉松</strong>，機器人都毋須遙控，自行感知、決策和移動。學生編寫感知、運動、比賽策略及多機器人協調程式，讓每一次場上動作成為可能。",
     "Team structure": "隊伍架構",
     "Programme Lines &amp; Robots": "發展路線與機器人",
     "Two platforms, one team: Booster T1 for full-size league soccer and Booster K1 for agile multi-robot competitions.":

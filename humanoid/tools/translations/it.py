@@ -89,10 +89,10 @@ T = {
     "<em>Booster T1 &mdash; humanoid robot platform</em>": "<em>Booster T1 &mdash; piattaforma robotica umanoide</em>",
 
     # ---------- programme lines ----------
-    "PCMS-HRG is a student team at Pui Ching Middle School (Macau), founded in November 2025. We programme autonomous humanoid robots for RoboCup and other international competitions.":
-        "PCMS-HRG è una squadra studentesca della Pui Ching Middle School (Macao), fondata nel novembre 2025. Programmiamo robot umanoidi autonomi per la RoboCup e altre competizioni internazionali.",
-    "In the <strong>RoboCup Humanoid Soccer League</strong>, robots see, decide and move without remote control. Students build the perception, motion, match strategy and multi-robot coordination that make every play possible.":
-        "Nella <strong>RoboCup Humanoid Soccer League</strong>, i robot percepiscono, decidono e si muovono senza telecomando. Gli studenti sviluppano percezione, movimento, strategia di gara e coordinamento multi-robot che rendono possibile ogni azione.",
+    "PCMS-HRG is a student team at Pui Ching Middle School (Macau), founded in November 2025. We programme autonomous humanoid robots for the <strong>RoboCup Humanoid Soccer League</strong>, the <strong>World Humanoid Robot Games</strong> and <strong>RoboCup Asia-Pacific (RCAP)</strong>.":
+        "PCMS-HRG è una squadra studentesca della Pui Ching Middle School (Macao), fondata nel novembre 2025. Programmiamo robot umanoidi autonomi per la <strong>RoboCup Humanoid Soccer League</strong>, i <strong>World Humanoid Robot Games</strong> e <strong>RoboCup Asia-Pacific (RCAP)</strong>.",
+    "Across every event &mdash; <strong>league soccer, 3v3, Humanoid OnStage and the half marathon</strong> &mdash; the robots see, decide and move without remote control. Students build the perception, motion, match strategy and multi-robot coordination that make every play possible.":
+        "In ogni competizione &mdash; <strong>calcio di lega, 3v3, Humanoid OnStage e mezza maratona</strong> &mdash; i robot percepiscono, decidono e si muovono senza telecomando. Gli studenti sviluppano percezione, movimento, strategia di gara e coordinamento multi-robot che rendono possibile ogni azione.",
     "Team structure": "Struttura della squadra",
     "Programme Lines &amp; Robots": "Linee di programma e robot",
     "Two platforms, one team: Booster T1 for full-size league soccer and Booster K1 for agile multi-robot competitions.":
