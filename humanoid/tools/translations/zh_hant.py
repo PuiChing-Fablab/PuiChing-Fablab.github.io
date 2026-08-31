@@ -776,3 +776,8 @@ T.update({
     "1.18&nbsp;m": "1.18&nbsp;米",
     "30&nbsp;kg": "30&nbsp;公斤",
 })
+
+T.update({
+    "The humanoid soccer squad with both Booster robots at the Incheon pitch":
+        "人形足球隊與兩台 Booster 機器人在仁川賽場合照",
+})

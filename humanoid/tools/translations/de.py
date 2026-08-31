@@ -791,3 +791,8 @@ T.update({
     "1.18&nbsp;m": "1,18&nbsp;m",
     "30&nbsp;kg": "30&nbsp;kg",
 })
+
+T.update({
+    "The humanoid soccer squad with both Booster robots at the Incheon pitch":
+        "Das Humanoid-Soccer-Team mit beiden Booster-Robotern am Spielfeldrand in Incheon",
+})
