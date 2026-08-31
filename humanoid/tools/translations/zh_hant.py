@@ -798,3 +798,22 @@ T.update({
     "All the Pui Ching teams and their robots after the competition":
         "賽後，培正各參賽隊伍與機器人合照",
 })
+
+T.update({
+    "A Booster K1 at the opening ceremony":
+        "開幕式上的 Booster K1",
+    "Students preparing for the competition":
+        "學生為比賽做準備",
+    "PCMS-HRG before the match":
+        "PCMS-HRG 賽前合照",
+    "PCMS-HRG after the match":
+        "PCMS-HRG 賽後合照",
+    "The Macau Pui Ching delegation at the Games":
+        "澳門培正代表團在運動會的合照",
+    "All the Humanoid OnStage teams together":
+        "所有 Humanoid OnStage 參賽隊伍合照",
+    "The team after the competition":
+        "隊伍賽後合照",
+    "The team at the airport on the way to Beijing":
+        "前往北京途中，隊伍在機場合照",
+})

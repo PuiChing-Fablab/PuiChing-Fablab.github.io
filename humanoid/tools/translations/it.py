@@ -799,3 +799,22 @@ T.update({
     "All the Pui Ching teams and their robots after the competition":
         "Tutte le squadre di Pui Ching con i loro robot dopo la competizione",
 })
+
+T.update({
+    "A Booster K1 at the opening ceremony":
+        "Un Booster K1 alla cerimonia di apertura",
+    "Students preparing for the competition":
+        "Gli studenti si preparano alla competizione",
+    "PCMS-HRG before the match":
+        "PCMS-HRG prima della partita",
+    "PCMS-HRG after the match":
+        "PCMS-HRG dopo la partita",
+    "The Macau Pui Ching delegation at the Games":
+        "La delegazione di Pui Ching (Macao) ai Games",
+    "All the Humanoid OnStage teams together":
+        "Tutte le squadre di Humanoid OnStage insieme",
+    "The team after the competition":
+        "La squadra dopo la competizione",
+    "The team at the airport on the way to Beijing":
+        "La squadra in aeroporto, in viaggio verso Pechino",
+})
