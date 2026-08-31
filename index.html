@@ -1,107 +1,452 @@
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
+        <title>Pui Ching Fablab (Macau)</title>
+        <meta name="description" content="Pui Ching Fablab (Macau), founded 2015 and operated by Pui Ching Middle School — a digital fabrication lab open to the public, and home to three student robotics programmes: service robots, an autonomous surface vehicle, and humanoid robots.">
         <meta name="author" content="Kinda, LAM KIN UN">
-        <meta name="generator" content="Hugo 0.122.0">
-        <title>PuiChing Fablab</title>
+        <link rel="canonical" href="https://puiching-fablab.github.io/">
+        <link rel="icon" href="./images/澳門培正中學_校徽_web.png" type="image/png">
 
-        <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/jumbotron/">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-        <link href="./home/assets/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="./home/style.css?r=2025" rel="stylesheet">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SSS0BVTYRK"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSS0BVTYRK"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-SSS0BVTYRK');
+        </script>
 
-    gtag('config', 'G-SSS0BVTYRK');
-</script>
         <style>
-            .feature-images a {
-                display: block;
+            /* The three programme sites each carry their own identity — the
+               humanoid one in particular runs dark and neon. This page is the
+               shared front door, so it goes the other way: paper, hairline
+               rules, space, and the school's own navy and red taken from the
+               crest rather than an invented accent. */
+            :root {
+                color-scheme: light dark;
+                --paper:   #fbfaf8;
+                --raised:  #ffffff;
+                --ink:     #14161c;
+                --body:    #3d3f47;
+                --muted:   #6a6a72;
+                --rule:    rgba(20, 22, 28, 0.12);
+                --navy:    #1b1b7a;
+                --red:     #cf1f1f;
+                --serif:   'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+                --sans:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             }
-            .feature-images img { filter: brightness(30%); }
-            .feature-images a:hover img {
-                filter: brightness(100%);
+
+            *, *::before, *::after { box-sizing: border-box; }
+
+            body {
+                margin: 0;
+                background: var(--paper);
+                color: var(--ink);
+                font-family: var(--sans);
+                font-size: 16px;
+                line-height: 1.65;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .wrap { width: min(1180px, calc(100% - 3rem)); margin-inline: auto; }
+            a { color: inherit; }
+
+            /* One stagger utility: children rise into place once, in source
+               order, and it collapses to nothing under reduced motion. */
+            .rise { animation: rise 0.7s cubic-bezier(0.22, 0.68, 0.35, 1) backwards; }
+            .d1 { animation-delay: 0.05s; }
+            .d2 { animation-delay: 0.16s; }
+            .d3 { animation-delay: 0.27s; }
+            .d4 { animation-delay: 0.38s; }
+            .d5 { animation-delay: 0.49s; }
+            @keyframes rise {
+                from { opacity: 0; transform: translateY(16px); }
+                to   { opacity: 1; transform: none; }
+            }
+
+            /* ---------- masthead ---------- */
+            .masthead {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.75rem 2rem;
+                padding: 1.35rem 0 1.15rem;
+                border-bottom: 1px solid var(--rule);
+            }
+            .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+            .brand img { width: 34px; height: 34px; display: block; }
+            .brand b { font-weight: 700; font-size: 1.02rem; letter-spacing: -0.005em; }
+            .masthead nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1.6rem;
+                font-size: 0.82rem;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+            .masthead nav a {
+                text-decoration: none;
+                color: var(--muted);
+                padding-bottom: 3px;
+                border-bottom: 2px solid transparent;
+                transition: color 0.18s ease, border-color 0.18s ease;
+            }
+            .masthead nav a:hover,
+            .masthead nav a:focus-visible { color: var(--navy); border-bottom-color: var(--red); }
+
+            /* ---------- hero ---------- */
+            .hero { padding: 5rem 0 3.75rem; }
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                font-size: 0.74rem;
+                font-weight: 700;
+                letter-spacing: 0.19em;
+                text-transform: uppercase;
+                color: var(--navy);
+                margin: 0 0 1.1rem;
+            }
+            .eyebrow::before { content: ''; width: 26px; height: 2px; background: var(--red); }
+
+            /* The name is the loudest thing on the page: heavy, tight, and
+               filled with a navy-to-red sweep pulled from the crest. The sweep
+               is gated behind @supports because it needs text-fill-color
+               transparent — without the gate, a browser that cannot clip a
+               background to text would render the title invisible rather than
+               navy. */
+            .title {
+                margin: 0 0 1.35rem;
+                font-size: clamp(2.9rem, 8.2vw, 6.2rem);
+                font-weight: 800;
+                line-height: 0.96;
+                letter-spacing: -0.035em;
+                color: var(--navy);
+            }
+            .title-main { display: inline-block; color: var(--navy); }
+            @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+                .title-main {
+                    background-image: linear-gradient(100deg,
+                        var(--navy) 0%, var(--navy) 26%, var(--red) 48%,
+                        var(--navy) 72%, var(--navy) 100%);
+                    background-size: 260% 100%;
+                    background-position: 0% 0;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    animation: sweep 9s ease-in-out infinite;
+                }
+            }
+            /* Sits on the same line as the name, one step down in size and
+               weight, so the place reads as a qualifier rather than a second
+               heading. It wraps to its own line only when the name does. */
+            .title-place {
+                display: inline-block;
+                margin-left: 0.22em;
+                font-size: 0.55em;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                color: var(--navy);
+                white-space: nowrap;
+            }
+            .title-place span { color: var(--red); }
+            @keyframes sweep {
+                0%, 100% { background-position: 0% 0; }
+                50%      { background-position: 100% 0; }
+            }
+
+            /* The title runs the full measure, so the two shorter lines under
+               it sit side by side rather than stacking down the left edge and
+               leaving the right half of the hero empty. */
+            .hero-body {
+                display: grid;
+                grid-template-columns: 1.1fr 1fr;
+                gap: 1rem 3.5rem;
+                align-items: start;
+                padding-top: 0.4rem;
+                border-top: 1px solid var(--rule);
+                margin-top: 2rem;
+            }
+            .tagline {
+                font-family: var(--serif);
+                font-style: italic;
+                font-size: clamp(1.3rem, 2.6vw, 2.05rem);
+                line-height: 1.28;
+                color: var(--ink);
+                margin: 0;
+            }
+            .hero-lede {
+                font-size: clamp(1rem, 1.3vw, 1.1rem);
+                color: var(--body);
+                margin: 0.35rem 0 0;
+            }
+
+            /* ---------- section heading ---------- */
+            .rule-head {
+                display: flex;
+                align-items: baseline;
+                gap: 1.25rem;
+                padding-top: 2.5rem;
+                border-top: 2px solid var(--ink);
+                margin-bottom: 2.25rem;
+            }
+            .rule-head h2 { font-family: var(--serif); font-weight: 400; font-size: 1.55rem; margin: 0; }
+            .rule-head span {
+                font-size: 0.74rem;
+                font-weight: 700;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--muted);
+            }
+
+            /* ---------- programme cards ---------- */
+            .programmes {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2.25rem;
+                padding-bottom: 4.5rem;
+            }
+            .programme {
+                display: flex;
+                flex-direction: column;
+                text-decoration: none;
+                color: inherit;
+                transition: transform 0.35s cubic-bezier(0.22, 0.68, 0.35, 1);
+            }
+            .programme:hover, .programme:focus-visible { transform: translateY(-6px); }
+            .programme:focus-visible { outline: 2px solid var(--navy); outline-offset: 8px; }
+            .programme figure {
+                position: relative;
+                margin: 0 0 1.15rem;
+                overflow: hidden;
+                background: #e9e6e1;
+            }
+            /* The three photographs were shot in different places under
+               different light. Holding them just off full saturation lets them
+               sit together as a set; hover returns the real colour. */
+            .programme img {
+                display: block;
+                width: 100%;
+                /* The width/height attributes on the tag are a presentational
+                   hint that outranks aspect-ratio, so the tallest source would
+                   otherwise set the card height. height:auto hands control
+                   back to the ratio and keeps the three cards identical. */
+                height: auto;
+                aspect-ratio: 1090 / 1586;
+                object-fit: cover;
+                filter: saturate(0.5) contrast(1.05);
+                transition: transform 0.55s ease, filter 0.4s ease;
+            }
+            .programme:hover img, .programme:focus-visible img { filter: none; transform: scale(1.04); }
+            .programme figure::after {
+                content: '';
+                position: absolute;
+                left: 0; right: 0; bottom: 0;
+                height: 4px;
+                background: linear-gradient(90deg, var(--navy), var(--red));
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.45s cubic-bezier(0.22, 0.68, 0.35, 1);
+            }
+            .programme:hover figure::after,
+            .programme:focus-visible figure::after { transform: scaleX(1); }
+            .programme-index {
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.16em;
+                color: var(--red);
+                margin-bottom: 0.4rem;
+            }
+            .programme h3 {
+                font-size: 1.36rem;
+                font-weight: 700;
+                letter-spacing: -0.012em;
+                line-height: 1.2;
+                margin: 0 0 0.5rem;
+            }
+            .programme p { color: var(--muted); font-size: 0.93rem; margin: 0 0 0.9rem; }
+            .programme .enter {
+                font-size: 0.78rem;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--navy);
+                margin-top: auto;
+            }
+            .programme .enter::after {
+                content: ' \2192';
+                display: inline-block;
+                transition: transform 0.25s ease;
+            }
+            .programme:hover .enter::after { transform: translateX(5px); }
+
+            /* ---------- the lab ---------- */
+            .lab {
+                display: grid;
+                grid-template-columns: 1.35fr 1fr;
+                gap: 3rem;
+                padding-bottom: 4rem;
+            }
+            .lab p { margin: 0 0 1.1rem; max-width: 38rem; color: var(--body); }
+            .lab .more {
+                display: inline-block;
+                margin-top: 0.4rem;
+                font-size: 0.84rem;
+                font-weight: 700;
+                letter-spacing: 0.07em;
+                text-transform: uppercase;
+                color: var(--navy);
+                text-decoration: none;
+                border-bottom: 2px solid var(--red);
+                padding-bottom: 3px;
+            }
+            .facts {
+                margin: 0;
+                padding: 1.5rem 1.6rem;
+                background: var(--raised);
+                border: 1px solid var(--rule);
+                border-top: 3px solid var(--navy);
+                font-size: 0.92rem;
+            }
+            .facts div + div { margin-top: 1.05rem; padding-top: 1.05rem; border-top: 1px solid var(--rule); }
+            .facts dt {
+                font-size: 0.7rem;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 0.25rem;
+            }
+            .facts dd { margin: 0; }
+
+            /* ---------- footer ---------- */
+            footer {
+                border-top: 1px solid var(--rule);
+                padding: 1.7rem 0 2.6rem;
+                font-size: 0.85rem;
+                color: var(--muted);
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem 2rem;
+                justify-content: space-between;
+                align-items: center;
+            }
+            footer a { color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--rule); }
+            footer a:hover { border-bottom-color: var(--red); }
+
+            @media (max-width: 860px) {
+                .programmes { grid-template-columns: 1fr; gap: 2.75rem; }
+                .lab { grid-template-columns: 1fr; gap: 2rem; }
+                .hero { padding: 3.25rem 0 2.5rem; }
+                .hero-body { grid-template-columns: 1fr; gap: 1.1rem; }
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --paper:  #101218;
+                    --raised: #161922;
+                    --ink:    #edeceb;
+                    --body:   #c3c3c8;
+                    --muted:  #94949d;
+                    --rule:   rgba(237, 236, 235, 0.15);
+                    --navy:   #8f90ee;
+                    --red:    #ef6b6b;
+                }
+                .programme figure { background: #20232c; }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .rise { animation: none; }
+                .title-main { animation: none; background-position: 0 0; }
+                .programme, .programme img, .programme figure::after,
+                .programme .enter::after { transition: none; }
             }
         </style>
     </head>
 
     <body>
-        <main>
-            <div class="container py-0">
-                <nav class="navbar navbar-expand-lg" aria-label="navbar_main">
-                    <div class="container">
-                        <div class="collapse navbar-collapse" id="navbar_main">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="./home">Service Robot</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="./rov">ROV</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="./humanoid">Humanoid</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+        <div class="wrap">
+            <header class="masthead">
+                <a class="brand" href="./">
+                    <img src="./images/澳門培正中學_校徽_web.png" width="256" height="256" alt="Pui Ching Middle School crest">
+                    <b>Pui Ching Fablab</b>
+                </a>
+                <nav aria-label="Programmes">
+                    <a href="./home">Service Robot</a>
+                    <a href="./rov">ROV</a>
+                    <a href="./humanoid">Humanoid</a>
                 </nav>
+            </header>
 
-                <div class="container text-center">
-                    <div class="row align-items-start">
-                        <div class="col" style="margin: 0; padding: 0;">
-                            <div class="bg-body-tertiary feature-images" style="height: auto;">
-                                <div class="container-fluid" style="padding: 0;">
-                                    <a href="./home">
-                                        <img src="./images/ServiceRobot.jpg" style="width: 100%;"/>
-                                        <h1 class="display-5 fw-bold">Service Robot</h1>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col" style="margin: 0; padding: 0;">
-                            <div class="bg-body-tertiary feature-images" style="height: auto;">
-                                <div class="container-fluid" style="padding: 0;">
-                                    <a href="./rov">
-                                        <img src="./images/ROV.png" style="width: 100%;"/>
-                                        <h1 class="display-5 fw-bold">ROV</h1>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col" style="margin: 0; padding: 0;">
-                            <div class="bg-body-tertiary feature-images" style="height: auto;">
-                                <div class="container-fluid" style="padding: 0;">
-                                    <a href="./humanoid">
-                                        <img src="./images/Humanoid.jpg" style="width: 100%;"/>
-                                        <h1 class="display-5 fw-bold">Humanoid</h1>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+            <main>
+                <section class="hero">
+                    <p class="eyebrow rise d1">Established 2015 &middot; Macau</p>
+                    <h1 class="title rise d2"><span class="title-main">Pui Ching Fablab</span><span class="title-place"><span>(</span>Macau<span>)</span></span></h1>
+                    <div class="hero-body">
+                        <p class="tagline rise d3">A workshop where students build what they imagine.</p>
+                        <p class="hero-lede rise d4">A digital fabrication lab operated by Pui Ching Middle School, open to the public &mdash; and the home of three student robotics programmes.</p>
                     </div>
+                </section>
+
+                <div class="rule-head">
+                    <h2>Programmes</h2>
+                    <span>Three teams</span>
                 </div>
 
+                <section class="programmes">
+                    <a class="programme" href="./home">
+                        <figure><img src="./images/ServiceRobot.jpg" width="1090" height="1586" alt="The service robot team with their robot" loading="lazy" decoding="async"></figure>
+                        <p class="programme-index">01</p>
+                        <h3>Service Robot</h3>
+                        <p>Domestic service robots built for the RoboCup@Home league, where machines are asked to work usefully alongside people in a home.</p>
+                        <span class="enter">Enter</span>
+                    </a>
 
+                    <a class="programme" href="./rov">
+                        <figure><img src="./images/ROV.png" width="642" height="934" alt="The autonomous surface vehicle on the water" loading="lazy" decoding="async"></figure>
+                        <p class="programme-index">02</p>
+                        <h3>ROV</h3>
+                        <p>An autonomous surface vehicle for ecosystem surveillance &mdash; water quality monitoring and invasive species management.</p>
+                        <span class="enter">Enter</span>
+                    </a>
 
-                <div class="row align-items-md-stretch">
-                    <h2>Fablab PuiChing (Macau)</h2>
-                    <p>Founded in April 2015, the Fablab PuiChing (Macau) is operated by Macau Puiching Middle School. We hope we can create a platform for people to interact and share their ideas. We have various equipment such as 3D-printers and CNC milling machines, which can be capable for us to fabricate our creations and realize our ideas. open for public in afternoon of Saturday and Sunday morning.</p>
-                    <a href="https://www.fablabs.io/labs/puichingmacau">Link</a>
+                    <a class="programme" href="./humanoid">
+                        <figure><img src="./images/Humanoid.jpg" width="1090" height="1586" alt="The Booster T1 and Booster K1 humanoid robots side by side" loading="lazy" decoding="async"></figure>
+                        <p class="programme-index">03</p>
+                        <h3>Humanoid</h3>
+                        <p>PCMS-HRG programmes autonomous humanoid robots on the Booster T1 and K1 platforms, for RoboCup and international competition.</p>
+                        <span class="enter">Enter</span>
+                    </a>
+                </section>
+
+                <div class="rule-head">
+                    <h2>The Lab</h2>
+                    <span>Open to the public</span>
                 </div>
 
-                <footer class="pt-3 mt-4 text-body-secondary border-top">&copy; 2025</footer>
-            </div>
-        </main>
-        <script src="./home/assets/dist/js/bootstrap.bundle.min.js"></script>
+                <section class="lab">
+                    <div>
+                        <p>Founded in April 2015, Pui Ching Fablab (Macau) is operated by Macau Pui Ching Middle School. We hope to create a platform where people can meet, share ideas and make them real.</p>
+                        <p>The lab holds equipment such as 3D printers and CNC milling machines, so that the things we design can actually be fabricated &mdash; by students working on a competition robot, or by anyone who walks in with an idea.</p>
+                        <a class="more" href="https://www.fablabs.io/labs/puichingmacau">See the lab on fablabs.io</a>
+                    </div>
+                    <dl class="facts">
+                        <div><dt>Founded</dt><dd>April 2015</dd></div>
+                        <div><dt>Operated by</dt><dd>Macau Pui Ching Middle School</dd></div>
+                        <div><dt>Equipment</dt><dd>3D printers, CNC milling machines and more</dd></div>
+                        <div><dt>Open to the public</dt><dd>Saturday afternoon &middot; Sunday morning</dd></div>
+                    </dl>
+                </section>
+            </main>
+
+            <footer>
+                <span>&copy; 2025 Pui Ching Fablab (Macau)</span>
+                <span><a href="https://www.fablabs.io/labs/puichingmacau">fablabs.io/labs/puichingmacau</a></span>
+            </footer>
+        </div>
     </body>
 </html>
