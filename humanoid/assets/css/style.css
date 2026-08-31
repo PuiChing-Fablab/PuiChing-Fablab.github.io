@@ -1312,7 +1312,7 @@ button:focus-visible,
     border-radius: 10px;
     overflow: hidden;
     background: var(--bg-card);
-    cursor: zoom-in;
+    margin: 0;
     aspect-ratio: 4 / 3;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
@@ -1330,25 +1330,6 @@ button:focus-visible,
     transform: translateY(-3px);
 }
 .gallery-item:hover img { transform: scale(1.06); filter: brightness(1.05); }
-.gallery-item::after {
-    content: '\F4A2';
-    font-family: 'bootstrap-icons';
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    width: 28px;
-    height: 28px;
-    display: grid;
-    place-items: center;
-    font-size: 0.85rem;
-    color: var(--neon-cyan);
-    background: rgba(10, 14, 23, 0.78);
-    border: 1px solid rgba(0, 240, 255, 0.3);
-    border-radius: 7px;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-}
-.gallery-item:hover::after { opacity: 1; }
 .gallery-caption {
     position: absolute;
     left: 0; right: 0; bottom: 0;
@@ -2459,7 +2440,6 @@ a.line-card:hover { color: inherit; }
    (set inline from the source file's real dimensions). */
 .gallery-item.is-wide {
     grid-column: 1 / -1;
-    cursor: zoom-in;
 }
 
 /* A block that ships one photo has nothing to sit beside it, so a single
@@ -2470,15 +2450,6 @@ a.line-card:hover { color: inherit; }
 .gallery:has(.gallery-item:only-child) .gallery-item,
 .gallery-item.is-feature {
     grid-column: span 2;
-}
-
-/* The lead photo of a set takes a 2x2 block. It stays on the gallery's own
-   4:3 ratio so it reads as the same kind of tile as its neighbours, just
-   larger, and at two tracks wide the 700px thumbnail is still being scaled
-   down rather than up — a full-row lead had to stretch it and went soft. */
-.gallery-item.is-lead {
-    grid-column: span 2;
-    grid-row: span 2;
 }
 @media (max-width: 575.98px) {
     .gallery:has(.gallery-item:only-child) .gallery-item,

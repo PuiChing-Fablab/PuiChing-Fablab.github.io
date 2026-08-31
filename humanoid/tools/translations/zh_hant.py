@@ -394,8 +394,8 @@ T.update({
 
     # ---------- activities page ----------
     "Activity log": "活動紀錄",
-    "Every competition, training camp and outreach event since the team was formed &mdash; newest first. Filter by type or by programme line; select a photo to open it full size.":
-        "隊伍成立以來的每一場比賽、集訓與推廣活動&mdash;&mdash;最新在前。可按類型或發展路線篩選；點擊照片可放大觀看。",
+    "Every competition, training camp and outreach event since the team was formed &mdash; newest first. Filter by type or by programme line.":
+        "隊伍成立以來的每一場比賽、集訓與推廣活動&mdash;&mdash;最新在前。可按類型或發展路線篩選。",
     "Filter activities by type": "按類型篩選活動",
     "All": "全部",
     "Competitions": "比賽",

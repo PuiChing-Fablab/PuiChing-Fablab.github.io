@@ -393,8 +393,8 @@ T.update({
 
     # ---------- activities page ----------
     "Activity log": "Registro attività",
-    "Every competition, training camp and outreach event since the team was formed &mdash; newest first. Filter by type or by programme line; select a photo to open it full size.":
-        "Ogni gara, ritiro di allenamento e attività divulgativa dalla nascita della squadra &mdash; dalla più recente. Filtra per tipo o per linea di programma; clicca su una foto per aprirla a dimensione piena.",
+    "Every competition, training camp and outreach event since the team was formed &mdash; newest first. Filter by type or by programme line.":
+        "Ogni gara, ritiro di allenamento e attività divulgativa dalla nascita della squadra &mdash; dalla più recente. Filtra per tipo o per linea di programma.",
     "Filter activities by type": "Filtra le attività per tipo",
     "All": "Tutte",
     "Competitions": "Gare",
