@@ -781,3 +781,20 @@ T.update({
     "The humanoid soccer squad with both Booster robots at the Incheon pitch":
         "人形足球隊與兩台 Booster 機器人在仁川賽場合照",
 })
+
+T.update({
+    "The students together after arriving in Incheon":
+        "抵達仁川後，學生們的合照",
+    "Setting the robots up on arrival at the venue":
+        "抵達場館後，學生為機器人進行設置",
+    "Pitch-side adjustments before a Humanoid Soccer match":
+        "人形足球賽前，在場邊調試機器人",
+    "The PCMS-HRG squad at RoboCup 2026":
+        "PCMS-HRG 隊伍在 RoboCup 2026 的合照",
+    "PCMS-HRG students celebrating at the venue":
+        "PCMS-HRG 學生在場館內的歡樂合影",
+    "The RoboCup@Home team":
+        "RoboCup@Home 隊伍合照",
+    "All the Pui Ching teams and their robots after the competition":
+        "賽後，培正各參賽隊伍與機器人合照",
+})

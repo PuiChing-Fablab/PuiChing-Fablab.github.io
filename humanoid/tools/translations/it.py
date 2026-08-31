@@ -782,3 +782,20 @@ T.update({
     "The humanoid soccer squad with both Booster robots at the Incheon pitch":
         "La squadra di calcio umanoide con entrambi i robot Booster a bordo campo a Incheon",
 })
+
+T.update({
+    "The students together after arriving in Incheon":
+        "Gli studenti dopo l'arrivo a Incheon",
+    "Setting the robots up on arrival at the venue":
+        "L'allestimento dei robot all'arrivo alla sede di gara",
+    "Pitch-side adjustments before a Humanoid Soccer match":
+        "Regolazioni a bordo campo prima di una partita di calcio umanoide",
+    "The PCMS-HRG squad at RoboCup 2026":
+        "La squadra PCMS-HRG alla RoboCup 2026",
+    "PCMS-HRG students celebrating at the venue":
+        "Gli studenti del PCMS-HRG festeggiano alla sede di gara",
+    "The RoboCup@Home team":
+        "La squadra RoboCup@Home",
+    "All the Pui Ching teams and their robots after the competition":
+        "Tutte le squadre di Pui Ching con i loro robot dopo la competizione",
+})

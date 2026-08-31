@@ -1062,7 +1062,7 @@ button:focus-visible,
 /* ---------- Hero (home) ---------- */
 .hero {
     position: relative;
-    min-height: clamp(380px, 62vh, 620px);
+    min-height: clamp(380px, 48vw, 900px);
     display: flex;
     align-items: flex-end;
     overflow: hidden;
@@ -1074,7 +1074,7 @@ button:focus-visible,
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 82%;
+    object-position: center bottom;
     filter: brightness(0.72) saturate(1.06);
 }
 .hero::after {
@@ -2470,6 +2470,15 @@ a.line-card:hover { color: inherit; }
 .gallery:has(.gallery-item:only-child) .gallery-item,
 .gallery-item.is-feature {
     grid-column: span 2;
+}
+
+/* The lead photo of a set takes a 2x2 block. It stays on the gallery's own
+   4:3 ratio so it reads as the same kind of tile as its neighbours, just
+   larger, and at two tracks wide the 700px thumbnail is still being scaled
+   down rather than up — a full-row lead had to stretch it and went soft. */
+.gallery-item.is-lead {
+    grid-column: span 2;
+    grid-row: span 2;
 }
 @media (max-width: 575.98px) {
     .gallery:has(.gallery-item:only-child) .gallery-item,
