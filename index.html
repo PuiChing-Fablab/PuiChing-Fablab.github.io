@@ -73,7 +73,7 @@
                 align-items: center;
                 justify-content: space-between;
                 gap: 0.75rem 2rem;
-                padding: 1.35rem 0 1.15rem;
+                padding: 1.1rem 0 0.95rem;
                 border-bottom: 1px solid var(--rule);
             }
             .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
@@ -99,7 +99,7 @@
             .masthead nav a:focus-visible { color: var(--navy); border-bottom-color: var(--red); }
 
             /* ---------- hero ---------- */
-            .hero { padding: 5rem 0 3.75rem; }
+            .hero { padding: 3.25rem 0 2.5rem; }
             .eyebrow {
                 display: inline-flex;
                 align-items: center;
@@ -120,14 +120,23 @@
                background to text would render the title invisible rather than
                navy. */
             .title {
-                margin: 0 0 1.35rem;
+                margin: 0 0 1rem;
                 font-size: clamp(2.9rem, 8.2vw, 6.2rem);
                 font-weight: 800;
                 line-height: 0.96;
                 letter-spacing: -0.035em;
                 color: var(--navy);
             }
-            .title-main { display: inline-block; color: var(--navy); }
+            /* The gradient is painted inside the element's box, and a 0.96
+               line-height box stops above the descenders — enough to shear the
+               tail off the g in "Ching". The padding grows the painted box; the
+               matching negative margin keeps the line the height it was. */
+            .title-main {
+                display: inline-block;
+                color: var(--navy);
+                padding-bottom: 0.2em;
+                margin-bottom: -0.2em;
+            }
             @supports ((-webkit-background-clip: text) or (background-clip: text)) {
                 .title-main {
                     background-image: linear-gradient(100deg,
@@ -169,7 +178,7 @@
                 align-items: start;
                 padding-top: 0.4rem;
                 border-top: 1px solid var(--rule);
-                margin-top: 2rem;
+                margin-top: 1.5rem;
             }
             .tagline {
                 font-family: var(--serif);
@@ -190,9 +199,9 @@
                 display: flex;
                 align-items: baseline;
                 gap: 1.25rem;
-                padding-top: 2.5rem;
+                padding-top: 1.9rem;
                 border-top: 2px solid var(--ink);
-                margin-bottom: 2.25rem;
+                margin-bottom: 1.6rem;
             }
             .rule-head h2 { font-family: var(--serif); font-weight: 400; font-size: 1.55rem; margin: 0; }
             .rule-head span {
@@ -207,8 +216,8 @@
             .programmes {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 2.25rem;
-                padding-bottom: 4.5rem;
+                gap: 2rem;
+                padding-bottom: 3rem;
             }
             .programme {
                 display: flex;
@@ -221,7 +230,7 @@
             .programme:focus-visible { outline: 2px solid var(--navy); outline-offset: 8px; }
             .programme figure {
                 position: relative;
-                margin: 0 0 1.15rem;
+                margin: 0 0 0.9rem;
                 overflow: hidden;
                 background: #e9e6e1;
             }
@@ -236,7 +245,7 @@
                    otherwise set the card height. height:auto hands control
                    back to the ratio and keeps the three cards identical. */
                 height: auto;
-                aspect-ratio: 1090 / 1586;
+                aspect-ratio: 4 / 5;
                 object-fit: cover;
                 filter: saturate(0.5) contrast(1.05);
                 transition: transform 0.55s ease, filter 0.4s ease;
@@ -289,7 +298,7 @@
                 display: grid;
                 grid-template-columns: 1.35fr 1fr;
                 gap: 3rem;
-                padding-bottom: 4rem;
+                padding-bottom: 2.75rem;
             }
             .lab p { margin: 0 0 1.1rem; max-width: 38rem; color: var(--body); }
             .lab .more {
@@ -326,7 +335,7 @@
             /* ---------- footer ---------- */
             footer {
                 border-top: 1px solid var(--rule);
-                padding: 1.7rem 0 2.6rem;
+                padding: 1.4rem 0 1.8rem;
                 font-size: 0.85rem;
                 color: var(--muted);
                 display: flex;
@@ -339,9 +348,9 @@
             footer a:hover { border-bottom-color: var(--red); }
 
             @media (max-width: 860px) {
-                .programmes { grid-template-columns: 1fr; gap: 2.75rem; }
+                .programmes { grid-template-columns: 1fr; gap: 2.25rem; }
                 .lab { grid-template-columns: 1fr; gap: 2rem; }
-                .hero { padding: 3.25rem 0 2.5rem; }
+                .hero { padding: 2.5rem 0 2rem; }
                 .hero-body { grid-template-columns: 1fr; gap: 1.1rem; }
             }
 
