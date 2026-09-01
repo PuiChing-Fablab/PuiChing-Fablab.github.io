@@ -174,6 +174,19 @@ a:hover { color: #67e8f9; text-decoration: none; }
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
 }
+/* Signal glitch. The burst is the last 4% of the cycle, so at 14s the name
+   sits still for thirteen and a half seconds, tears for about half a second,
+   then settles — the way a bad video feed drops a frame now and then. */
+@keyframes brandGlitch {
+    0%, 96%, 100% { transform: none; filter: none; }
+    96.5% { transform: translateX(-2px) skewX(-1.2deg);
+            filter: drop-shadow(2px 0 rgba(255, 45, 110, 0.55)) drop-shadow(-2px 0 rgba(0, 240, 255, 0.55)); }
+    97.5% { transform: translateX(3px);
+            filter: drop-shadow(-3px 0 rgba(255, 45, 110, 0.5)) drop-shadow(3px 0 rgba(0, 240, 255, 0.5)); }
+    98.5% { transform: translateX(-1px) skewX(0.8deg);
+            filter: drop-shadow(1px 0 rgba(255, 45, 110, 0.45)) drop-shadow(-1px 0 rgba(0, 240, 255, 0.45)); }
+    99.5% { transform: translateX(1px); filter: none; }
+}
 @keyframes scanline {
     0% { top: -10%; }
     100% { top: 110%; }
@@ -320,12 +333,13 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    flex-shrink: 0;
+    min-width: 0;
     line-height: 0;
 }
 .brand-logo {
     height: 38px;
     width: auto;
+    flex-shrink: 0;
     object-fit: contain;
     filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.28));
     transition: filter 0.25s ease, transform 0.25s ease;
@@ -334,20 +348,54 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     filter: drop-shadow(0 0 14px rgba(0, 240, 255, 0.5));
     transform: translateY(-1px);
 }
+/* 24rem fits the English name on one line. The German and Italian names are
+   longer and the cap still holds them, so they wrap — text-wrap: balance
+   splits those into two even lines instead of orphaning the last word. */
 .brand-name {
-    max-width: 20rem;
+    position: relative;
+    max-width: 30rem;
     color: var(--text-secondary);
     font-family: var(--font-body);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.025em;
-    line-height: 1.25;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
     text-align: left;
-    transition: color 0.25s ease, text-shadow 0.25s ease;
+    text-wrap: balance;
+    animation: brandGlitch 14s steps(1, end) infinite;
 }
+/* Cyan-to-violet lettering, the highlight drifting across it. Two animations
+   on separate properties — colour and geometry — so neither blocks the other. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .brand-name {
+        background: linear-gradient(100deg, #7ff5ff 0%, #dbeaff 35%, #cfa8ff 65%, #7ff5ff 100%);
+        background-size: 220% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: gradientShift 8s ease-in-out infinite,
+                   brandGlitch 14s steps(1, end) infinite;
+    }
+}
+/* A gradient rule that draws itself in from the left on hover. */
+.brand-name::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.brand-link:hover .brand-name::after { transform: scaleX(1); }
+/* Hover quickens the colour drift only. The glitch keeps its own long
+   interval, so pointing at the logo never sets it jittering. */
 .brand-link:hover .brand-name {
-    color: var(--text-primary);
-    text-shadow: 0 0 12px rgba(0, 240, 255, 0.22);
+    animation-duration: 3s, 14s;
 }
 .footer-logo {
     height: 46px;
@@ -1117,9 +1165,14 @@ button:focus-visible,
 }
 
 /* ---------- Hero (home) ---------- */
+/* The banner is a group photo: people stand at both edges and their heads sit
+   close to the top, so every crop cuts somebody out. The box therefore has to
+   hold the image's own 2.4:1 shape — 41.7vw is 1/2.4, and the 900px ceiling
+   keeps that true out to a 2160px window instead of squaring the box off
+   early and slicing the tops of heads. */
 .hero {
     position: relative;
-    min-height: clamp(380px, 48vw, 900px);
+    min-height: clamp(320px, 41.7vw, 900px);
     display: flex;
     align-items: flex-end;
     overflow: hidden;
@@ -1131,23 +1184,23 @@ button:focus-visible,
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center bottom;
-    filter: brightness(0.72) saturate(1.06);
+    object-position: center center;
+    filter: brightness(0.86) saturate(1.04);
 }
 .hero::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(90deg, rgba(6,9,16,0.88) 0%, rgba(6,9,16,0.55) 42%, rgba(6,9,16,0.12) 72%, rgba(6,9,16,0.35) 100%),
-        linear-gradient(180deg, rgba(10,14,23,0.5) 0%, rgba(10,14,23,0.05) 30%, rgba(10,14,23,0.9) 100%),
-        radial-gradient(ellipse at 12% 88%, rgba(0,240,255,0.16), transparent 62%);
+        linear-gradient(180deg, rgba(6,9,16,0.22) 0%, rgba(6,9,16,0.04) 30%,
+                                rgba(6,9,16,0.55) 70%, rgba(6,9,16,0.93) 100%),
+        radial-gradient(ellipse at 12% 92%, rgba(0,240,255,0.14), transparent 60%);
     pointer-events: none;
 }
 .hero-inner {
     position: relative;
     z-index: 2;
-    padding: 3rem 0 2.5rem;
+    padding: 2rem 0 2rem;
     width: 100%;
 }
 .hero-kicker {
@@ -2030,7 +2083,7 @@ a.line-card:hover { color: inherit; }
     .footer-logo { height: 40px; }
 }
 @media (min-width: 992px) and (max-width: 1199.98px) {
-    .brand-name { max-width: 15rem; font-size: 0.66rem; }
+    .brand-name { max-width: 19rem; font-size: 0.95rem; }
 }
 @media (max-width: 991.98px) {
     .brand-name { display: none; }
