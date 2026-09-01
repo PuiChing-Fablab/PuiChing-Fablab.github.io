@@ -30,6 +30,8 @@ T = {
     # ---------- page titles & meta ----------
     "PCMS-HRG — Pui Ching Middle School (Macau) Humanoid Robot Group":
         "PCMS-HRG — Humanoid Robot Group della Pui Ching Middle School (Macao)",
+    "Pui Ching Middle School (Macau) Humanoid Robot Group":
+        "Humanoid Robot Group della Pui Ching Middle School (Macao)",
     "About — PCMS-HRG": "Chi siamo — PCMS-HRG",
     "Activities — PCMS-HRG": "Attività — PCMS-HRG",
     "Achievements — PCMS-HRG": "Risultati — PCMS-HRG",
@@ -281,6 +283,9 @@ T = {
     "Team Members": "Membri della squadra",
     "Ten students share the work &mdash; C++ development, computer vision, strategy design, robot maintenance and match-day operation. Tags show which programme line each member runs.":
         "Dieci studenti si dividono il lavoro &mdash; sviluppo in C++, visione artificiale, progettazione delle strategie, manutenzione dei robot e gestione nei giorni di gara. Le etichette indicano in quale linea di programma opera ciascun membro.",
+    "Click to copy": "Clicca per copiare",
+    "Joined 2025": "Nel team dal 2025",
+    "Joined 2026": "Nel team dal 2026",
 
     "History": "Storia",
     "Team Milestones": "Tappe della squadra",
@@ -309,10 +314,10 @@ T = {
         "La squadra e il programma di cui fa parte. Clicca su una foto per vederla a dimensione piena.",
     "Humanoid Robot Group": "Humanoid Robot Group",
     "Design &amp; Technology Co-curricular": "Attività integrativa di Design &amp; Tecnologia",
-    "The squad that ran both programme lines through the 2026 season, with its three coaches and a Booster T1.":
-        "La rosa che ha portato avanti entrambe le linee di programma nella stagione 2026, con i suoi tre allenatori e un Booster T1.",
-    "PCMS-HRG is one team inside this programme &mdash; the same one that sends teams to RoboCupJunior Soccer and Rescue, and to RoboCup@Home. Techniques travel between them: a vision trick from Junior Soccer, a mechanical fix from Rescue, a navigation idea from @Home.":
-        "PCMS-HRG è una delle squadre di questo programma &mdash; lo stesso che manda squadre a RoboCupJunior Soccer e Rescue e a RoboCup@Home. Le tecniche viaggiano fra loro: un trucco di visione da Junior Soccer, una soluzione meccanica da Rescue, un'idea di navigazione da @Home.",
+    "The squad that ran both programme lines during the 2025–26 school year, with its three coaches and a Booster T1. Students share responsibility for programming, computer vision, match strategy, motion tuning and robot maintenance.":
+        "La squadra che ha portato avanti entrambe le linee nell'anno scolastico 2025–26, con i suoi tre allenatori e un Booster T1. Gli studenti si dividono programmazione, visione artificiale, strategia di gara, messa a punto dei movimenti e manutenzione dei robot.",
+    "PCMS-HRG is one team within our Design and Technology co-curricular programme &mdash; the same programme that sends teams to RoboCupJunior Soccer and Rescue, and to RoboCup@Home.":
+        "PCMS-HRG è una delle squadre del nostro programma extracurricolare di Design and Technology &mdash; lo stesso programma che invia squadre a RoboCupJunior Soccer e Rescue e a RoboCup@Home.",
     "See the full RoboCup delegation results <i class=\"bi bi-arrow-right ms-1\" aria-hidden=\"true\"></i>":
         "Vedi tutti i risultati della delegazione RoboCup <i class=\"bi bi-arrow-right ms-1\" aria-hidden=\"true\"></i>",
     "The 2025–26 Humanoid Robot Group with its coaches and a Booster T1":

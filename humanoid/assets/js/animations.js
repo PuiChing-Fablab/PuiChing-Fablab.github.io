@@ -286,7 +286,7 @@
     // 5. 3D TILT ON HOVER (cards)
     // ============================================================
     function initTilt() {
-        var cards = document.querySelectorAll('.coach-card, .member-card, .connect-card');
+        var cards = document.querySelectorAll('.coach-card, .contact-coach-card, .member-card, .connect-card');
         cards.forEach(function (card) {
             card.addEventListener('mousemove', function (e) {
                 card.classList.add('is-tilting');
@@ -570,7 +570,7 @@
             el.classList.add('animate-on-scroll');
             el.classList.add('delay-' + ((i % 3) + 1));
         });
-        document.querySelectorAll('.coach-card').forEach(function (el, i) {
+        document.querySelectorAll('.coach-card, .contact-coach-card').forEach(function (el, i) {
             el.classList.add('animate-scale');
             el.classList.add('delay-' + (i + 1));
         });

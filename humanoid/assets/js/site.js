@@ -203,12 +203,71 @@
         });
     }
 
+    /* ---------------------------------------------------------------------
+       Coach addresses copy to the clipboard when clicked. The chip answers
+       with a tick rather than a word, so the feedback needs no translation.
+       --------------------------------------------------------------------- */
+    function initCopyEmail() {
+        var links = document.querySelectorAll('.coach-email');
+        if (!links.length) return;
+
+        function flash(link) {
+            var icon = link.querySelector('.bi');
+            var was = icon ? icon.className : null;
+            link.classList.add('is-copied');
+            if (icon) icon.className = was.replace('bi-envelope-fill', 'bi-check-lg');
+            window.setTimeout(function () {
+                link.classList.remove('is-copied');
+                if (icon) icon.className = was;
+            }, 1600);
+        }
+
+        // The async clipboard is unavailable on file:// and plain http, where
+        // the site is often opened straight from disk — hence the fallback.
+        function copy(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+            return new Promise(function (resolve, reject) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.top = '-1000px';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                document.body.removeChild(ta);
+                if (ok) { resolve(); } else { reject(); }
+            });
+        }
+
+        links.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                var href = link.getAttribute('href') || '';
+                var address = href.replace(/^mailto:/, '');
+                if (!address) return;
+                e.preventDefault();
+                copy(address).then(function () {
+                    flash(link);
+                }, function () {
+                    // Nothing was copied — hand the click back to the mail
+                    // client the href already points at.
+                    window.location.href = href;
+                });
+            });
+        });
+    }
+
     function init() {
         initLightbox();
         initFilters();
         initCounters();
         initToTop();
         initHashOffset();
+        initCopyEmail();
     }
 
     if (document.readyState === 'loading') {

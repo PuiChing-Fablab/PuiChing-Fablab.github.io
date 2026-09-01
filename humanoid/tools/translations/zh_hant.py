@@ -30,6 +30,8 @@ T = {
     # ---------- page titles & meta ----------
     "PCMS-HRG — Pui Ching Middle School (Macau) Humanoid Robot Group":
         "PCMS-HRG — 澳門培正中學人形機器人實驗小組",
+    "Pui Ching Middle School (Macau) Humanoid Robot Group":
+        "澳門培正中學人形機器人實驗小組",
     "About — PCMS-HRG": "關於我們 — PCMS-HRG",
     "Activities — PCMS-HRG": "活動 — PCMS-HRG",
     "Achievements — PCMS-HRG": "成績 — PCMS-HRG",
@@ -282,6 +284,9 @@ T = {
     "Team Members": "隊伍成員",
     "Ten students share the work &mdash; C++ development, computer vision, strategy design, robot maintenance and match-day operation. Tags show which programme line each member runs.":
         "十位學生分工合作&mdash;&mdash;C++ 開發、電腦視覺、策略設計、機器人維護及比賽日操作。標籤顯示各成員所屬的發展路線。",
+    "Click to copy": "點擊複製",
+    "Joined 2025": "2025 學年加入",
+    "Joined 2026": "2026 學年加入",
 
     "History": "歷程",
     "Team Milestones": "隊伍里程碑",
@@ -310,10 +315,10 @@ T = {
         "隊伍，以及它所屬的課程。點擊照片可放大觀看。",
     "Humanoid Robot Group": "人形機器人實驗小組",
     "Design &amp; Technology Co-curricular": "設計與科技科聯課活動",
-    "The squad that ran both programme lines through the 2026 season, with its three coaches and a Booster T1.":
-        "在 2026 年度同時推進兩條路線的隊伍，與三位指導老師及一台 Booster T1 合照。",
-    "PCMS-HRG is one team inside this programme &mdash; the same one that sends teams to RoboCupJunior Soccer and Rescue, and to RoboCup@Home. Techniques travel between them: a vision trick from Junior Soccer, a mechanical fix from Rescue, a navigation idea from @Home.":
-        "PCMS-HRG 是這個課程之中的其中一隊&mdash;&mdash;同一課程亦派隊參加 RoboCupJunior 足球與救援項目，以及 RoboCup@Home。技術在各隊之間互相流通：來自 Junior Soccer 的視覺技巧、來自 Rescue 的機械改良、來自 @Home 的導航思路。",
+    "The squad that ran both programme lines during the 2025–26 school year, with its three coaches and a Booster T1. Students share responsibility for programming, computer vision, match strategy, motion tuning and robot maintenance.":
+        "在 2025–26 學年同時推進兩條路線的隊伍，與三位指導老師及一台 Booster T1 合照。學生共同負責程式開發、電腦視覺、比賽策略、動作調校及機器人維護。",
+    "PCMS-HRG is one team within our Design and Technology co-curricular programme &mdash; the same programme that sends teams to RoboCupJunior Soccer and Rescue, and to RoboCup@Home.":
+        "PCMS-HRG 是本校設計與科技科聯課活動的其中一支隊伍&mdash;&mdash;同一聯課活動亦派隊參加 RoboCupJunior 足球與救援項目，以及 RoboCup@Home。",
     "See the full RoboCup delegation results <i class=\"bi bi-arrow-right ms-1\" aria-hidden=\"true\"></i>":
         "查看 RoboCup 代表隊完整成績 <i class=\"bi bi-arrow-right ms-1\" aria-hidden=\"true\"></i>",
     "The 2025–26 Humanoid Robot Group with its coaches and a Booster T1":
