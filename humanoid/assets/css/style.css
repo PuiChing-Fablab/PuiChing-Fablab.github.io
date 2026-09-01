@@ -77,12 +77,19 @@ p {
     text-align: left;
 }
 
+/* Justified body copy needs hyphenation, or it opens rivers of white space.
+   Unbounded, though, it strands fragments like "lat-/er." on a line of their
+   own: only break a word of 8+ letters, and never leave fewer than 4 on
+   either side of the hyphen. */
 @media (min-width: 992px) {
     p {
         text-align: justify;
         text-justify: inter-ideograph;
         hyphens: auto;
         -webkit-hyphens: auto;
+        hyphenate-limit-chars: 8 4 4;
+        -webkit-hyphenate-limit-before: 4;
+        -webkit-hyphenate-limit-after: 4;
     }
 }
 
@@ -626,6 +633,10 @@ h1.section-title::before { width: min(100%, 8rem); }
     margin-top: 0.5rem;
     letter-spacing: 0.5px;
 }
+/* The line under a title is display copy, not body copy. It runs one to three
+   lines, so a full first line and a two-word tail reads as a mistake rather
+   than a paragraph: never hyphenate it, and let the browser even the lines out
+   instead. */
 .section-intro {
     color: var(--text-secondary);
     font-size: 1.08rem;
@@ -634,6 +645,9 @@ h1.section-title::before { width: min(100%, 8rem); }
     max-width: 78ch;
     line-height: 1.75;
     text-align: left;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+    text-wrap: balance;
 }
 .page-content > .section-intro { max-width: none; }
 .section-divider {
