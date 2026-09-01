@@ -1550,6 +1550,17 @@ button:focus-visible,
 }
 .result-table tbody tr:last-child td { border-bottom: none; }
 .result-table tbody tr:hover { background: rgba(0, 240, 255, 0.035); }
+/* The date is one token — "7–12 Apr 2026" must not break across two lines.
+   width:1% plus nowrap is the shrink-to-content idiom for a table column: the
+   browser gives the column exactly what its longest date needs and hands the
+   remaining width to Event and Result. The wrapper already scrolls, so the
+   extra width costs nothing on a narrow screen. Opt-in, because the other
+   result tables lead with a long event name that must stay wrappable. */
+.result-table.has-dates th:first-child,
+.result-table.has-dates td:first-child {
+    white-space: nowrap;
+    width: 1%;
+}
 .result-table td:first-child { color: var(--text-primary); font-weight: 500; }
 .result-table .res-highlight { color: #fde047; font-weight: 600; }
 
