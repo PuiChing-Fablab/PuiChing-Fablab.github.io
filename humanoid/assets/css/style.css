@@ -1296,6 +1296,32 @@ button:focus-visible,
     padding: 2rem 0 2rem;
     width: 100%;
 }
+/* Below 767px the clamp floor holds the box at 320px while the viewport keeps
+   narrowing, so the box is no longer the banner's 2.4:1 and `cover` pays for
+   the difference by cutting the width — about half of it on a phone, taking
+   the people at both edges with it. Under that width the banner becomes a
+   band at its own shape with the copy stacked beneath it, so the whole group
+   stays in frame. */
+@media (max-width: 767.98px) {
+    .hero {
+        display: block;
+        min-height: 0;
+    }
+    .hero-bg {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+    /* The overlay existed to darken the photo under the copy. With the copy
+       moved below, it only has to fade the band's bottom edge into the page —
+       inset and aspect-ratio give it the same box as the image. */
+    .hero::after {
+        inset: 0 0 auto 0;
+        aspect-ratio: 1778 / 741;
+        background: linear-gradient(180deg, rgba(6,9,16,0) 60%, rgba(6,9,16,0.85) 100%);
+    }
+    .hero-inner { padding-top: 1.25rem; }
+}
 .hero-kicker {
     display: inline-block;
     font-family: var(--font-tech);
