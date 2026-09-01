@@ -1645,6 +1645,38 @@ button:focus-visible,
    the border stays lit at rest rather than only on hover. */
 .honour-card.is-world::before { background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple)); }
 .honour-card.is-world { border-color: rgba(0, 240, 255, 0.34); box-shadow: 0 0 20px rgba(0, 240, 255, 0.08); }
+/* RoboCup is the hardest field the team has played — university and research
+   lab opposition — so its card is the one the eye should land on first. It
+   takes the whole top row on wide screens and carries a lit wash, a thicker
+   bar and a larger rank; the other highlights stay one step down. */
+.honour-card.is-flagship {
+    border-color: rgba(0, 240, 255, 0.55);
+    background: linear-gradient(150deg, rgba(0, 240, 255, 0.08), rgba(168, 85, 247, 0.05) 55%, transparent 80%), var(--bg-card);
+    box-shadow: 0 0 34px rgba(0, 240, 255, 0.16);
+}
+.honour-card.is-flagship::before { width: 4px; background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple)); }
+.honour-card.is-flagship:hover { border-color: rgba(0, 240, 255, 0.75); box-shadow: 0 14px 36px rgba(0,0,0,0.45), 0 0 34px rgba(0, 240, 255, 0.28); }
+@media (min-width: 992px) {
+    /* Full width, laid out as two columns: the result and its line on the
+       left, the event and its story on the right. Spanning the row without
+       this leaves the right third of the card empty, which reads as a gap
+       rather than as emphasis. */
+    .honour-card.is-flagship {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+        grid-template-areas:
+            "rank  event"
+            "pill  detail"
+            ".     foot";
+        column-gap: 2rem;
+    }
+    .honour-card.is-flagship .honour-rank   { grid-area: rank; }
+    .honour-card.is-flagship .pill          { grid-area: pill; align-self: start; justify-self: start; }
+    .honour-card.is-flagship .honour-event  { grid-area: event; }
+    .honour-card.is-flagship .honour-detail { grid-area: detail; }
+    .honour-card.is-flagship .honour-foot   { grid-area: foot; }
+}
 .honour-rank {
     font-family: var(--font-tech);
     font-size: 1.9rem;
@@ -1655,6 +1687,7 @@ button:focus-visible,
 }
 .honour-card.is-gold .honour-rank { color: #fde047; text-shadow: 0 0 20px rgba(250,204,21,0.35); }
 .honour-card.is-world .honour-rank { text-shadow: 0 0 20px rgba(0,240,255,0.4); }
+.honour-card.is-flagship .honour-rank { font-size: 2.4rem; text-shadow: 0 0 26px rgba(0,240,255,0.55); }
 .honour-event {
     font-size: 1.02rem;
     font-weight: 600;
