@@ -174,18 +174,64 @@ a:hover { color: #67e8f9; text-decoration: none; }
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
 }
-/* Signal glitch. The burst is the last 4% of the cycle, so at 14s the name
-   sits still for thirteen and a half seconds, tears for about half a second,
-   then settles — the way a bad video feed drops a frame now and then. */
-@keyframes brandGlitch {
-    0%, 96%, 100% { transform: none; filter: none; }
-    96.5% { transform: translateX(-2px) skewX(-1.2deg);
-            filter: drop-shadow(2px 0 rgba(255, 45, 110, 0.55)) drop-shadow(-2px 0 rgba(0, 240, 255, 0.55)); }
-    97.5% { transform: translateX(3px);
-            filter: drop-shadow(-3px 0 rgba(255, 45, 110, 0.5)) drop-shadow(3px 0 rgba(0, 240, 255, 0.5)); }
-    98.5% { transform: translateX(-1px) skewX(0.8deg);
-            filter: drop-shadow(1px 0 rgba(255, 45, 110, 0.45)) drop-shadow(-1px 0 rgba(0, 240, 255, 0.45)); }
-    99.5% { transform: translateX(1px); filter: none; }
+/* Signal flicker. The name holds sharp for four seconds, then loses the feed
+   for about a second: the lettering cuts out and strikes back over-bright half
+   a dozen times, and between the cutouts a cyan and a magenta copy of it tear
+   off sideways in bands (brandSliceCyan / brandSliceMagenta below). The
+   dropouts and the tears interleave — the copies only show while the name is
+   lit — and the gaps are deliberately uneven, so it reads as a failing feed
+   rather than a strobe. steps(1, end) makes every jump instant. Reduced motion
+   stops all of it; see the media query near the end. */
+@keyframes brandFlicker {
+    0%, 78%, 96%, 100% { opacity: 1; filter: none; }
+    78.6% { opacity: 0.2; }
+    79.2% { opacity: 1; filter: brightness(1.9) drop-shadow(0 0 14px rgba(0, 240, 255, 0.85)); }
+    80%   { opacity: 1; filter: none; }
+    80.6% { opacity: 0.3; }
+    81.4% { opacity: 1; filter: brightness(2.1) drop-shadow(0 0 18px rgba(140, 120, 255, 0.9)); }
+    82.4% { opacity: 1; filter: none; }
+    83.2% { opacity: 0.15; }
+    84%   { opacity: 1; filter: brightness(1.7) drop-shadow(0 0 12px rgba(0, 240, 255, 0.8)); }
+    85%   { opacity: 1; filter: none; }
+    86%   { opacity: 0.4; }
+    87%   { opacity: 1; filter: brightness(1.5) drop-shadow(0 0 10px rgba(0, 240, 255, 0.6)); }
+    88%   { opacity: 1; filter: none; }
+    89%   { opacity: 0.25; }
+    90%   { opacity: 1; filter: brightness(1.8) drop-shadow(0 0 14px rgba(140, 120, 255, 0.75)); }
+    91%   { opacity: 1; filter: none; }
+    92.4% { opacity: 0.6; }
+    93.4% { opacity: 1; filter: brightness(1.3); }
+    94.4% { opacity: 1; filter: none; }
+}
+@keyframes brandSliceCyan {
+    0%, 78%, 96%, 100% { opacity: 0; transform: none; }
+    79.2% { opacity: 0.9;  transform: translateX(-6px); clip-path: inset(6% 0 54% 0); }
+    80%   { opacity: 0; }
+    81.4% { opacity: 0.85; transform: translateX(7px);  clip-path: inset(38% 0 24% 0); }
+    82.4% { opacity: 0; }
+    84%   { opacity: 0.9;  transform: translateX(-9px); clip-path: inset(62% 0 4% 0); }
+    85%   { opacity: 0; }
+    87%   { opacity: 0.7;  transform: translateX(4px);  clip-path: inset(18% 0 48% 0); }
+    88%   { opacity: 0; }
+    90%   { opacity: 0.85; transform: translateX(-5px); clip-path: inset(46% 0 22% 0); }
+    91%   { opacity: 0; }
+    93.4% { opacity: 0.6;  transform: translateX(3px);  clip-path: inset(28% 0 42% 0); }
+    94.4% { opacity: 0; }
+}
+@keyframes brandSliceMagenta {
+    0%, 78%, 96%, 100% { opacity: 0; transform: none; }
+    79.2% { opacity: 0.85; transform: translateX(6px);  clip-path: inset(50% 0 12% 0); }
+    80%   { opacity: 0; }
+    81.4% { opacity: 0.9;  transform: translateX(-8px); clip-path: inset(8% 0 58% 0); }
+    82.4% { opacity: 0; }
+    84%   { opacity: 0.8;  transform: translateX(6px);  clip-path: inset(30% 0 40% 0); }
+    85%   { opacity: 0; }
+    87%   { opacity: 0.65; transform: translateX(-4px); clip-path: inset(56% 0 14% 0); }
+    88%   { opacity: 0; }
+    90%   { opacity: 0.8;  transform: translateX(5px);  clip-path: inset(14% 0 56% 0); }
+    91%   { opacity: 0; }
+    93.4% { opacity: 0.55; transform: translateX(-3px); clip-path: inset(60% 0 10% 0); }
+    94.4% { opacity: 0; }
 }
 @keyframes scanline {
     0% { top: -10%; }
@@ -348,9 +394,10 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     filter: drop-shadow(0 0 14px rgba(0, 240, 255, 0.5));
     transform: translateY(-1px);
 }
-/* 24rem fits the English name on one line. The German and Italian names are
-   longer and the cap still holds them, so they wrap — text-wrap: balance
-   splits those into two even lines instead of orphaning the last word. */
+/* animations.js splits the English name after "(Macau)", so the cap only
+   comes into play for the longer German and Italian names — text-wrap:
+   balance splits those into two even lines instead of orphaning the last
+   word. */
 .brand-name {
     position: relative;
     max-width: 30rem;
@@ -362,20 +409,23 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     line-height: 1.3;
     text-align: left;
     text-wrap: balance;
-    animation: brandGlitch 14s steps(1, end) infinite;
+    animation: brandFlicker 5s steps(1, end) infinite;
 }
-/* Cyan-to-violet lettering, the highlight drifting across it. Two animations
-   on separate properties — colour and geometry — so neither blocks the other. */
+/* Cyan-to-violet lettering, the highlight drifting across it. The gradient is
+   clipped to the text of each line, not to the name as a whole: the text lives
+   in the child lines, and a parent clipping its background to text inside child
+   boxes is exactly where WebKit drops the paint and leaves the name blank. The
+   name itself keeps a solid colour, so a browser that never runs the line
+   splitter still shows it. */
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-    .brand-name {
+    .brand-line {
         background: linear-gradient(100deg, #7ff5ff 0%, #dbeaff 35%, #cfa8ff 65%, #7ff5ff 100%);
         background-size: 220% auto;
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
         color: transparent;
-        animation: gradientShift 8s ease-in-out infinite,
-                   brandGlitch 14s steps(1, end) infinite;
+        animation: gradientShift 8s ease-in-out infinite;
     }
 }
 /* A gradient rule that draws itself in from the left on hover. */
@@ -392,10 +442,41 @@ main, .top-bar, .tab-nav, .site-footer { position: relative; z-index: 1; }
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .brand-link:hover .brand-name::after { transform: scaleX(1); }
-/* Hover quickens the colour drift only. The glitch keeps its own long
-   interval, so pointing at the logo never sets it jittering. */
-.brand-link:hover .brand-name {
-    animation-duration: 3s, 14s;
+/* Hover quickens the colour drift only. The flicker keeps its own interval,
+   so pointing at the logo never sets it tearing. */
+.brand-link:hover .brand-line {
+    animation-duration: 3s;
+}
+/* Fixed lines, written by animations.js, keep "(Macau)" on the school-name
+   line. They are rebuilt on a language change, and each one carries its own
+   text in data-text so the glitch copies can be drawn from it. */
+.brand-line {
+    display: block;
+    position: relative;
+}
+/* The two copies that tear off during the burst. They sit exactly over the
+   line and stay invisible until brandSlice* lights a band of them; screen
+   blending keeps the overlap reading as light rather than paint. Their colour
+   is set outright — the line's own lettering is transparent, filled by the
+   gradient behind it, and that would inherit straight through. */
+.brand-line::before,
+.brand-line::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+.brand-line::before {
+    color: var(--neon-cyan);
+    -webkit-text-fill-color: var(--neon-cyan);
+    animation: brandSliceCyan 5s steps(1, end) infinite;
+}
+.brand-line::after {
+    color: #ff2d6e;
+    -webkit-text-fill-color: #ff2d6e;
+    animation: brandSliceMagenta 5s steps(1, end) infinite;
 }
 .footer-logo {
     height: 46px;
@@ -976,13 +1057,11 @@ h1.section-title::before { width: min(100%, 8rem); }
     .tab-btn-back { padding-top: calc(0.75rem + 1px); padding-bottom: calc(0.75rem - 1px); }
     .top-bar { padding: 0.5rem 0; }
     .tab-nav { top: 52px; }
-    .social-link-named { font-size: 0.75rem; padding: 0.25rem 0.6rem; }
 }
 @media (max-width: 575.98px) {
     .activity-img { height: 160px; }
     .tab-btn { padding: 0.65rem 0.75rem; font-size: 0.82rem; }
     .tab-btn-back { padding-top: calc(0.65rem + 1px); padding-bottom: calc(0.65rem - 1px); }
-    .social-link-named span { display: none; }
 }
 
 /* ---------- Connect Page — Coach Contact Cards ---------- */
@@ -2082,11 +2161,29 @@ a.line-card:hover { color: inherit; }
     .brand-logo  { height: 32px; }
     .footer-logo { height: 40px; }
 }
-@media (min-width: 992px) and (max-width: 1199.98px) {
+@media (min-width: 768px) and (max-width: 1199.98px) {
     .brand-name { max-width: 19rem; font-size: 0.95rem; }
 }
-@media (max-width: 991.98px) {
+/* Under the tablet break the logo and the chips take the whole bar. */
+@media (max-width: 767.98px) {
     .brand-name { display: none; }
+}
+/* Below the xl break the labelled pills and the team name stop fitting on one
+   row, and the bar piles up into two. The chips go icon-only there; the label
+   is clipped rather than removed, so the links keep their name for screen
+   readers. */
+@media (max-width: 1199.98px) {
+    .social-link-named { padding: 0.32rem 0.6rem; font-size: 1rem; }
+    .social-link-named i { font-size: 1.05rem; }
+    .social-link-named > span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
 }
 @media (max-width: 575.98px) {
     .brand-logo  { height: 28px; }

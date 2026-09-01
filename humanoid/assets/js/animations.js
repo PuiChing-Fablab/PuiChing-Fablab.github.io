@@ -626,9 +626,55 @@
     }
 
     // ============================================================
+    // 12. BRAND NAME — FIXED LINES
+    // ============================================================
+    function initBrandName() {
+        document.querySelectorAll('.brand-name').forEach(function (el) {
+            var probe = document.createElement('div');
+
+            function intended() {
+                probe.innerHTML = el.__i18nText != null ? el.__i18nText : el.innerHTML;
+                return probe.textContent.replace(/\s+/g, ' ').trim();
+            }
+
+            // The place name rides with the school name, so the break goes
+            // after the bracket rather than before it. German and Italian
+            // close on the bracket — those stay one run and wrap on their own.
+            function split(text) {
+                var cut = text.indexOf(')');
+                if (cut > 0 && cut < text.length - 1) {
+                    return [text.slice(0, cut + 1), text.slice(cut + 1).trim()];
+                }
+                return [text];
+            }
+
+            function render() {
+                el.textContent = '';
+                split(intended()).forEach(function (text) {
+                    var line = document.createElement('span');
+                    line.className = 'brand-line';
+                    line.textContent = text;
+                    // The glitch copies are drawn from this by CSS.
+                    line.setAttribute('data-text', text);
+                    el.appendChild(line);
+                });
+            }
+
+            render();
+            // A language switch rewrites the element with plain text, so the
+            // lines have to be laid out again.
+            document.addEventListener('i18n:applied', render);
+        });
+    }
+
+    // ============================================================
     // INIT
     // ============================================================
     function init() {
+        // The name is split into lines whatever the motion setting; the
+        // defocus flicker on it is CSS, and reduced motion already stops that.
+        initBrandName();
+
         if (reducedMotion) {
             // Skip all animations for users who prefer reduced motion
             document.querySelectorAll('.animate-on-scroll, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-flip').forEach(function (el) {
