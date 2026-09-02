@@ -892,6 +892,28 @@ tr.is-podium .res-place { color: var(--beacon); }
     .plates > * { grid-column: span 2; }
     .plates > .is-wide { grid-column: span 3; }
 }
+/* A heading that spans the plate grid, to set undated archive material
+   apart from the dated plates above it. */
+.plates-group {
+    grid-column: 1 / -1;
+    margin: 1.75rem 0 0;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--rule-bright);
+    font-size: 1.15rem;
+    font-weight: 400;
+    letter-spacing: -0.012em;
+}
+.plates-group span {
+    display: block;
+    margin-top: 0.35rem;
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+
 .plates .plate-frame img { aspect-ratio: 4 / 3; object-fit: cover; }
 .plates .is-tall .plate-frame img { aspect-ratio: 3 / 4; }
 .plates .is-wide .plate-frame img { aspect-ratio: 16 / 10; }
