@@ -286,10 +286,11 @@ img { max-width: 100%; height: auto; display: block; }
 .contents-back { margin-left: auto; flex: none; }
 
 /* ---------- Depth gauge ---------- */
-/* The one instrument on the page, mounted in the right margin: a sounding
-   scale that fills as you descend, ticked every 80 m, with a lamp-lit
-   marker riding the trace and a large live readout above it. Everything
-   keys off the single --depth value. */
+/* The one instrument on the page, floating directly in the right margin: a
+   sounding scale that fills as you descend, ticked every 80 m, with a
+   lamp-lit marker riding the trace and a large live readout above it. The
+   light haze has no hard edge, so the instrument feels projected into the
+   water rather than mounted on a panel. Everything keys off --depth. */
 .gauge {
     position: fixed;
     right: max(0.9rem, calc((100vw - var(--page)) / 2 - 4.6rem));
@@ -301,11 +302,25 @@ img { max-width: 100%; height: auto; display: block; }
     align-items: center;
     width: 5.4rem;
     padding: 0.9rem 0.5rem 1.1rem;
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    background: linear-gradient(180deg, rgba(6, 26, 44, 0.62), rgba(2, 10, 18, 0.5));
-    backdrop-filter: blur(3px);
+    isolation: isolate;
     pointer-events: none;
+}
+.gauge::before {
+    content: '';
+    position: absolute;
+    inset: -2.2rem -1.8rem;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse 78% 24% at 52% 14%, rgba(79, 211, 232, 0.16), transparent 72%),
+        radial-gradient(ellipse 54% 74% at 72% 64%, rgba(79, 211, 232, 0.1), transparent 74%);
+    filter: blur(12px);
+    transform: scale(0.96);
+    opacity: 0.58;
+    animation: gauge-breathe 5.6s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+@keyframes gauge-breathe {
+    to { transform: scale(1.04); opacity: 0.9; }
 }
 @media (min-width: 78rem) { .gauge { display: flex; } }
 
@@ -316,9 +331,6 @@ img { max-width: 100%; height: auto; display: block; }
     .gauge {
         width: 3.6rem;
         padding: 0;
-        border: 0;
-        background: none;
-        backdrop-filter: none;
         right: max(0.9rem, calc((100vw - var(--page)) / 2 - 3.9rem));
     }
     .gauge-value { font-size: 1.6rem; letter-spacing: -0.03em; }
@@ -337,6 +349,23 @@ img { max-width: 100%; height: auto; display: block; }
     text-indent: 0.28em;
     text-transform: uppercase;
     color: var(--ink-soft);
+    text-shadow: 0 1px 8px rgba(2, 10, 18, 0.95);
+}
+.gauge-label::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    margin-right: 0.42rem;
+    border-radius: 50%;
+    vertical-align: 0.12em;
+    background: var(--lamp);
+    box-shadow: 0 0 5px var(--lamp), 0 0 12px rgba(79, 211, 232, 0.65);
+    animation: gauge-live 2.2s ease-in-out infinite;
+}
+@keyframes gauge-live {
+    0%, 100% { opacity: 0.38; transform: scale(0.75); }
+    50%      { opacity: 1; transform: scale(1.12); }
 }
 .gauge-value {
     font-family: var(--mono);
@@ -360,12 +389,32 @@ img { max-width: 100%; height: auto; display: block; }
     text-transform: uppercase;
     color: var(--ink-dim);
     margin-bottom: 1.05rem;
+    text-shadow: 0 1px 8px rgba(2, 10, 18, 0.95);
 }
 
 .gauge-scale {
     position: relative;
+    isolation: isolate;
     width: 100%;
     height: 20rem;
+}
+.gauge-scale::after {
+    content: '';
+    position: absolute;
+    right: -1.45rem;
+    top: calc(var(--depth) * 100%);
+    z-index: -1;
+    width: 4.6rem;
+    height: 4.6rem;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(79, 211, 232, 0.15),
+        rgba(79, 211, 232, 0.045) 40%,
+        transparent 72%);
+    filter: blur(5px);
+    transform: translateY(-50%);
+    transition: top 120ms linear;
+    pointer-events: none;
 }
 /* The unsounded remainder of the scale. */
 .gauge-scale::before {
@@ -405,6 +454,7 @@ img { max-width: 100%; height: auto; display: block; }
     color: var(--ink-dim);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+    text-shadow: 0 1px 8px rgba(2, 10, 18, 0.95);
 }
 .gauge-tick::after {
     content: '';
@@ -1009,7 +1059,9 @@ tr.is-podium .res-place { color: var(--beacon); }
 
 /* ---------- Motion & print ---------- */
 @media (prefers-reduced-motion: reduce) {
-    .water-rays, .water-rays::after, .water-caustics, .gauge-mark::after { animation: none; }
+    .water-rays, .water-rays::after, .water-caustics,
+    .gauge::before, .gauge-label::before, .gauge-mark::after { animation: none; }
+    .water-column, .gauge-fill, .gauge-mark, .gauge-scale::after { transition: none; }
     html { scroll-behavior: auto; }
 }
 @media print {
