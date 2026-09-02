@@ -1,313 +1,897 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<!-- basic -->
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- mobile metas -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="viewport" content="initial-scale=1, maximum-scale=1">
-<!-- site metas -->
-<title>Autonomous Ecosystem Surveillance Vehicle</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="">	
-<!-- bootstrap css -->
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-<!-- style css -->
-<link rel="stylesheet" type="text/css" href="css/style.css">
-<!-- Responsive-->
-<link rel="stylesheet" href="css/responsive.css">
-<!-- fevicon -->
-<link rel="icon" href="images/fevicon.png" type="image/gif" />
-<!-- Scrollbar Custom CSS -->
-<link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-<!-- Tweaks for older IEs-->
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-<!-- owl stylesheets --> 
-<link rel="stylesheet" href="css/owl.carousel.min.css">
-<!--<link rel="stylesheet" href="css/owl.theme.default.min.css">-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-</head>
-<body>
-	<!-- header section start -->
-	<div class="header_section">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="logo"><a href="../"><img src="images/logo.png"></a></div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                  <a class="nav-link" href="../">HOME</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#about">ABOUT US</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#vision">OUR VISION</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#my_slider">OUR PRODUCT</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#activities">OUR ACTIVITIES</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#contact">CONTACT US</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"><img src="images/search-icon.png"></a>
-                </li>
-			<!--
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">SIGN IN</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">REGISTER</a>
-                </li>
-			-->
-              </ul>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PCMS ROV — Pui Ching Middle School (Macau) Underwater Robotics</title>
+        <meta name="description" content="The underwater robotics team of Pui Ching Middle School, Macau — 2nd in the world at the 2026 International SeaPerch Challenge, 2nd in the world for Engineering Presentation at the MATE ROV World Championship, and First Prize in the university division of the 2026 China Robot Competition.">
+        <meta name="author" content="Fablab Pui Ching (Macau) — Underwater Robotics Team">
+        <meta name="theme-color" content="#020a12">
+        <link rel="canonical" href="https://www.pcms-rov.com/">
+
+        <!-- Open Graph / social -->
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="PCMS ROV">
+        <meta property="og:title" content="PCMS ROV — Pui Ching Middle School (Macau) Underwater Robotics">
+        <meta property="og:description" content="Students who design, build and pilot their own ROVs — from the school pool to the MATE ROV World Championship and the International SeaPerch Challenge.">
+        <meta property="og:url" content="https://www.pcms-rov.com/">
+        <meta property="og:image" content="https://www.pcms-rov.com/assets/img/events/2026-04-mate-hk/202604_MATE香港地區賽_水下任務.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+
+        <link rel="icon" href="assets/img/brand/澳門培正中學_校徽_web.png" type="image/png">
+        <link rel="apple-touch-icon" href="assets/img/brand/澳門培正中學_校徽_web.png">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="assets/css/style.css" rel="stylesheet">
+
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "SportsTeam",
+          "name": "PCMS ROV",
+          "alternateName": "Pui Ching Middle School (Macau) Underwater Robotics Team",
+          "url": "https://www.pcms-rov.com/",
+          "sport": "Underwater Robotics",
+          "parentOrganization": {
+            "@type": "School",
+            "name": "Pui Ching Middle School (Macau)",
+            "url": "https://www.puiching.edu.mo/"
+          },
+          "location": { "@type": "Place", "address": "Macau SAR, China" }
+        }
+        </script>
+    </head>
+    <body>
+        <a class="skip-link" href="#main">Skip to main content</a>
+
+        <!-- The water column: depth gradient, sunlight shafts, caustics, drift -->
+        <div class="water" aria-hidden="true">
+            <div class="water-column"></div>
+            <div class="water-rays"></div>
+            <div class="water-caustics"></div>
+            <canvas id="drift"></canvas>
+        </div>
+
+        <!-- Depth gauge -->
+        <div class="gauge" aria-hidden="true">
+            <span class="gauge-label">Depth</span>
+            <span class="gauge-value" id="gauge-read">000</span>
+            <span class="gauge-unit">metres</span>
+            <div class="gauge-scale">
+                <div class="gauge-fill"></div>
+                <span class="gauge-tick" style="--at:0">0</span>
+                <span class="gauge-tick" style="--at:.25">80</span>
+                <span class="gauge-tick" style="--at:.5">160</span>
+                <span class="gauge-tick" style="--at:.75">240</span>
+                <span class="gauge-tick" style="--at:1">320</span>
+                <span class="gauge-mark"></span>
+            </div>
+        </div>
+
+        <!-- ============ MASTHEAD ============ -->
+        <header class="masthead">
+            <div class="sheet masthead-inner">
+                <div class="masthead-id">
+                    <a href="../" aria-label="Fablab Pui Ching (Macau)">
+                        <img src="assets/img/brand/FABLAB_PuiChing_logo.png" width="800" height="253"
+                             alt="Fablab Pui Ching (Macau)" class="masthead-logo">
+                    </a>
+                    <div class="masthead-titles">
+                        <div class="masthead-title"><a href="#main">Underwater Robotics Team</a></div>
+                        <span class="note">Pui Ching Middle School &middot; Macau</span>
+                    </div>
+                </div>
+                <nav class="masthead-links" aria-label="External">
+                    <a href="https://fablab.puiching.edu.mo/?tag=rov" target="_blank" rel="noopener">Team news</a>
+                    <a href="https://www.puiching.edu.mo/" target="_blank" rel="noopener">Pui Ching</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- ============ CONTENTS ============ -->
+        <nav class="contents" aria-label="Contents">
+            <div class="sheet contents-inner">
+                <span class="note contents-label">Contents</span>
+                <ul class="contents-list">
+                    <li><a href="#results"><span class="idx">01</span>Results</a></li>
+                    <li><a href="#work"><span class="idx">02</span>The Work</a></li>
+                    <li><a href="#fleet"><span class="idx">03</span>Fleet</a></li>
+                    <li><a href="#log"><span class="idx">04</span>Station Log</a></li>
+                    <li><a href="#plates"><span class="idx">05</span>Plates</a></li>
+                    <li><a href="#crew"><span class="idx">06</span>Crew</a></li>
+                    <li><a href="#contact"><span class="idx">07</span>Contact</a></li>
+                </ul>
+                <a class="note contents-back" href="../">&larr; puiching-fablab</a>
             </div>
         </nav>
-	</div>
-	<!-- header section end -->
-  
-  <!-- about section start -->
-  <div class="about_section layout_padding">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="image_2"><img src="images/about_us.jpg"></div>
-        </div>
-        <div class="col-md-6">
-          <h1 id="about" class="about_text">ABOUT US</h1>
-          <p class="lorem_text">We are a dynamic team of five passionate innovators dedicated to making a difference. With the advancement of technology, our team aims to revolutionize both the water monitoring and the invasive species management industry.</p>
-          <div class="shop_bt_2"><a href="#">More</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- about section end -->
-  
-  <!-- product section start -->
-  <div class="product_section layout_padding">
-    <div class="container">
-      <div id="vision" class="product_text">Our <span style="color: #5ca0e9;">Vision</span></div>
-      <p class="long_text">We hope to provide a comprehensive solution to maintaining a healthy and balanced ecosystem and a sustainable yet effective water resource management program.</p>
-    </div>
-  </div>
-  
-  <!-- banner section start -->
-  <div class="banner_section layout_padding">
-    <div class="container">
-      <div id="my_slider" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="row">
-              <div class="col-md-6">
-                <h1 class="video_text">Autonomous</h1>
-                <h1 class="controller_text">Surface Vehicle</h1>
-                <p class="banner_text">A new design for the vehicle's surveillance system has been developed alongside the new platform. This reduces the possibility that the systems will be mixed while still allowing strong integration between the systems.</p>
-                <div class="shop_bt"><a href="#">More</a></div>
-              </div>
-              <div class="col-md-6">
-                <div class="image_1"><img src="images/asv-1.png"></div>
-            </div>
-          </div>
-          </div>
-          <div class="carousel-item">
-            <div class="row">
-              <div class="col-md-6">
-                <h1 class="video_text">Spectrometer</h1>
-                <h1 class="controller_text">rapid water quality tests</h1>
-                <p class="banner_text">This design includes a 3D printed sample holder with an LED to illuminate the two cuvettes.</p>
-                <div class="shop_bt"><a href="#">More</a></div>
-              </div>
-              <div class="col-md-6">
-                <div class="image_1"><img src="images/asv-2.png"></div>
-            </div>
-          </div>
-          </div>
-        </div>
-        <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
-          <i class="fa fa-angle-left"></i>
-        </a>
-        <a class="carousel-control-next" href="#my_slider" role="button" data-slide="next">
-          <i class="fa fa-angle-right"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-  <!-- banner section end -->
-  
-  <!-- activities section start -->
-  <div class="product_section layout_padding">
-    <div class="container">
-      <div id="activities" class="product_text">Our <span style="color: #5ca0e9;">activities</span></div>
-      <p class="long_text"></p>
-      <div class="product_section_2">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="image_2"><img src="images/activities_1.jpg"></div>
-            <div class="price_text">Public <span style="color: #3a3a38;">Campaigns</span></div>
-            <h1 class="game_text">Hong Kong Regional of the MATE ROV Competition</h1>
-            <p class="long_text">The challenge is scored in four parts, including robot combat competition, robot production and construction, technical report and poster design. Interest and concern in marine conservation, and try to use technology in marine conservation. It is a communication platform that attracts hundreds of middle school and college students from all over the world every year.</p>
-          </div>
-          <div class="col-md-6">
-            <div class="image_2"><img src="images/activities_2.jpg"></div>
-            <div class="price_text">Technology Exhibitions <br/> <span style="color: #3a3a38;">&</span> <br/>Trade shows</div>
-            <h1 class="game_text"></h1>
-            <p class="long_text">After the game, there will be a non-scoring reporting and exchange session to exchange experiences on making robots. The two teams enhanced their friendship with other teams and broadened their international horizons.</p>
-          </div>
-        </div>
-      </div>
-      <div class="see_main">
-        <div class="see_bt"><a target="_blank" href="https://fablab.puiching.edu.mo/?tag=rov">See More</a></div>
-      </div>
-    </div>
-  </div>
-  <!-- product section end -->
-  <!-- video section start --
-  <div class="video_section layout_padding">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h1 class="video_text_2">3d video game</h1>
-          <h1 class="controller_text_2">remoto control</h1>
-          <p class="banner_text_2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-          <div class="shop_bt"><a href="#">Shop Now</a></div>
-        </div>
-        <div class="col-md-6">
-          <div class="image_4"><img src="images/img-4.png"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- video section end -->
-  <!-- testimonial section start --
-  <div class="testimonial_section layout_padding">
-    <div class="container">
-      <h1 class="testimonial_text">Testimonial</h1>
-      <p class="ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-      <div class="testimonial_section_2">
-        <div class="box_main">
-          <div class="quote_icon"><img src="images/quote-icon.png"></div>
-          <p class="dolor_text"> dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum </p>
-          <div class="client_main">
-            <div class="client_left">
-              <div class="images_5"><img src="images/img-5.png"></div>
-            </div>
-            <div class="client_right">
-              <h1 class="sandy_text">Sandy Delex</h1>
-              <p class="sandy_text_1">Reprehenderit</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="see_main">
-        <div class="see_bt"><a href="#">See More</a></div>
-      </div>
-    </div>
-  </div>
-  <!-- testimonial section end -->
-  <!-- contact section start -->
-  <div class="contact_section layout_padding">
-    <div class="container">
-          <div id="contact" class="email_box">
-                    <div class="input_main">
-                       <div class="container">
-						<div class="row">
-							<div class="col-md-6">Name:</div>
-							<div class="col-md-6">Fablab Puiching (Macau)</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6">Address:</div>
-							<div class="col-md-6">Avenida de Horta e Costa, No.7, Macau</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6">TEL:</div>
-							<div class="col-md-6">+853 28529333</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6">Email:</div>
-							<div class="col-md-6">thomaslao@gmail.com</div>
-						</div>
 
-                       </div>                 
+        <main id="main">
+            <!-- ============ OPENING ============ -->
+            <section class="opening">
+                <div class="sheet opening-inner">
+                    <span class="note opening-kicker">Survey log &middot; 2025&ndash;2026 season</span>
+                    <h1 class="opening-title">Underwater Robotics,<em>built by students</em></h1>
+                    <p class="opening-standfirst">
+                        We design the frame, print the tooling, lay out the boards, write the control
+                        software and fly the vehicle ourselves &mdash; then take it from the school pool
+                        to the MATE ROV World Championship, the International SeaPerch Challenge and the
+                        China Robot Competition.
+                    </p>
+                    <dl class="legend">
+                        <div>
+                            <dt class="note">Survey period</dt>
+                            <dd>Oct 2025 &ndash; Aug 2026</dd>
+                        </div>
+                        <div>
+                            <dt class="note">Operating area</dt>
+                            <dd>Macau, Hong Kong, Beijing, Guangzhou, Shijiazhuang, Maryland, Newfoundland</dd>
+                        </div>
+                        <div>
+                            <dt class="note">Complement</dt>
+                            <dd>31 students &middot; 3 advisors</dd>
+                        </div>
+                        <div>
+                            <dt class="note">Vehicle classes</dt>
+                            <dd>MATE Ranger, SeaPerch, water-operations, surface</dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
+
+            <div class="sheet">
+
+                <!-- ============ 01 RESULTS ============ -->
+                <section class="section" id="results">
+                    <div class="section-head">
+                        <span class="section-num">01</span>
+                        <h2 class="section-title">Results, best first</h2>
                     </div>
-                 </div>
-    </div>
-  </div>
-  <!-- contact section end -->
-  <!-- footer section start --
-  <div class="section_footer ">
-      <div class="container"> 
-          <div class="footer_section_2">
-            <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                  <h2 class="account_text">About Us</h2>
-                  <p class="ipsum_text_2">dolor sit amet, consectetur magna aliqua. Ut enim ad minim veniam, quisdotempor incididunt r</p>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                  <h2 class="account_text">Useful Link</h2>
-                  <div class="useful_link">
-                    <ul>
-                      <li><a href="#">Video games</a></li>
-                      <li><a href="#">Remote control</a></li>
-                      <li><a href="#">3d controller</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                <h2 class="account_text">Contact Us</h2>
-                <p class="ipsum_text_2">dolor sit amet, consectetur magna aliqua. quisdotempor incididunt ut e </p>
-                </div>
-          <div class="col-sm-6 col-md-6 col-lg-3">
-            <h2 class="account_text">Newsletter</h2>
-            <input type="" class="email_text" placeholder="Enter Your Email" name="Enter Your Email">
-            <button class="subscribr_bt">SUBSCRIBE</button>
-          </div>
-        </div>
-      </div>
-      <div class="social_icon">
-        <ul>
-          <li><a href="#"><img src="images/fb-icon.png"></a></li>
-          <li><a href="#"><img src="images/twitter-icon.png"></a></li>
-          <li><a href="#"><img src="images/linkdin-icon.png"></a></li>
-          <li><a href="#"><img src="images/instagram-icon.png"></a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <!-- footer section end -->
-  <!-- copyright section start -->
-  <div class="copyright_section">
-    <div class="container">
-      <p class="copyright_text">Copyright 2025 All Right Reserved By <a href="https://fablab.puiching.edu.mo"> Fablab Puiching (Macau)</p>
-    </div>
-  </div>
-  <!-- copyright section end -->
-  <!-- Javascript files-->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/jquery-3.0.0.min.js"></script>
-    <script src="js/plugin.js"></script>
-    <!-- sidebar -->
-    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="js/custom.js"></script>
-    <!-- javascript --> 
-    <script src="js/owl.carousel.js"></script>
-    <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
-    <script>
-    $(document).ready(function(){
-    $(".fancybox").fancybox({
-        openEffect: "none",
-        closeEffect: "none"
-        });
-    </script>
-</body>
+                    <p class="section-intro">
+                        Ranked by the standing achieved rather than by date, and grouped by the level of
+                        the competition. Where the team entered a university division, it did so as the
+                        only junior secondary entry in the field.
+                    </p>
+                    <table class="results">
+                        <thead>
+                            <tr>
+                                <th scope="col">Standing</th>
+                                <th scope="col">Competition</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="res-tier"><th scope="rowgroup" colspan="3">World championships</th></tr>
+                            <tr class="is-podium">
+                                <td class="res-place">2<sup>nd</sup> in the world</td>
+                                <td class="res-event">International SeaPerch Challenge &mdash; Middle School Division
+                                    <small>Team DeltaX &middot; 210 teams &middot; also 3rd in the mission course</small></td>
+                                <td class="res-when">May 2026</td>
+                            </tr>
+                            <tr class="is-podium">
+                                <td class="res-place">2<sup>nd</sup> in the world</td>
+                                <td class="res-event">MATE ROV World Championship &mdash; Engineering Presentation
+                                    <small>Team Mosasaurus &middot; 3.6 points behind first place</small></td>
+                                <td class="res-when">Jun 2026</td>
+                            </tr>
+                            <tr>
+                                <td class="res-place">9<sup>th</sup></td>
+                                <td class="res-event">MATE ROV World Championship &mdash; Ranger class, overall
+                                    <small>86 teams from 16 countries and regions</small></td>
+                                <td class="res-when">Jun 2026</td>
+                            </tr>
+                            <tr>
+                                <td class="res-place">16<sup>th</sup></td>
+                                <td class="res-event">International SeaPerch Challenge &mdash; Middle School Division
+                                    <small>Team DeltaY &middot; 210 teams</small></td>
+                                <td class="res-when">May 2026</td>
+                            </tr>
+
+                            <tr class="res-tier"><th scope="rowgroup" colspan="3">National</th></tr>
+                            <tr class="is-podium">
+                                <td class="res-place">First Prize</td>
+                                <td class="res-event">China Robot Competition &mdash; Underwater Operations, university division
+                                    <small>North China University of Technology, Beijing</small></td>
+                                <td class="res-when">Aug 2026</td>
+                            </tr>
+                            <tr class="is-podium">
+                                <td class="res-place">1<sup>st</sup></td>
+                                <td class="res-event">SeaPerch China Regional Selection &mdash; and 2nd, and 3rd
+                                    <small>All three podium places, from more than 20 teams</small></td>
+                                <td class="res-when">Feb 2026</td>
+                            </tr>
+                            <tr>
+                                <td class="res-place">Second Prize</td>
+                                <td class="res-event">China Robot Competition &mdash; Underwater Operations, university division
+                                    <small>Shijiazhuang &middot; Third Prize also taken &middot; 40+ university teams</small></td>
+                                <td class="res-when">Oct 2025</td>
+                            </tr>
+
+                            <tr class="res-tier"><th scope="rowgroup" colspan="3">Regional</th></tr>
+                            <tr>
+                                <td class="res-place">Runner-up</td>
+                                <td class="res-event">IET/MATE ROV Competition &mdash; Hong Kong Regional
+                                    <small>Qualifier for the World Championship</small></td>
+                                <td class="res-when">Apr 2026</td>
+                            </tr>
+                            <tr class="is-podium">
+                                <td class="res-place">1<sup>st</sup></td>
+                                <td class="res-event">Guangzhou&ndash;Hong Kong&ndash;Macau Exchange &mdash; Underwater Robot Event
+                                    <small>Second place also taken &middot; Pui Ching co-organised and judged</small></td>
+                                <td class="res-when">Nov 2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- ============ 02 THE WORK ============ -->
+                <section class="section" id="work">
+                    <div class="section-head">
+                        <span class="section-num">02</span>
+                        <h2 class="section-title">The work</h2>
+                    </div>
+
+                    <p class="standfirst">
+                        A vehicle goes from a blank sheet to a competition tank without ever
+                        leaving the students&rsquo; hands &mdash; and at MATE it has to arrive with a
+                        company built around it.
+                    </p>
+
+                    <div class="editorial">
+                        <aside class="marginalia">
+                            <b>Done in-house</b>
+                            Structural design &middot; 3D modelling and printing &middot; PCB layout &middot;
+                            material selection &middot; waterproofing &middot; machining &middot;
+                            control software &middot; tuning &middot; piloting
+                        </aside>
+                        <div class="prose">
+                            <figure class="plate plate-float">
+                                <div class="plate-frame">
+                                    <img src="assets/img/events/2026-06-mate-world/202606_MATE世界賽_賽前調試.jpg"
+                                         alt="Team members working on the ROV at a table before a competition run"
+                                         width="1600" height="1067" loading="lazy" decoding="async">
+                                </div>
+                                <figcaption><span class="plate-fig">Fig. 01</span>
+                                    Pit work before a run at the MATE ROV World Championship, St. John&rsquo;s.</figcaption>
+                            </figure>
+                            <p>
+                                The underwater robotics team at Fablab Pui Ching (Macau) is run by junior
+                                secondary students who take a vehicle all the way from a blank sheet to a
+                                competition tank. Structural design, 3D modelling and printing, PCB layout,
+                                material selection, waterproofing, machining, control software, tuning and
+                                piloting &mdash; every part of it is done by the students themselves.
+                            </p>
+                            <p>
+                                At MATE the team does not simply enter a robot. Alongside the vehicle it has
+                                to produce a full technical documentation package, manage a project budget,
+                                design its marketing material, and defend the engineering in English before
+                                a panel of working ocean engineers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pull">
+                        <blockquote>&ldquo;It operates as a start-up company &mdash; budget, documentation,
+                            marketing, and an English defence before working ocean engineers.&rdquo;</blockquote>
+                        <cite class="note">Which is why the Engineering Presentation finished 2nd in the world in 2026</cite>
+                    </div>
+
+                    <div class="figures">
+                        <div class="figure-stat">
+                            <b>210</b><span>Teams at the 2026 International SeaPerch Challenge</span>
+                        </div>
+                        <div class="figure-stat">
+                            <b>86</b><span>Teams at the MATE ROV World Championship, from 16 countries and regions</span>
+                        </div>
+                        <div class="figure-stat">
+                            <b>40+</b><span>University teams faced in the 2025 China Robot Competition</span>
+                        </div>
+                        <div class="figure-stat">
+                            <b>31</b><span>Students across the programme, with three advisors</span>
+                        </div>
+                    </div>
+
+                    <div class="editorial" style="margin-top:3.25rem">
+                        <aside class="marginalia">
+                            <b>2026 SeaPerch theme</b>
+                            Storm Response &mdash; technology in disaster recovery and rescue
+                        </aside>
+                        <div>
+                            <figure class="plate" style="margin-bottom:1.9rem">
+                                <div class="plate-frame">
+                                    <img src="assets/img/events/2026-06-mate-world/202606_MATE世界賽_海上測試.jpg"
+                                         alt="A student lowering the ROV into open sea water from a dock"
+                                         width="1438" height="1079" loading="lazy" decoding="async">
+                                </div>
+                                <figcaption><span class="plate-fig">Fig. 02</span>
+                                    Putting the vehicle over the side into open water.</figcaption>
+                            </figure>
+                            <div class="cols">
+                                <p>
+                                    Every competition task the team trains for is drawn from real subsea
+                                    work: mapping and conserving coral, predicting iceberg drift, installing
+                                    and maintaining offshore power equipment, deploying hydrophones,
+                                    terminating cables on seabed instruments, and collecting data under ice.
+                                </p>
+                                <p>
+                                    So the engineering is pointed somewhere. The team built a
+                                    computer-vision model to recognise invasive species, and carries its
+                                    water-quality instrumentation on a surface platform of its own design.
+                                    The goal is a practical contribution to marine conservation and to
+                                    sustainable water resource management &mdash; made by students, from Macau.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ 03 FLEET ============ -->
+                <section class="section" id="fleet">
+                    <div class="section-head">
+                        <span class="section-num">03</span>
+                        <h2 class="section-title">Fleet register</h2>
+                    </div>
+                    <p class="section-intro">
+                        Different competitions call for very different vehicles: a Ranger-class ROV for
+                        MATE, a compact SeaPerch platform for the RoboNation circuit, a manipulator-heavy
+                        build for water-operations events, and a surface craft carrying its own
+                        water-quality payload.
+                    </p>
+                    <div class="register">
+                        <article class="vessel">
+                            <figure class="vessel-plate">
+                                <img src="assets/img/events/2026-04-mate-hk/thumb/202604_MATE香港地區賽_水下任務.jpg"
+                                     alt="The Mosasaurus ROV working a mission structure on the bottom of the competition pool"
+                                     width="700" height="525" loading="lazy" decoding="async">
+                            </figure>
+                            <div>
+                                <span class="note vessel-class">MATE Ranger class</span>
+                                <h3 class="vessel-name">Mosasaurus</h3>
+                                <p>
+                                    The team's flagship ROV, rebuilt for the 2026 season. It carries a
+                                    360&deg;-rotating manipulator and 3D-printed task tooling designed
+                                    against the mission list, and runs a YOLO vision model for identifying
+                                    invasive species.
+                                </p>
+                            </div>
+                            <ul class="vessel-specs">
+                                <li><span>Control</span><span>Tethered</span></li>
+                                <li><span>Manipulator</span><span>360&deg; rotating</span></li>
+                                <li><span>Vision</span><span>YOLO model</span></li>
+                                <li><span>Season</span><span>2026</span></li>
+                            </ul>
+                        </article>
+
+                        <article class="vessel">
+                            <figure class="vessel-plate">
+                                <img src="assets/img/events/2026-02-seaperch-china/thumb/202602_SeaPerch中國區選拔賽_障礙賽.jpg"
+                                     alt="A SeaPerch vehicle passing through a hoop on the obstacle course"
+                                     width="700" height="467" loading="lazy" decoding="async">
+                            </figure>
+                            <div>
+                                <span class="note vessel-class">SeaPerch platform</span>
+                                <h3 class="vessel-name">Delta series</h3>
+                                <p>
+                                    Small, fast and hand-built for the SeaPerch obstacle and mission
+                                    courses. The Delta boats are where the youngest members learn buoyancy
+                                    trim, thruster layout and clean piloting under a clock.
+                                </p>
+                            </div>
+                            <ul class="vessel-specs">
+                                <li><span>Crews</span><span>DeltaX, DeltaY</span></li>
+                                <li><span>Events</span><span>Obstacle, mission</span></li>
+                                <li><span>Build</span><span>Hand-assembled</span></li>
+                                <li><span>Season</span><span>2026</span></li>
+                            </ul>
+                        </article>
+
+                        <article class="vessel">
+                            <figure class="vessel-plate">
+                                <img src="assets/img/events/2026-08-robocup-china/thumb/202608_中國機器人大賽_水中作業任務.jpg"
+                                     alt="The water-operations ROV working on a submerged task structure"
+                                     width="700" height="467" loading="lazy" decoding="async">
+                            </figure>
+                            <div>
+                                <span class="note vessel-class">Water-operations build</span>
+                                <h3 class="vessel-name">Task vehicle</h3>
+                                <p>
+                                    Built for the China Robot Competition's underwater operations event:
+                                    releasing and installing hydrophones, torquing seabed instrument
+                                    connectors, terminating cables to the millimetre and throwing switches
+                                    on the bottom.
+                                </p>
+                            </div>
+                            <ul class="vessel-specs">
+                                <li><span>Division</span><span>University</span></li>
+                                <li><span>Tasks</span><span>Hydrophone, cable</span></li>
+                                <li><span>Result</span><span>First Prize</span></li>
+                                <li><span>Season</span><span>2025&ndash;26</span></li>
+                            </ul>
+                        </article>
+
+                        <article class="vessel">
+                            <figure class="vessel-plate is-render">
+                                <img src="assets/img/rov/ASV_平台.png"
+                                     alt="Render of the autonomous surface vehicle platform"
+                                     width="866" height="611" loading="lazy" decoding="async">
+                            </figure>
+                            <div>
+                                <span class="note vessel-class">Autonomous surface vehicle</span>
+                                <h3 class="vessel-name">Survey platform</h3>
+                                <p>
+                                    A surface craft for ecosystem surveillance. Its surveillance system was
+                                    redesigned alongside the new hull, keeping the two loosely coupled so
+                                    they integrate tightly without getting tangled together.
+                                </p>
+                            </div>
+                            <ul class="vessel-specs">
+                                <li><span>Mode</span><span>Autonomous</span></li>
+                                <li><span>Role</span><span>Ecosystem survey</span></li>
+                                <li><span>Payload</span><span>Water quality</span></li>
+                            </ul>
+                        </article>
+
+                        <article class="vessel">
+                            <figure class="vessel-plate is-render">
+                                <img src="assets/img/rov/ASV_光譜儀.png"
+                                     alt="Render of the 3D-printed spectrometer sample holder"
+                                     width="866" height="612" loading="lazy" decoding="async">
+                            </figure>
+                            <div>
+                                <span class="note vessel-class">Payload</span>
+                                <h3 class="vessel-name">Spectrometer</h3>
+                                <p>
+                                    Rapid water-quality testing on board: a 3D-printed sample holder with
+                                    an LED illuminating two cuvettes, so a reading can be taken without
+                                    bringing the sample back to a lab.
+                                </p>
+                            </div>
+                            <ul class="vessel-specs">
+                                <li><span>Housing</span><span>3D printed</span></li>
+                                <li><span>Cells</span><span>Two cuvettes</span></li>
+                                <li><span>Source</span><span>LED</span></li>
+                            </ul>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============ 04 STATION LOG ============ -->
+                <section class="section" id="log">
+                    <div class="section-head">
+                        <span class="section-num">04</span>
+                        <h2 class="section-title">Station log</h2>
+                    </div>
+                    <p class="section-intro">
+                        Every competition of the two seasons, in the same order as the results above &mdash;
+                        strongest standing first. Each entry carries its full roster.
+                    </p>
+
+                    <div class="log">
+                        <!-- STN 01 — SeaPerch Worlds -->
+                        <article class="station is-podium">
+                            <div class="station-margin">
+                                <span class="station-no">Stn 01</span>
+                                <span class="station-date">2026.05</span>
+                                <span class="station-place">2nd in the world</span>
+                                <span class="station-note">Highest-placed team from China, and the highest-placed team in Asia. Both results are school records.</span>
+                            </div>
+                            <div>
+                                <h3 class="station-title">2026 International SeaPerch Challenge</h3>
+                                <p class="station-where">University of Maryland, USA &middot; 30&ndash;31 May 2026 &middot; organised by RoboNation &middot; 210 teams worldwide</p>
+                                <div class="station-body">
+                                    <p>
+                                        Nine students in two teams travelled to the United States. In a field of
+                                        210 teams from countries including the USA, China, New Zealand,
+                                        Kazakhstan, Egypt, Kenya and Puerto Rico, <strong>DeltaX</strong> took
+                                        second place in the world in the middle school division and third in the
+                                        mission course &mdash; the highest-placed team from China and the
+                                        highest-placed team in Asia. <strong>DeltaY</strong> finished 16th in the
+                                        world. Both results are school records.
+                                    </p>
+                                    <div class="roster">
+                                        <span class="roster-line">DeltaX &mdash; 2nd in the world, 3rd in the mission course</span>
+                                        <ul class="names is-podium">
+                                            <li>孔鈺婷</li><li>廖曉樂</li><li>陳穆</li><li>梁卓諾</li><li>鄭昊昕</li><li>程梓軒</li>
+                                        </ul>
+                                        <span class="roster-line">DeltaY &mdash; 16th in the world</span>
+                                        <ul class="names">
+                                            <li>李紫穎</li><li>馮穎心</li><li>林初熹</li>
+                                        </ul>
+                                    </div>
+                                    <a class="station-source" href="https://fablab.puiching.edu.mo/?p=3499" target="_blank" rel="noopener">Read the report &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- STN 02 — MATE Worlds -->
+                        <article class="station is-podium">
+                            <div class="station-margin">
+                                <span class="station-no">Stn 02</span>
+                                <span class="station-date">2026.06</span>
+                                <span class="station-place">2nd &mdash; Engineering Presentation<br>9th overall</span>
+                                <span class="station-note">24th edition of the championship. The team ran the event as a start-up company and defended its engineering in English.</span>
+                            </div>
+                            <div>
+                                <h3 class="station-title">MATE ROV Competition World Championship</h3>
+                                <p class="station-where">St. John's, Canada &middot; 25&ndash;27 June 2026 &middot; 24th edition &middot; 86 teams from 16 countries and regions</p>
+                                <div class="station-body">
+                                    <p>
+                                        Representing Macau, Team Mosasaurus finished 9th in the world among
+                                        Ranger-class teams, and second in the world in the Engineering
+                                        Presentation &mdash; 3.6 points off first place. Running as a start-up
+                                        company, the team completed coral ecosystem mapping, subsea observatory
+                                        maintenance and under-ice data collection in cold water, while producing
+                                        the technical report, managing the budget, designing the poster and
+                                        defending all of it in English.
+                                    </p>
+                                    <div class="roster">
+                                        <span class="roster-line">Students</span>
+                                        <ul class="names is-podium">
+                                            <li>何柏熹</li><li>周以軒</li><li>邵安喬</li><li>洪嘉濠</li><li>梁卓軒</li>
+                                            <li>梁觀然</li><li>路承霖</li><li>鄧諾軒</li><li>李卓翹</li>
+                                        </ul>
+                                    </div>
+                                    <a class="station-source" href="https://fablab.puiching.edu.mo/?p=3601" target="_blank" rel="noopener">Read the report &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- STN 03 — China Robot Competition 2026 -->
+                        <article class="station is-podium">
+                            <div class="station-margin">
+                                <span class="station-no">Stn 03</span>
+                                <span class="station-date">2026.08</span>
+                                <span class="station-place">First Prize</span>
+                                <span class="station-note">Entered a division up &mdash; a junior secondary team against national university entries.</span>
+                            </div>
+                            <div>
+                                <h3 class="station-title">China Robot Competition &amp; RoboCup China Open &mdash; Underwater Robot / Water Operations, University Division</h3>
+                                <p class="station-where">North China University of Technology, Beijing &middot; 21&ndash;23 Aug 2026 &middot; hosted by the Chinese Association of Automation</p>
+                                <div class="station-body">
+                                    <p>
+                                        Competing a division up against top university teams from across the
+                                        country, the students took First Prize. The event is themed on marine
+                                        survey and extreme subsea work: within a time limit the vehicle had to
+                                        release and install a hydrophone, screw connectors onto a seabed
+                                        instrument and terminate its cable precisely, throw switches, and handle
+                                        loose parts on the bottom.
+                                    </p>
+                                    <div class="roster">
+                                        <span class="roster-line">Students</span>
+                                        <ul class="names is-podium">
+                                            <li>周以軒</li><li>洪嘉濠</li><li>梁觀然</li><li>鄧諾軒</li>
+                                        </ul>
+                                    </div>
+                                    <a class="station-source" href="https://fablab.puiching.edu.mo/?p=3684" target="_blank" rel="noopener">Read the report &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- STN 04 — SeaPerch China Regional -->
+                        <article class="station is-podium">
+                            <div class="station-margin">
+                                <span class="station-no">Stn 04</span>
+                                <span class="station-date">2026.02</span>
+                                <span class="station-place">1st, 2nd and 3rd</span>
+                                <span class="station-note">Four Pui Ching teams entered. The school took first, second and third from more than twenty.</span>
+                            </div>
+                            <div>
+                                <h3 class="station-title">2026 SeaPerch China Regional Selection Training Camp</h3>
+                                <p class="station-where">Beijing &middot; 1&ndash;6 Feb 2026 &middot; national selection for the SeaPerch Global Finals &middot; 20+ teams from Beijing, Guangzhou, Macau and Fujian</p>
+                                <div class="station-body">
+                                    <p>
+                                        Four Pui Ching teams entered and the school swept the podium, judged
+                                        across mission runs, the obstacle course, the technical report and the
+                                        defence. The camp ran project-based research under the international
+                                        theme <em>Storm Response: technology in disaster recovery and rescue</em>,
+                                        and closed with a visit to Peking University.
+                                    </p>
+                                    <div class="roster">
+                                        <span class="roster-line">1st &mdash; Crazy Delta</span>
+                                        <ul class="names is-podium"><li>陳穆</li><li>梁卓諾</li><li>鄭昊昕</li><li>程梓軒</li></ul>
+                                        <span class="roster-line">2nd &mdash; Deep Iruka</span>
+                                        <ul class="names is-podium"><li>廖曉樂</li><li>司徒琛悅</li><li>黃詩恩</li><li>周紀君</li><li>沈彥樺</li></ul>
+                                        <span class="roster-line">3rd &mdash; Flood Dragon</span>
+                                        <ul class="names is-podium"><li>孔鈺婷</li><li>陳柏謙</li><li>邱璟澤</li></ul>
+                                        <span class="roster-line">6th &mdash; Seal</span>
+                                        <ul class="names"><li>李紫穎</li><li>梁欣翹</li><li>馮穎心</li><li>譚天昕</li></ul>
+                                    </div>
+                                    <a class="station-source" href="https://fablab.puiching.edu.mo/?p=2939" target="_blank" rel="noopener">Read the report &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- STN 05 — China Robot Competition 2025 -->
+                        <article class="station">
+                            <div class="station-margin">
+                                <span class="station-no">Stn 05</span>
+                                <span class="station-date">2025.10</span>
+                                <span class="station-place">Second &amp; Third Prize</span>
+                                <span class="station-note">The only all-junior-secondary team in a field of more than forty university entries.</span>
+                            </div>
+                            <div>
+                                <h3 class="station-title">2025 China Robot Competition &amp; RoboCup China Open &mdash; Underwater Robot / Water Operations, University Division</h3>
+                                <p class="station-where">Shijiazhuang, Hebei &middot; 16&ndash;20 Oct 2025 &middot; 40+ university teams &middot; the only all-junior-secondary entry in the field</p>
+                                <div class="station-body">
+                                    <p>
+                                        The team's first run at the university division. Against more than forty
+                                        university teams, the students placed in the upper half of the field with
+                                        a Second Prize and a Third Prize &mdash; and spent the rest of the event
+                                        trading notes with teams from across the country. University competitors
+                                        were struck by both the design of the vehicle and how the students flew it.
+                                    </p>
+                                    <div class="roster">
+                                        <span class="roster-line">Second Prize</span>
+                                        <ul class="names"><li>梁觀然</li><li>洪嘉濠</li><li>何柏熹</li><li>鄧諾軒</li></ul>
+                                        <span class="roster-line">Third Prize</span>
+                                        <ul class="names"><li>路承霖</li><li>梁卓軒</li><li>周以軒</li><li>邵安喬</li><li>李卓翹</li></ul>
+                                    </div>
+                                    <a class="station-source" href="https://fablab.puiching.edu.mo/?p=2597" target="_blank" rel="noopener">Read the report &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- STN 06 — MATE Hong Kong Regional -->
+                        <article class="station">
+                            <div class="station-margin">
+                                <span class="station-no">Stn 06</span>
+                                <span class="station-date">2026.04</span>
+                                <span class="station-place">Runner-up</span>
+                                <span class="station-note">The team also ran the competition&rsquo;s Fun Day, lending its ROV to the public to pilot.</span>
+                            </div>
+                            <div>
+                                <h3 class="station-title">IET/MATE ROV Competition &mdash; Hong Kong Regional</h3>
+                                <p class="station-where">Tsing Yi, Hong Kong &middot; 25&ndash;26 Apr 2026 &middot; organised by the IET &middot; qualifier for the World Championship</p>
+                                <div class="station-body">
+                                    <p>
+                                        The mission set was built from live ocean engineering problems: iceberg
+                                        drift prediction, coral conservation research, and the installation and
+                                        maintenance of offshore power equipment. Team Mosasaurus answered them
+                                        with a rebuilt vehicle &mdash; new 3D-printed tooling, a
+                                        360&deg;-rotating manipulator, and a YOLO model for recognising invasive
+                                        species. The team also lent its ROV to the public at the competition's
+                                        Fun Day, letting visitors pilot it and explaining how it works.
+                                    </p>
+                                    <div class="roster">
+                                        <span class="roster-line">Students</span>
+                                        <ul class="names">
+                                            <li>何柏熹</li><li>邵安喬</li><li>周以軒</li><li>洪嘉濠</li><li>梁卓軒</li><li>梁觀然</li>
+                                            <li>路承霖</li><li>鄧諾軒</li><li>李卓翹</li><li>孔鈺婷</li><li>廖曉樂</li><li>司徒琛悅</li>
+                                        </ul>
+                                    </div>
+                                    <a class="station-source" href="https://fablab.puiching.edu.mo/?p=3350" target="_blank" rel="noopener">Read the report &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- STN 07 — GBA exchange -->
+                        <article class="station is-podium">
+                            <div class="station-margin">
+                                <span class="station-no">Stn 07</span>
+                                <span class="station-date">2025.11</span>
+                                <span class="station-place">1st and 2nd</span>
+                                <span class="station-note">Pui Ching co-organised: a teacher was chief judge, and older members worked the event as officials.</span>
+                            </div>
+                            <div>
+                                <h3 class="station-title">Guangzhou&ndash;Hong Kong&ndash;Macau Science Education &amp; Student Technology Exchange &mdash; Underwater Robot Event</h3>
+                                <p class="station-where">Guangzhou No.2 Middle School &middot; 22&ndash;23 Nov 2025 &middot; hosted by the Guangzhou Municipal Education Bureau, co-organised by Pui Ching</p>
+                                <div class="station-body">
+                                    <p>
+                                        Two teams of S1 students took first and second place in an event whose
+                                        vehicles had to clear an underwater obstacle run inside a time limit.
+                                        Pui Ching was also on the other side of the table: a Pui Ching teacher
+                                        served as chief judge of the event, and S2 and S3 members of the
+                                        underwater robotics group worked it as judges, registrars and
+                                        scorekeepers.
+                                    </p>
+                                    <div class="roster">
+                                        <span class="roster-line">1st place</span>
+                                        <ul class="names is-podium"><li>袁樂然</li><li>李紫穎</li><li>蘇若愚</li></ul>
+                                        <span class="roster-line">2nd place</span>
+                                        <ul class="names is-podium"><li>陳俊亨</li><li>余煒基</li><li>徐子越</li></ul>
+                                    </div>
+                                    <a class="station-source" href="https://fablab.puiching.edu.mo/?p=2714" target="_blank" rel="noopener">Read the report &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============ 05 PLATES ============ -->
+                <section class="section" id="plates">
+                    <div class="section-head">
+                        <span class="section-num">05</span>
+                        <h2 class="section-title">Plates</h2>
+                    </div>
+                    <p class="section-intro">
+                        Pits and pool decks, hotel-room repairs, mission runs and the occasional podium
+                        &mdash; from Shijiazhuang and Guangzhou to Beijing, Hong Kong, Maryland and
+                        Newfoundland.
+                    </p>
+                    <div class="plates">
+                        <figure class="plate is-wide">
+                            <div class="plate-frame"><img src="assets/img/events/2026-05-seaperch-world/thumb/202605_國際SeaPerch挑戰賽_隊伍合照.jpg" alt="The team with the school flag at the International SeaPerch Challenge backdrop" width="700" height="525" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 03</span>International SeaPerch Challenge, Maryland &middot; May 2026</figcaption>
+                        </figure>
+                        <figure class="plate is-wide">
+                            <div class="plate-frame"><img src="assets/img/events/2026-06-mate-world/thumb/202606_MATE世界賽_抵達會場.jpg" alt="Team members at the MATE ROV World Championship venue entrance" width="700" height="394" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 04</span>Arriving at the MATE World Championship &middot; Jun 2026</figcaption>
+                        </figure>
+                        <figure class="plate is-tall">
+                            <div class="plate-frame"><img src="assets/img/events/2026-06-mate-world/thumb/202606_MATE世界賽_水下任務.jpg" alt="The Mosasaurus ROV flying over a mission structure underwater" width="394" height="700" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 05</span>Mosasaurus on task &middot; Jun 2026</figcaption>
+                        </figure>
+                        <figure class="plate is-tall">
+                            <div class="plate-frame"><img src="assets/img/events/2026-06-mate-world/thumb/202606_MATE世界賽_碼頭下水.jpg" alt="Two students in life jackets carrying the ROV along a dock" width="525" height="700" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 06</span>Carrying Mosasaurus to the water &middot; Jun 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-05-seaperch-world/thumb/202605_國際SeaPerch挑戰賽_技術檢驗.jpg" alt="Students presenting their vehicle to judges at the inspection table" width="700" height="525" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 07</span>Judging and inspection &middot; May 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-05-seaperch-world/thumb/202605_國際SeaPerch挑戰賽_馬里蘭大學泳池.jpg" alt="The competition pool at the University of Maryland" width="700" height="525" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 08</span>The pool at the University of Maryland &middot; May 2026</figcaption>
+                        </figure>
+                        <figure class="plate is-wide">
+                            <div class="plate-frame"><img src="assets/img/events/2026-08-robocup-china/thumb/202608_中國機器人大賽_隊伍合照.jpg" alt="The team in front of the 2026 China Robot Competition backdrop in Beijing" width="700" height="416" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 09</span>China Robot Competition, Beijing &middot; Aug 2026</figcaption>
+                        </figure>
+                        <figure class="plate is-wide">
+                            <div class="plate-frame"><img src="assets/img/events/2026-08-robocup-china/thumb/202608_中國機器人大賽_水中作業任務.jpg" alt="The water-operations ROV working on a submerged task structure" width="700" height="467" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 10</span>Water-operations task run &middot; Aug 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-08-robocup-china/thumb/202608_中國機器人大賽_岸上控制站.jpg" alt="Students at the poolside control station with laptops during a run" width="700" height="493" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 11</span>The control station, poolside &middot; Aug 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-08-robocup-china/thumb/202608_中國機器人大賽_任務場地.jpg" alt="The competition tank with submerged wooden task structures" width="700" height="467" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 12</span>Task field, Beijing &middot; Aug 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-04-mate-hk/thumb/202604_MATE香港地區賽_賽會合照.jpg" alt="The team at the IET/MATE ROV Hong Kong Regional Competition backdrop" width="700" height="451" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 13</span>MATE Hong Kong Regional &middot; Apr 2026</figcaption>
+                        </figure>
+                        <figure class="plate is-tall">
+                            <div class="plate-frame"><img src="assets/img/events/2026-04-mate-hk/thumb/202604_MATE香港地區賽_池邊備賽.jpg" alt="The team preparing the ROV under a canopy beside the outdoor pool" width="525" height="700" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 14</span>Poolside preparation, Tsing Yi &middot; Apr 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-04-mate-hk/thumb/202604_MATE香港地區賽_水下任務2.jpg" alt="The ROV working a mission prop on the floor of the pool" width="649" height="426" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 15</span>A mission run in the regional &middot; Apr 2026</figcaption>
+                        </figure>
+                        <figure class="plate is-wide">
+                            <div class="plate-frame"><img src="assets/img/events/2026-02-seaperch-china/thumb/202602_SeaPerch中國區選拔賽_戰訓營合照.jpg" alt="All four Pui Ching teams at the SeaPerch China Regional training camp backdrop" width="700" height="525" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 16</span>SeaPerch China Regional camp, Beijing &middot; Feb 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-02-seaperch-china/thumb/202602_SeaPerch中國區選拔賽_頒獎.jpg" alt="Students on stage holding their certificates with their teachers" width="700" height="467" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 17</span>Award ceremony &middot; Feb 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2026-02-seaperch-china/thumb/202602_SeaPerch中國區選拔賽_參觀北京大學.jpg" alt="The group photographed on the steps of a Peking University building" width="700" height="525" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 18</span>Closing visit to Peking University &middot; Feb 2026</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2025-11-gba-exchange/thumb/202511_穗港澳水底機械人賽_頒獎台.jpg" alt="Teams on the podium at the Guangzhou underwater robot event" width="700" height="467" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 19</span>Podium in Guangzhou &middot; Nov 2025</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2025-11-gba-exchange/thumb/202511_穗港澳水底機械人賽_賽事場地.jpg" alt="The pool and event backdrop for the underwater robot event in Guangzhou" width="700" height="467" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 20</span>Running the event as hosts &middot; Nov 2025</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2025-10-robocup-china/thumb/202510_中國機器人大賽_隊伍合照.jpg" alt="The team with the school flag at the 2025 China Robot Competition" width="700" height="525" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 21</span>China Robot Competition, Hebei &middot; Oct 2025</figcaption>
+                        </figure>
+                        <figure class="plate">
+                            <div class="plate-frame"><img src="assets/img/events/2025-10-robocup-china/thumb/202510_中國機器人大賽_賽前維修.jpg" alt="Students working on vehicles in the pit tent before a run" width="700" height="467" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 22</span>Pit work before a run &middot; Oct 2025</figcaption>
+                        </figure>
+                        <figure class="plate is-wide">
+                            <div class="plate-frame"><img src="assets/img/events/2025-10-robocup-china/thumb/202510_中國機器人大賽_房間調試.jpg" alt="Two students repairing the ROV in their hotel room at night" width="700" height="525" loading="lazy" decoding="async"></div>
+                            <figcaption><span class="plate-fig">Fig. 23</span>Repairs back at the hotel &middot; Oct 2025</figcaption>
+                        </figure>
+                    </div>
+                </section>
+
+                <!-- ============ 06 CREW ============ -->
+                <section class="section" id="crew">
+                    <div class="section-head">
+                        <span class="section-num">06</span>
+                        <h2 class="section-title">Crew</h2>
+                    </div>
+                    <p class="section-intro">
+                        Three teachers run the programme; the students do the engineering. Rosters vary by
+                        competition &mdash; the full line-up for each event is listed in the station log above.
+                    </p>
+                    <div class="crew">
+                        <div class="crew-member">
+                            <span class="crew-han">劉冠華</span>
+                            <span class="crew-name">Lao Kun Wa</span>
+                            <span class="note crew-role">Team Advisor</span>
+                        </div>
+                        <div class="crew-member">
+                            <span class="crew-han">盧永強</span>
+                            <span class="crew-name">Marco Lou</span>
+                            <span class="note crew-role">Team Advisor</span>
+                        </div>
+                        <div class="crew-member">
+                            <span class="crew-han">劉安雋</span>
+                            <span class="crew-name">Daniel Lau</span>
+                            <span class="note crew-role">Team Advisor</span>
+                        </div>
+                    </div>
+
+                    <div class="squads">
+                        <div>
+                            <h3 class="squad-name">Mosasaurus &mdash; MATE line</h3>
+                            <ul class="names">
+                                <li>何柏熹</li><li>周以軒</li><li>邵安喬</li><li>洪嘉濠</li><li>梁卓軒</li><li>梁觀然</li>
+                                <li>路承霖</li><li>鄧諾軒</li><li>李卓翹</li><li>孔鈺婷</li><li>廖曉樂</li><li>司徒琛悅</li>
+                            </ul>
+                            <h3 class="squad-name" style="margin-top:2rem">Junior squad &mdash; regional line</h3>
+                            <ul class="names">
+                                <li>袁樂然</li><li>李紫穎</li><li>蘇若愚</li><li>陳俊亨</li><li>余煒基</li><li>徐子越</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="squad-name">Delta squads &mdash; SeaPerch line</h3>
+                            <ul class="names">
+                                <li>孔鈺婷</li><li>廖曉樂</li><li>陳穆</li><li>梁卓諾</li><li>鄭昊昕</li><li>程梓軒</li>
+                                <li>李紫穎</li><li>馮穎心</li><li>林初熹</li><li>司徒琛悅</li><li>黃詩恩</li><li>周紀君</li>
+                                <li>沈彥樺</li><li>陳柏謙</li><li>邱璟澤</li><li>梁欣翹</li><li>譚天昕</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <figure class="plate" style="margin-top:2.5rem;max-width:38rem">
+                        <div class="plate-frame">
+                            <img src="assets/img/events/2026-04-mate-hk/202604_MATE香港地區賽_學生合照.jpg"
+                                 alt="Team members in school uniform photographed together"
+                                 width="1080" height="709" loading="lazy" decoding="async">
+                        </div>
+                        <figcaption><span class="plate-fig">Fig. 24</span>The team in school uniform.</figcaption>
+                    </figure>
+                </section>
+
+                <!-- ============ 07 CONTACT ============ -->
+                <section class="section" id="contact">
+                    <div class="section-head">
+                        <span class="section-num">07</span>
+                        <h2 class="section-title">Contact</h2>
+                    </div>
+                    <dl class="colophon-grid">
+                        <div>
+                            <dt class="note">Name</dt>
+                            <dd>Fablab Pui Ching (Macau)</dd>
+                        </div>
+                        <div>
+                            <dt class="note">Telephone</dt>
+                            <dd><a href="tel:+85328529333">+853 2852 9333</a></dd>
+                        </div>
+                        <div>
+                            <dt class="note">Address</dt>
+                            <dd>Avenida de Horta e Costa, No.&nbsp;7, Macau</dd>
+                        </div>
+                        <div>
+                            <dt class="note">Email</dt>
+                            <dd><a href="mailto:thomaslao@gmail.com">thomaslao@gmail.com</a></dd>
+                        </div>
+                    </dl>
+                </section>
+
+            </div>
+        </main>
+
+        <footer class="site-foot">
+            <div class="sheet">
+                <p>Copyright 2026 All Rights Reserved By
+                   <a href="https://fablab.puiching.edu.mo" target="_blank" rel="noopener">Fablab Pui Ching (Macau)</a></p>
+            </div>
+        </footer>
+
+        <script src="assets/js/main.js" defer></script>
+    </body>
 </html>

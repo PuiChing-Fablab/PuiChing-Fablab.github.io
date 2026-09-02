@@ -1,0 +1,972 @@
+/* ============================================================
+   PCMS ROV — Pui Ching Middle School (Macau) Underwater Robotics
+   ------------------------------------------------------------
+   A survey log written underwater. The page is a document —
+   ruled registers, margin annotations, mounted photographic
+   plates, serif setting — floating in a dark water column that
+   darkens as you descend. No cards, no framework, no icon font.
+   ============================================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+TC:wght@400;500;600&display=swap');
+
+/* ---------- Tokens ---------- */
+:root {
+    /* --- The water column --- */
+    --surface:      #10405e;
+    --shelf:        #0a2b45;
+    --deep:         #061a2c;
+    --abyss:        #020a12;
+
+    /* --- Ink on water --- */
+    --ink:          #dfeaf2;
+    --ink-soft:     #9db8ca;
+    --ink-dim:      #62849b;
+
+    /* --- Drawn lines --- */
+    --rule:         rgba(157, 184, 202, 0.18);
+    --rule-firm:    rgba(157, 184, 202, 0.34);
+    --rule-bright:  rgba(157, 184, 202, 0.55);
+
+    /* --- Accents --- */
+    --lamp:         #4fd3e8;   /* dive-lamp cyan: links, live readouts */
+    --beacon:       #f4a63c;   /* marker beacon amber: podium finishes */
+
+    /* --- Type --- */
+    --serif: 'Spectral', 'Noto Serif TC', Georgia, 'Times New Roman', serif;
+    --mono:  'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --han:   'Noto Serif TC', 'Songti TC', 'PMingLiU', serif;
+
+    /* --- Measure & rhythm --- */
+    --measure:  38rem;
+    --gutter:   clamp(1.15rem, 4vw, 3rem);
+    --page:     76rem;
+    --space-section: clamp(3.25rem, 7vw, 5.5rem);
+
+    /* Scroll depth, 0 at the surface and 1 at the bottom of the page.
+       main.js writes it; everything that gets darker with depth reads it. */
+    --depth: 0;
+}
+
+:root { color-scheme: dark; }
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ---------- Base ---------- */
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1.0625rem;
+    line-height: 1.72;
+    color: var(--ink);
+    background-color: var(--abyss);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+p { margin: 0 0 1.15em; }
+p:last-child { margin-bottom: 0; }
+
+h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    line-height: 1.22;
+    margin: 0;
+    letter-spacing: -0.008em;
+}
+
+a { color: var(--lamp); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { color: var(--beacon); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+::selection { background: rgba(79, 211, 232, 0.26); }
+:focus-visible { outline: 2px solid var(--lamp); outline-offset: 3px; }
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 90;
+    padding: 0.6rem 1rem;
+    background: var(--lamp);
+    color: var(--abyss);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+}
+.skip-link:focus { left: 0; }
+
+/* ============================================================
+   THE WATER
+   Four fixed layers behind everything: a depth gradient that
+   darkens as you descend, sunlight shafts wheeling slowly from
+   the surface, a caustic net, and drifting marine snow.
+   ============================================================ */
+.water {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+.water-column {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 130% 62% at 50% -12%, rgba(79, 211, 232, 0.16) 0%, transparent 62%),
+        linear-gradient(180deg, var(--surface) 0%, var(--shelf) 26%, var(--deep) 62%, var(--abyss) 100%);
+    /* Sinking past the shelf: the whole column fades toward the abyss. */
+    opacity: calc(1 - var(--depth) * 0.72);
+    transition: opacity 120ms linear;
+}
+
+/* Sunlight shafts. Two sets of soft angled bands at different rates, so the
+   light never repeats on an obvious cycle. Masked away below the shelf. */
+.water-rays,
+.water-rays::after {
+    position: absolute;
+    inset: -40% -30%;
+    content: '';
+    background-repeat: repeat-x;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.35) 46%, transparent 78%);
+    mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.35) 46%, transparent 78%);
+}
+.water-rays {
+    background-image: repeating-linear-gradient(102deg,
+        transparent 0 42px,
+        rgba(150, 226, 240, 0.052) 42px 70px,
+        transparent 70px 132px);
+    animation: shafts-a 41s ease-in-out infinite alternate;
+    opacity: calc(1 - var(--depth) * 0.9);
+}
+.water-rays::after {
+    inset: -20% -20%;
+    background-image: repeating-linear-gradient(76deg,
+        transparent 0 66px,
+        rgba(120, 205, 226, 0.04) 66px 92px,
+        transparent 92px 190px);
+    animation: shafts-b 67s ease-in-out infinite alternate;
+}
+@keyframes shafts-a {
+    from { transform: translate3d(-3%, 0, 0) skewX(-1.2deg); }
+    to   { transform: translate3d(4%, 0, 0) skewX(1.6deg); }
+}
+@keyframes shafts-b {
+    from { transform: translate3d(3%, 0, 0) skewX(1deg); }
+    to   { transform: translate3d(-4%, 0, 0) skewX(-1.4deg); }
+}
+
+/* The caustic net thrown by surface ripples onto anything just below. */
+.water-caustics {
+    position: absolute;
+    inset: -25%;
+    opacity: calc(0.55 - var(--depth) * 0.5);
+    background-image:
+        repeating-radial-gradient(ellipse 24% 13% at 28% 10%, rgba(126, 232, 246, 0.11) 0 11%, transparent 11% 40%),
+        repeating-radial-gradient(ellipse 32% 17% at 74% 3%, rgba(79, 211, 232, 0.09) 0 9%, transparent 9% 36%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 58%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 58%);
+    animation: caustics 23s ease-in-out infinite alternate;
+}
+@keyframes caustics {
+    from { transform: translate3d(-2%, -1%, 0) scale(1); }
+    to   { transform: translate3d(3%, 2%, 0) scale(1.09); }
+}
+
+/* Marine snow and bubbles, drawn in main.js. */
+#drift { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---------- Page frame ---------- */
+.sheet {
+    max-width: var(--page);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+}
+
+/* The annotation voice: mono, letterspaced, small. Used for every label,
+   the way a chart writes in its margins. */
+.note {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+
+/* ---------- Masthead ---------- */
+.masthead { border-bottom: 1px solid var(--rule); }
+.masthead-inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    flex-wrap: wrap;
+    padding: 1.15rem 0 0.95rem;
+}
+.masthead-id { display: flex; align-items: center; gap: 0.95rem; min-width: 0; }
+.masthead-logo {
+    /* The Fablab mark is drawn for white paper; a small light plate keeps its
+       own colours legible against the water. */
+    height: 42px;
+    width: auto;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 3px;
+}
+.masthead-title {
+    font-size: clamp(1.32rem, 2.3vw, 1.75rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    margin-bottom: 0.22rem;
+}
+.masthead-title a { color: inherit; text-decoration: none; }
+.masthead-title a:hover { color: var(--lamp); }
+.masthead-links { display: flex; gap: 1.35rem; flex-wrap: wrap; }
+.masthead-links a {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-firm);
+    padding-bottom: 0.12rem;
+}
+.masthead-links a:hover { color: var(--beacon); border-bottom-color: var(--beacon); }
+
+/* ---------- Contents strip ---------- */
+/* A numbered index of the sheets in this survey — not a tab bar. */
+.contents {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(3, 12, 21, 0.82);
+    backdrop-filter: blur(9px);
+    border-bottom: 1px solid var(--rule-firm);
+}
+.contents-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 0 1.5rem;
+    padding: 0.62rem 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.contents-inner::-webkit-scrollbar { display: none; }
+.contents-label { flex: none; }
+.contents-list {
+    display: flex;
+    align-items: baseline;
+    gap: 0 1.35rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.contents-list a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    white-space: nowrap;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding-bottom: 0.12rem;
+    border-bottom: 1px solid transparent;
+}
+.contents-list a .idx { color: var(--ink-dim); font-size: 0.68rem; }
+.contents-list a:hover { color: var(--ink); }
+.contents-list a.is-current { color: var(--beacon); border-bottom-color: var(--beacon); }
+.contents-list a.is-current .idx { color: var(--beacon); }
+.contents-back { margin-left: auto; flex: none; }
+
+/* ---------- Depth gauge ---------- */
+/* The one instrument on the page: a sounding scale that fills as you
+   descend, ticked every 80 m, with a lamp-lit marker riding the trace and
+   a live readout above it. Everything keys off the single --depth value. */
+.gauge {
+    position: fixed;
+    right: max(0.9rem, calc((100vw - var(--page)) / 2 - 3.9rem));
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 3.4rem;
+    pointer-events: none;
+}
+@media (min-width: 78rem) { .gauge { display: flex; } }
+
+.gauge-label {
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+.gauge-value {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--lamp);
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 20px rgba(79, 211, 232, 0.6), 0 0 44px rgba(79, 211, 232, 0.25);
+}
+.gauge-unit {
+    font-family: var(--mono);
+    font-size: 0.54rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 0.95rem;
+}
+
+.gauge-scale {
+    position: relative;
+    width: 100%;
+    height: 17rem;
+}
+/* The unsounded remainder of the scale. */
+.gauge-scale::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-radius: 1px;
+    background: linear-gradient(180deg, rgba(157, 184, 202, 0.42), rgba(157, 184, 202, 0.1));
+}
+/* How far down you have come, lit from the marker upward. */
+.gauge-fill {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 2px;
+    height: calc(var(--depth) * 100%);
+    border-radius: 1px;
+    background: linear-gradient(180deg, rgba(79, 211, 232, 0.12), var(--lamp));
+    box-shadow: 0 0 14px rgba(79, 211, 232, 0.55);
+    transition: height 120ms linear;
+}
+.gauge-tick {
+    position: absolute;
+    right: 0;
+    top: calc(var(--at) * 100%);
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-dim);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.gauge-tick::after {
+    content: '';
+    width: 9px;
+    height: 1px;
+    background: var(--rule-firm);
+}
+
+.gauge-mark {
+    position: absolute;
+    right: -3px;
+    top: calc(var(--depth) * 100%);
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    border-radius: 50%;
+    background: var(--lamp);
+    box-shadow:
+        0 0 0 3px rgba(79, 211, 232, 0.16),
+        0 0 18px 3px rgba(79, 211, 232, 0.85);
+    transition: top 120ms linear;
+}
+/* A hairline running off the marker, the way a plotter draws the current fix. */
+.gauge-mark::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    margin-right: 4px;
+    /* Stop short of the tick labels, or the two collide at 0 m. */
+    width: 0.6rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--lamp));
+}
+/* A slow sonar ping off the marker. */
+.gauge-mark::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(79, 211, 232, 0.55);
+    animation: ping 2.8s cubic-bezier(0, 0.5, 0.4, 1) infinite;
+}
+@keyframes ping {
+    0%        { transform: scale(0.55); opacity: 0.85; }
+    70%, 100% { transform: scale(2.6);  opacity: 0; }
+}
+
+/* ---------- Opening block ---------- */
+.opening { border-bottom: 1px solid var(--rule); }
+.opening-inner { padding: clamp(2.75rem, 7vw, 5rem) 0 clamp(2rem, 4vw, 3rem); }
+.opening-kicker { display: block; margin-bottom: 1.2rem; }
+.opening-title {
+    font-size: clamp(2.6rem, 7.4vw, 5rem);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -0.026em;
+    margin-bottom: 1.15rem;
+}
+.opening-title em {
+    display: block;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--lamp);
+}
+.opening-standfirst {
+    max-width: 35rem;
+    font-size: 1.18rem;
+    line-height: 1.62;
+    color: var(--ink-soft);
+}
+
+/* The legend under a chart title: period, area, complement, depth rating. */
+.legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+    gap: 1px;
+    margin-top: 2.4rem;
+    /* The grid gap is the rule: cells sit on a 1px lattice. The lattice
+       colour also fills any cell the auto-fit grid leaves empty, so it has
+       to match the cells rather than the line. */
+    background: rgba(6, 26, 44, 0.55);
+    border: 1px solid var(--rule);
+    box-shadow: 0 0 0 0 transparent;
+}
+.legend { column-gap: 1px; row-gap: 1px; }
+.legend > div { box-shadow: 0 0 0 1px var(--rule); }
+.legend > div { padding: 0.9rem 1rem; background: rgba(6, 26, 44, 0.55); }
+.legend dt { margin-bottom: 0.32rem; }
+.legend dd { margin: 0; font-size: 1rem; line-height: 1.4; }
+
+/* ---------- Sections ---------- */
+.section { padding-top: var(--space-section); scroll-margin-top: 3.5rem; }
+.section-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.45rem 2rem;
+    padding-bottom: 1.05rem;
+    border-bottom: 1px solid var(--rule-bright);
+    margin-bottom: 2rem;
+}
+@media (min-width: 60rem) {
+    .section-head { grid-template-columns: 4.5rem 1fr; align-items: baseline; }
+}
+.section-num {
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--beacon);
+}
+.section-title {
+    font-size: clamp(1.65rem, 3.4vw, 2.25rem);
+    font-weight: 400;
+    letter-spacing: -0.018em;
+}
+.section-intro {
+    max-width: var(--measure);
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin-bottom: 2.25rem;
+}
+
+/* ---------- Results register ---------- */
+/* Results are ranked by how good they are, grouped world / national /
+   regional, so the ordering explains itself. A ruled table, not tiles. */
+.results { width: 100%; border-collapse: collapse; }
+.results th, .results td {
+    text-align: left;
+    padding: 0.95rem 1.25rem 0.95rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: baseline;
+}
+.results thead th {
+    border-bottom: 1px solid var(--rule-bright);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    padding-bottom: 0.5rem;
+}
+.results tbody tr:hover { background: rgba(79, 211, 232, 0.05); }
+.res-tier th {
+    padding: 1.6rem 0 0.45rem;
+    border-bottom: 1px solid var(--rule-firm);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lamp);
+}
+.res-tier:first-child th { padding-top: 0.35rem; }
+.res-place {
+    width: 9.5rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+    color: var(--ink);
+}
+.res-place sup { font-size: 0.48em; font-weight: 400; top: -0.72em; margin-left: 0.05em; }
+tr.is-podium .res-place { color: var(--beacon); }
+.res-event { font-size: 1.05rem; }
+.res-event small {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+}
+.res-when {
+    width: 8rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    padding-right: 0 !important;
+    font-variant-numeric: tabular-nums;
+}
+@media (max-width: 47.99rem) {
+    .results, .results thead, .results tbody, .results tr, .results th, .results td { display: block; width: auto; }
+    .results thead { display: none; }
+    .results tbody tr { padding: 1rem 0; border-bottom: 1px solid var(--rule); }
+    .results tbody td { border: 0; padding: 0 0 0.3rem; }
+    .res-tier th { padding: 1.5rem 0 0.4rem; }
+    .res-place { font-size: 1.4rem; }
+}
+
+/* ---------- Prose spread with a mounted plate ---------- */
+.spread {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    align-items: start;
+}
+@media (min-width: 60rem) {
+    .spread { grid-template-columns: 1fr 1fr; gap: 3.25rem; }
+    .spread.is-reversed .plate { order: -1; }
+    .spread .prose { max-width: var(--measure); }
+}
+.prose p { color: var(--ink-soft); }
+.prose > p:first-of-type::first-letter {
+    float: left;
+    font-size: 3.1em;
+    line-height: 0.84;
+    padding: 0.06em 0.1em 0 0;
+    font-weight: 300;
+    color: var(--lamp);
+}
+
+/* ============================================================
+   EDITORIAL SETTING
+   Running prose is broken up the way a magazine breaks it: a
+   margin column of notes, a plate floated into the text, a
+   pulled sentence set large between rules, and display figures
+   that carry the numbers out of the sentences.
+   ============================================================ */
+
+/* A lead line, set larger than the body and shorter than the measure. */
+.standfirst {
+    max-width: 44rem;
+    font-size: clamp(1.18rem, 2.2vw, 1.42rem);
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+    margin-bottom: 2.25rem;
+}
+
+/* Text with a margin column beside it. */
+.editorial {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.35rem 2.75rem;
+}
+@media (min-width: 60rem) {
+    .editorial { grid-template-columns: 11.5rem 1fr; }
+}
+.marginalia {
+    font-family: var(--mono);
+    font-size: 0.745rem;
+    line-height: 1.62;
+    color: var(--ink-dim);
+    border-top: 1px solid var(--rule-firm);
+    padding-top: 0.55rem;
+    margin: 0;
+}
+.marginalia b {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+/* Continuous prose in two columns, split by a hairline. */
+.cols { column-count: 1; }
+@media (min-width: 60rem) {
+    .cols {
+        column-count: 2;
+        column-gap: 2.75rem;
+        column-rule: 1px solid var(--rule);
+    }
+}
+.cols p { margin-bottom: 1.05em; color: var(--ink-soft); }
+.cols p:last-child { margin-bottom: 0; }
+
+/* A plate floated into the running text. Floats and CSS columns do not
+   mix, so this only ever sits in single-column prose. */
+@media (min-width: 60rem) {
+    .plate-float { float: right; width: 21rem; margin: 0.35rem 0 1.6rem 2.5rem; }
+    .plate-float.is-left { float: left; margin: 0.35rem 2.5rem 1.6rem 0; }
+}
+
+/* A sentence pulled out of the body and set large between rules. */
+.pull {
+    max-width: 54rem;
+    margin: 3rem 0;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--rule-bright);
+    border-bottom: 1px solid var(--rule-bright);
+}
+.pull blockquote {
+    margin: 0;
+    font-size: clamp(1.42rem, 3.1vw, 2.1rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.34;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    text-indent: -0.42em;
+}
+.pull cite {
+    display: block;
+    margin-top: 0.95rem;
+    font-style: normal;
+}
+
+/* Numbers taken out of the sentences and set as display figures. */
+.figures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 1.75rem 2.25rem;
+    margin: 2.5rem 0 0;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--rule);
+}
+.figure-stat b {
+    display: block;
+    font-size: clamp(2.5rem, 5.2vw, 3.5rem);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: var(--lamp);
+    font-variant-numeric: lining-nums tabular-nums;
+}
+.figure-stat span {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.92rem;
+    line-height: 1.42;
+    color: var(--ink-soft);
+}
+
+/* Each station carries a note in its margin, under the fix. */
+.station-note {
+    display: block;
+    margin-top: 1rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    line-height: 1.6;
+    color: var(--ink-dim);
+}
+
+/* ---------- Mounted plates ---------- */
+/* A photograph is a plate: hairline rule, dark mat, figure number and
+   caption underneath in the margin hand. */
+.plate { margin: 0; }
+.plate-frame {
+    padding: 0.5rem;
+    background: rgba(10, 43, 69, 0.5);
+    border: 1px solid var(--rule-firm);
+}
+.plate-frame img { width: 100%; }
+.plate figcaption {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.62rem;
+    font-size: 0.87rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+}
+.plate-fig {
+    flex: none;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--beacon);
+    padding-top: 0.16rem;
+}
+
+/* ---------- Fleet register ---------- */
+.register { border-top: 1px solid var(--rule-bright); }
+.vessel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.15rem 2.5rem;
+    padding: 1.85rem 0;
+    border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 48rem) { .vessel { grid-template-columns: 15rem 1fr; align-items: start; } }
+@media (min-width: 60rem) { .vessel { grid-template-columns: 17rem 1fr 15rem; } }
+.vessel-plate { margin: 0; }
+.vessel-plate img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--rule-firm);
+    background: rgba(10, 43, 69, 0.5);
+}
+.vessel-plate.is-render img { object-fit: contain; padding: 0.5rem; }
+.vessel-class { display: block; margin-bottom: 0.4rem; }
+.vessel-name {
+    font-size: 1.55rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.6rem;
+}
+.vessel p { color: var(--ink-soft); font-size: 1rem; }
+.vessel-specs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.vessel-specs li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.73rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+}
+.vessel-specs li span:first-child {
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--ink-dim);
+}
+
+/* ---------- Station log ---------- */
+.log { border-top: 1px solid var(--rule-bright); }
+.station {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem 2.5rem;
+    padding: 2.1rem 0 2.35rem;
+    border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 60rem) { .station { grid-template-columns: 9rem 1fr; } }
+.station-no {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--ink-dim);
+    margin-bottom: 0.35rem;
+}
+.station-date {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+    font-variant-numeric: tabular-nums;
+}
+.station-place {
+    display: inline-block;
+    font-size: 1.06rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--ink-soft);
+    border-top: 2px solid var(--rule-firm);
+    padding-top: 0.42rem;
+}
+.station.is-podium .station-place { color: var(--beacon); border-top-color: var(--beacon); }
+.station-title {
+    font-size: 1.34rem;
+    font-weight: 400;
+    line-height: 1.34;
+    letter-spacing: -0.012em;
+    margin-bottom: 0.35rem;
+}
+.station-where {
+    font-size: 0.93rem;
+    font-style: italic;
+    color: var(--ink-dim);
+    margin-bottom: 0.95rem;
+}
+.station-body { max-width: var(--measure); color: var(--ink-soft); }
+.station-source {
+    display: inline-block;
+    margin-top: 0.45rem;
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ---------- Rosters ---------- */
+/* The names are the record. Set them large, in the Han serif, on ruled lines. */
+.roster { margin-top: 1.4rem; }
+.roster-line {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    padding-bottom: 0.42rem;
+    margin-bottom: 0.65rem;
+    border-bottom: 1px solid var(--rule);
+}
+.roster-line + .names { margin-bottom: 1.4rem; }
+.names {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.names li {
+    font-family: var(--han);
+    font-size: 1.32rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+}
+.names.is-podium li { color: var(--beacon); }
+
+/* ---------- Plates gallery ---------- */
+.plates { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.85rem 1.5rem; }
+@media (min-width: 48rem) {
+    .plates { grid-template-columns: repeat(6, 1fr); }
+    .plates > * { grid-column: span 2; }
+    .plates > .is-wide { grid-column: span 3; }
+}
+.plates .plate-frame img { aspect-ratio: 4 / 3; object-fit: cover; }
+.plates .is-tall .plate-frame img { aspect-ratio: 3 / 4; }
+.plates .is-wide .plate-frame img { aspect-ratio: 16 / 10; }
+
+/* ---------- Crew ---------- */
+.crew {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    border-top: 1px solid var(--rule-bright);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2.5rem;
+}
+.crew-member { padding: 1.6rem 1.5rem 1.7rem 0; border-right: 1px solid var(--rule); }
+.crew-member:last-child { border-right: 0; }
+.crew-han {
+    display: block;
+    font-family: var(--han);
+    font-size: 2.1rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 0.22rem;
+}
+.crew-name {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-bottom: 0.55rem;
+}
+.crew-role { display: block; }
+
+.squads { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+@media (min-width: 48rem) { .squads { grid-template-columns: repeat(2, 1fr); } }
+.squad-name {
+    font-size: 1.14rem;
+    font-weight: 500;
+    padding-bottom: 0.45rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid var(--rule-bright);
+}
+
+/* ---------- Colophon ---------- */
+.colophon-grid { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rule-bright); }
+@media (min-width: 48rem) { .colophon-grid { grid-template-columns: repeat(2, 1fr); } }
+.colophon-grid > div { padding: 1.3rem 1.5rem 1.4rem 0; border-bottom: 1px solid var(--rule); }
+.colophon-grid dt { margin-bottom: 0.32rem; }
+.colophon-grid dd { margin: 0; font-size: 1.05rem; }
+
+.site-foot { margin-top: var(--space-section); padding: 1.5rem 0 2.5rem; border-top: 1px solid var(--rule-firm); }
+.site-foot p {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    color: var(--ink-dim);
+}
+
+/* ---------- Motion & print ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .water-rays, .water-rays::after, .water-caustics, .gauge-mark::after { animation: none; }
+    html { scroll-behavior: auto; }
+}
+@media print {
+    .water, .gauge, .contents, .masthead-links { display: none; }
+    body { color: #000; background: #fff; }
+    .station, .vessel { break-inside: avoid; }
+}
+
+/* ---------- Narrow screens ---------- */
+@media (max-width: 34rem) {
+    body { font-size: 1rem; }
+    .prose > p:first-of-type::first-letter { font-size: 2.7em; }
+    .crew-member { border-right: 0; border-bottom: 1px solid var(--rule); padding-right: 0; }
+    .crew-member:last-child { border-bottom: 0; }
+    .names li { font-size: 1.22rem; }
+}
