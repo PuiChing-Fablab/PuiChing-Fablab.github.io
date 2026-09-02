@@ -121,6 +121,136 @@ body.page-exit { transform: none !important; }
     animation: interface-aurora-violet 21s ease-in-out infinite alternate;
 }
 
+/* A real team robot briefly materialises as a chromatic hologram behind the
+   content. JavaScript changes its model, position and travel path each time,
+   preventing the effect from becoming a fixed piece of page furniture. */
+.robot-ghost {
+    --ghost-image: url('../img/brand/Booster-T1.png');
+    --ghost-x: 80vw;
+    --ghost-y: 56vh;
+    --ghost-width: 230px;
+    --ghost-duration: 2.2s;
+    --ghost-direction: 1;
+    --ghost-tilt: 0deg;
+    --ghost-start-x: -36px;
+    --ghost-end-x: 58px;
+    --ghost-start-y: 16px;
+    --ghost-end-y: -20px;
+    position: fixed;
+    z-index: 4;
+    left: var(--ghost-x);
+    top: var(--ghost-y);
+    display: block;
+    width: min(var(--ghost-width), 32vw);
+    aspect-ratio: 255 / 578;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) translate(var(--ghost-start-x), var(--ghost-start-y)) rotate(var(--ghost-tilt)) scaleX(var(--ghost-direction));
+    transform-origin: center bottom;
+    mix-blend-mode: screen;
+    will-change: opacity, transform, filter;
+}
+.robot-ghost.is-k1 {
+    --ghost-image: url('../img/brand/Booster-K1.png');
+    aspect-ratio: 261 / 645;
+}
+.robot-ghost > i {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+}
+.robot-ghost__halo {
+    inset: -18% -70% !important;
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse, rgba(255, 255, 255, 0.16), rgba(50, 236, 255, 0.13) 18%, rgba(131, 71, 255, 0.1) 39%, rgba(255, 52, 194, 0.055) 57%, transparent 73%);
+    filter: blur(18px) saturate(1.6);
+    animation: robot-ghost-halo 0.34s steps(2, end) infinite;
+}
+.robot-ghost__core {
+    background: var(--ghost-image) center / contain no-repeat;
+    opacity: 0.13;
+    filter: grayscale(1) brightness(2) contrast(1.3) drop-shadow(0 0 7px rgba(210, 253, 255, 0.86));
+}
+.robot-ghost__spectre,
+.robot-ghost__scan {
+    -webkit-mask: var(--ghost-image) center / contain no-repeat;
+    mask: var(--ghost-image) center / contain no-repeat;
+}
+.robot-ghost__spectre {
+    opacity: 0.74;
+    background: linear-gradient(165deg, #20ffff 3%, #267cff 30%, #aa45ff 56%, #ff30c8 80%, #ffd13f 100%);
+    filter: saturate(1.75) brightness(1.42) drop-shadow(0 0 8px currentColor) drop-shadow(0 0 24px currentColor);
+}
+.robot-ghost__spectre--cyan {
+    color: #2cf5ff;
+    transform: translateX(-5px);
+    animation: robot-ghost-split-cyan 0.24s steps(2, end) infinite;
+}
+.robot-ghost__spectre--magenta {
+    color: #ff46cf;
+    opacity: 0.46;
+    transform: translateX(6px);
+    animation: robot-ghost-split-magenta 0.31s steps(2, end) infinite reverse;
+}
+.robot-ghost__scan {
+    opacity: 0.68;
+    background:
+        repeating-linear-gradient(to bottom, transparent 0 5px, rgba(181, 250, 255, 0.36) 6px, transparent 7px),
+        linear-gradient(to bottom, transparent 0 37%, #fff 45%, #52f6ff 49%, rgba(171, 81, 255, 0.82) 53%, transparent 62%);
+    background-size: 100% 100%, 100% 220%;
+    animation: robot-ghost-scan 0.82s linear infinite;
+}
+.robot-ghost::before,
+.robot-ghost::after {
+    content: '';
+    position: absolute;
+    z-index: 4;
+    left: -42%;
+    right: -42%;
+    height: 1px;
+    opacity: 0.8;
+    background: linear-gradient(90deg, transparent, #42f8ff 24%, #fff 50%, #c158ff 73%, transparent);
+    box-shadow: 0 0 8px #4cf5ff, 0 0 22px rgba(172, 75, 255, 0.76);
+}
+.robot-ghost::before { top: 31%; }
+.robot-ghost::after { top: 68%; animation-delay: -0.18s; }
+.robot-ghost.is-active { animation: robot-ghost-materialise var(--ghost-duration) steps(1, end) both; }
+
+@keyframes robot-ghost-materialise {
+    0%, 100% { opacity: 0; filter: blur(8px) brightness(0.7); transform: translate(-50%, -50%) translate(var(--ghost-start-x), var(--ghost-start-y)) rotate(var(--ghost-tilt)) scale(0.9) scaleX(var(--ghost-direction)); }
+    7% { opacity: 0.12; }
+    11% { opacity: 0.62; filter: blur(0) brightness(1.35); }
+    15% { opacity: 0.14; }
+    21% { opacity: 0.53; }
+    27% { opacity: 0.22; }
+    34% { opacity: 0.7; filter: blur(0.4px) brightness(1.58); }
+    43% { opacity: 0.3; }
+    57% { opacity: 0.54; }
+    72% { opacity: 0.26; }
+    88% { opacity: 0.12; filter: blur(2px) brightness(1.15); }
+    99% { transform: translate(-50%, -50%) translate(var(--ghost-end-x), var(--ghost-end-y)) rotate(var(--ghost-tilt)) scale(1.04) scaleX(var(--ghost-direction)); }
+}
+@keyframes robot-ghost-split-cyan {
+    0%, 100% { transform: translateX(-4px); }
+    35% { transform: translate(-9px, 2px); }
+    62% { transform: translate(-2px, -1px); }
+}
+@keyframes robot-ghost-split-magenta {
+    0%, 100% { transform: translateX(5px); }
+    31% { transform: translate(10px, -2px); }
+    67% { transform: translate(3px, 2px); }
+}
+@keyframes robot-ghost-scan {
+    from { background-position: 0 0, 0 -120%; }
+    to { background-position: 0 0, 0 120%; }
+}
+@keyframes robot-ghost-halo {
+    0%, 100% { opacity: 0.58; transform: scale(0.96); }
+    50% { opacity: 1; transform: scale(1.04); }
+}
+
 .robot-atmosphere__orbit {
     width: min(78vw, 1120px);
     aspect-ratio: 1;
@@ -1174,6 +1304,11 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     .group-photo .photo-feature { margin-bottom: 1rem; }
     .group-photo:nth-child(even) .photo-feature,
     .group-photo:nth-child(even) figcaption { grid-column: auto; grid-row: auto; }
+    .robot-ghost { width: min(var(--ghost-width), 42vw); }
+    .robot-ghost__core { opacity: 0.08; }
+    .robot-ghost__spectre { opacity: 0.5; }
+    .robot-ghost__spectre--magenta { opacity: 0.32; }
+    .robot-ghost__scan { opacity: 0.44; }
     .edge-field { opacity: 0.7; }
     .edge-field__side--left,
     .edge-field__side--right { width: 11px; }
@@ -1219,7 +1354,8 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     .edge-field__side b,
     .edge-field__corner,
     .edge-field__lightning { animation: none !important; }
-    .robot-atmosphere__scan { display: none; }
+    .robot-atmosphere__scan,
+    .robot-ghost { display: none; }
     .edge-field__lightning { display: none; }
 }
 
