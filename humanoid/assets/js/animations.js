@@ -619,14 +619,70 @@
     }
 
     // ============================================================
-    // 11. SCANLINE
+    // 11. HERO VISION HUD — machine-vision overlay on the banner photo
+    // ============================================================
+    function initVisionHUD() {
+        var hud = document.getElementById('vision-hud');
+        if (!hud) return;
+
+        // A live clock in the top-right readout — a cheap way to make the
+        // frame read as a running feed rather than a static graphic.
+        var clock = document.getElementById('vf-clock');
+        if (clock) {
+            (function tick() {
+                var d = new Date();
+                var pad = function (n) { return String(n).padStart(2, '0'); };
+                clock.textContent = 'CAM_01 · ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+                setTimeout(tick, 1000);
+            })();
+        }
+
+        function countConf(el) {
+            var target = parseInt(el.getAttribute('data-conf'), 10);
+            if (isNaN(target)) return;
+            // Matches the stat-strip counters in site.js: a numeric tween is
+            // still motion, so reduced-motion users get the settled value.
+            if (reducedMotion) { el.textContent = target; return; }
+            var start = performance.now();
+            var duration = 550;
+            (function step(now) {
+                var p = Math.min((now - start) / duration, 1);
+                el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+                if (p < 1) requestAnimationFrame(step);
+            })(start);
+        }
+
+        function reveal() {
+            hud.classList.add('is-active');
+            hud.querySelectorAll('.vision-conf').forEach(countConf);
+        }
+
+        if (reducedMotion) { reveal(); return; }
+
+        // The sweep plays once on arrival, revealing the boxes as it crosses,
+        // then repeats every so often so the frame still feels alive to
+        // anyone who lingers on the page.
+        function sweep() {
+            hud.classList.remove('is-scanning');
+            // Force reflow so the animation restarts on repeat plays.
+            void hud.offsetWidth;
+            hud.classList.add('is-scanning');
+        }
+
+        sweep();
+        setTimeout(reveal, 550);
+        setInterval(sweep, 16000);
+    }
+
+    // ============================================================
+    // 12. SCANLINE
     // ============================================================
     function initScanline() {
         document.body.classList.add('scanline-overlay');
     }
 
     // ============================================================
-    // 12. BRAND NAME — FIXED LINES
+    // 13. BRAND NAME — FIXED LINES
     // ============================================================
     function initBrandName() {
         document.querySelectorAll('.brand-name').forEach(function (el) {
@@ -680,6 +736,9 @@
             document.querySelectorAll('.animate-on-scroll, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-flip').forEach(function (el) {
                 el.classList.add('animate-visible');
             });
+            // The HUD itself still renders — reducedMotion inside it drops
+            // straight to the settled, non-animated state.
+            initVisionHUD();
             return;
         }
 
@@ -692,6 +751,7 @@
         initPageTransitions();
         initRipple();
         initTeamPreviewDrift();
+        initVisionHUD();
         initScanline();
 
         // Delay typewriter slightly for page load effect

@@ -1360,6 +1360,197 @@ button:focus-visible,
 }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
+/* ---------- Hero vision HUD ----------
+   A machine-vision overlay on the banner photo: a viewfinder frame plus two
+   detection boxes (the squad, the robot), styled like the feed a robot's own
+   camera would draw. Ties directly to the "see with their own cameras" copy
+   below. Desktop only — the frame needs real screen space to read, and the
+   mobile hero is already a tight full-width band.
+
+   .hero-media takes over the exact box .hero-bg used to fill alone, so the
+   HUD (an inset:0 sibling) shares its coordinate space without disturbing
+   the image's own sizing rules at either breakpoint. */
+.hero-media { position: absolute; inset: 0; }
+@media (max-width: 767.98px) {
+    .hero-media { position: static; }
+}
+
+.vision-hud {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    font-family: var(--font-tech);
+}
+/* Needs real headroom above the hero copy — the title's clamp maxes out
+   around 1047px, after which the text block's pixel height stops shrinking
+   while the hero itself keeps growing with viewport width. Below ~1200px
+   there usually isn't enough clear photo left above the text for the boxes
+   to sit in without grazing it, so the HUD only turns on from there. */
+@media (max-width: 1199.98px) {
+    .vision-hud { display: none; }
+}
+
+/* Viewfinder corners — four L-brackets framing the whole shot. */
+.vf-corner { position: absolute; width: 22px; height: 22px; opacity: 0.5; }
+.vf-corner::before, .vf-corner::after {
+    content: '';
+    position: absolute;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.55);
+}
+.vf-corner::before { width: 2px; height: 100%; }
+.vf-corner::after  { width: 100%; height: 2px; }
+.vf-tl { top: 14px; left: 14px; }
+.vf-tl::before, .vf-tl::after { top: 0; left: 0; }
+.vf-tr { top: 14px; right: 14px; }
+.vf-tr::before, .vf-tr::after { top: 0; right: 0; }
+.vf-bl { bottom: 14px; left: 14px; }
+.vf-bl::before, .vf-bl::after { bottom: 0; left: 0; }
+.vf-br { bottom: 14px; right: 14px; }
+.vf-br::before, .vf-br::after { bottom: 0; right: 0; }
+
+/* Telemetry readouts in the untouched corners. Bottom-left is left clear —
+   that's where the hero copy sits. */
+.vf-readout {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(224, 250, 255, 0.7);
+    text-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+}
+.vf-readout-rec { top: 16px; left: 44px; }
+.vf-readout-rec::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--neon-red);
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+    animation: blink 1.1s step-end infinite;
+}
+.vf-readout-cam { top: 16px; right: 44px; text-align: right; }
+.vf-readout-brand { bottom: 16px; right: 44px; color: rgba(224, 250, 255, 0.45); }
+/* The one readout that reports a detection rather than always-on chrome —
+   it only appears once the sweep has "found" the robot, same beat as the
+   boxes, and lives top-centre where the copy never reaches. */
+.vf-readout-target {
+    top: 16px; left: 50%;
+    transform: translateX(-50%);
+    color: #eafeff;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    transition-delay: 0.3s;
+}
+.vf-readout-target::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+    animation: blink 1.1s step-end infinite;
+}
+.vf-readout-target b { color: #fff; }
+.vision-hud.is-active .vf-readout-target { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+    .vf-readout-target::before { animation: none; }
+}
+
+/* Detection boxes. Four corner ticks drawn from eight background gradients —
+   an open bracket rather than a full rectangle, so the photo reads through.
+   Coordinates live here (not inline) so the squad box's height can be
+   tuned per width band below, without the specificity fight inline styles
+   would otherwise force. */
+.vision-box-squad { --x: 2%; --y: 5%; --w: 96%; --h: 26%; }
+.vision-box-robot { --x: 47.5%; --y: 46%; --w: 10%; --h: 52%; }
+
+/* At the narrow end of the enabled range the hero is shorter and the title
+   sits closer to the top, so the squad band is trimmed to a strip across
+   the tops of the heads rather than the fuller band used once there's more
+   clear space above the copy. */
+@media (max-width: 1365.98px) {
+    .vision-box-squad { --h: 16%; }
+}
+
+.vision-box {
+    --vc: var(--neon-cyan);
+    position: absolute;
+    left: var(--x); top: var(--y); width: var(--w); height: var(--h);
+    background-repeat: no-repeat;
+    background-image:
+        linear-gradient(var(--vc), var(--vc)), linear-gradient(var(--vc), var(--vc)),
+        linear-gradient(var(--vc), var(--vc)), linear-gradient(var(--vc), var(--vc)),
+        linear-gradient(var(--vc), var(--vc)), linear-gradient(var(--vc), var(--vc)),
+        linear-gradient(var(--vc), var(--vc)), linear-gradient(var(--vc), var(--vc));
+    background-size: 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px;
+    background-position: 0 0, 0 0, 100% 0, 100% 0, 0 100%, 0 100%, 100% 100%, 100% 100%;
+    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
+    opacity: 0;
+    transform: scale(0.94);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.vision-hud.is-active .vision-box { opacity: 1; transform: scale(1); }
+.vision-box-robot { --vc: #fff; transition-delay: 0.3s; }
+
+.vision-tag {
+    position: absolute;
+    left: 6px; top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    color: #eafeff;
+    background: rgba(5, 15, 25, 0.6);
+    border: 1px solid rgba(0, 240, 255, 0.5);
+    border-radius: 2px;
+    padding: 0.2rem 0.45rem;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+    backdrop-filter: blur(2px);
+}
+.vision-tag::before {
+    content: '';
+    flex: none;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 6px currentColor;
+    animation: blink 1.1s step-end infinite;
+}
+.vision-tag b { font-weight: 700; color: var(--neon-cyan); margin-left: 0.1rem; }
+.vision-tag-hl { border-color: rgba(255, 255, 255, 0.65); box-shadow: 0 0 14px rgba(0, 240, 255, 0.4); }
+.vision-tag-hl b { color: #fff; }
+
+/* The scan sweep: one bright line that crosses the frame, revealing the
+   detection boxes as it passes. Replays on an interval — see animations.js. */
+.vision-sweep {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: -2%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.9) 45%, #fff 50%, rgba(0, 240, 255, 0.9) 55%, transparent);
+    box-shadow: 0 0 20px 4px rgba(0, 240, 255, 0.55), 0 0 60px 10px rgba(0, 240, 255, 0.22);
+    opacity: 0;
+}
+.vision-hud.is-scanning .vision-sweep {
+    animation: visionSweep 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes visionSweep {
+    0%   { left: -2%; opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { left: 102%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .vision-box { transition: none; opacity: 1; transform: none; }
+    .vision-tag::before, .vf-readout-rec::before { animation: none; }
+    .vision-hud.is-scanning .vision-sweep { animation: none; opacity: 0; }
+}
+
 /* ---------- Stat strip ---------- */
 .stat-grid {
     display: grid;
