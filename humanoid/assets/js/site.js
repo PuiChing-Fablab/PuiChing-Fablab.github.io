@@ -1,6 +1,6 @@
 /* =========================================================================
    PCMS-HRG — site interactions
-   Gallery lightbox · activity filters · stat counters · back-to-top
+   Gallery lightbox · activity filters · activity reel · back-to-top
    ========================================================================= */
 (function () {
     'use strict';
@@ -128,6 +128,77 @@
         var preset = new URLSearchParams(location.search).get('filter');
         if (preset && chips.some(function (c) { return c.getAttribute('data-filter') === preset; })) {
             apply(preset);
+        }
+    }
+
+    /* ---------------------------------------------------------------------
+       Home activity reel — clone one complete set for a mathematically exact
+       seamless loop. The clone is inert, so assistive technology and keyboard
+       users encounter each activity only once.
+       --------------------------------------------------------------------- */
+    function initActivityLoop() {
+        var loop = document.querySelector('.activity-loop');
+        if (!loop) return;
+
+        var track = loop.querySelector('.activity-loop__track');
+        var group = track && track.querySelector('.activity-loop__group');
+        var viewport = loop.querySelector('.activity-loop__viewport');
+        var toggle = loop.querySelector('.activity-loop__toggle');
+        if (!track || !group || !viewport) return;
+
+        if (!track.querySelector('.activity-loop__group--clone')) {
+            var clone = group.cloneNode(true);
+            clone.classList.add('activity-loop__group--clone');
+            clone.removeAttribute('role');
+            clone.setAttribute('aria-hidden', 'true');
+            clone.setAttribute('inert', '');
+            Array.prototype.forEach.call(clone.querySelectorAll('[id]'), function (el) {
+                el.removeAttribute('id');
+            });
+            Array.prototype.forEach.call(clone.querySelectorAll('a, button'), function (el) {
+                el.setAttribute('tabindex', '-1');
+            });
+            track.appendChild(clone);
+        }
+
+        var paused = reduceMotion;
+
+        function setPaused(value) {
+            paused = value;
+            loop.classList.toggle('is-paused', paused);
+            if (!toggle) return;
+            toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
+            toggle.setAttribute('aria-label', paused ? 'Resume automatic activity movement' : 'Pause automatic activity movement');
+            toggle.setAttribute('title', paused ? 'Resume automatic activity movement' : 'Pause automatic activity movement');
+            var icon = toggle.querySelector('.bi');
+            if (icon) icon.className = paused ? 'bi bi-play-fill' : 'bi bi-pause-fill';
+        }
+
+        setPaused(paused);
+        if (toggle) {
+            if (reduceMotion) {
+                toggle.hidden = true;
+            } else {
+                toggle.addEventListener('click', function () { setPaused(!paused); });
+            }
+        }
+
+        if (!reduceMotion) {
+            var releaseTimer = 0;
+            viewport.addEventListener('pointerdown', function () {
+                window.clearTimeout(releaseTimer);
+                loop.classList.add('is-dragging');
+            }, { passive: true });
+
+            function releaseDrag() {
+                window.clearTimeout(releaseTimer);
+                releaseTimer = window.setTimeout(function () {
+                    loop.classList.remove('is-dragging');
+                }, 900);
+            }
+
+            window.addEventListener('pointerup', releaseDrag, { passive: true });
+            window.addEventListener('pointercancel', releaseDrag, { passive: true });
         }
     }
 
@@ -264,6 +335,7 @@
     function init() {
         initLightbox();
         initFilters();
+        initActivityLoop();
         initCounters();
         initToTop();
         initHashOffset();

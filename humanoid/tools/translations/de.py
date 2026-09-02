@@ -394,6 +394,8 @@ T.update({
 
     # ---------- activities page ----------
     "Activity log": "Aktivitätsprotokoll",
+    "Competitions, training camps, performances and milestones &mdash; the complete team journey, moving continuously from newest to first.":
+        "Wettkämpfe, Trainingslager, Auftritte und Meilensteine &mdash; die gesamte Entwicklung des Teams, fortlaufend von den neuesten Ereignissen bis zum Anfang.",
     "Every competition, training camp and outreach event since the team was formed &mdash; newest first. Filter by type or by programme line.":
         "Jeder Wettkampf, jedes Trainingslager und jede Öffentlichkeitsveranstaltung seit Gründung des Teams &mdash; neueste zuerst. Nach Art oder Programmlinie filtern.",
     "Filter activities by type": "Aktivitäten nach Art filtern",

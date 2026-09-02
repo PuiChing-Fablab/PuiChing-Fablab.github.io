@@ -399,6 +399,8 @@ T.update({
 
     # ---------- activities page ----------
     "Activity log": "活動紀錄",
+    "Competitions, training camps, performances and milestones &mdash; the complete team journey, moving continuously from newest to first.":
+        "比賽、集訓、演出與里程碑&mdash;&mdash;完整記錄隊伍一路走來的每一步，由最新活動持續循環至創隊之初。",
     "Every competition, training camp and outreach event since the team was formed &mdash; newest first. Filter by type or by programme line.":
         "隊伍成立以來的每一場比賽、集訓與推廣活動&mdash;&mdash;最新在前。可按類型或發展路線篩選。",
     "Filter activities by type": "按類型篩選活動",

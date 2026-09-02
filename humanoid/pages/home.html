@@ -135,24 +135,153 @@
 
             <div class="container page-content">
 
-                <!-- ============ STAT STRIP ============ -->
-                <section class="section" aria-label="Season highlights at a glance" data-i18n-aria-label="41e9ee7a">
-                    <div class="stat-grid">
-                        <div class="stat-card">
-                            <div class="stat-value">5<span class="stat-suffix">th</span></div>
-                            <span class="stat-label" data-i18n="646b0ab2">RoboCup 2026 &mdash; Humanoid Soccer League, Large Division</span>
+                <!-- ============ ACTIVITY REEL ============ -->
+                <section class="section activity-showcase" aria-label="Season highlights at a glance" data-i18n-aria-label="41e9ee7a">
+                    <div class="activity-showcase__head">
+                        <div>
+                            <span class="section-eyebrow" data-i18n="cce84423">Activity log</span>
+                            <h2 class="section-title" id="activity-reel-title" data-i18n="e58f7f88">Activities</h2>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-value">1<span class="stat-suffix">st</span></div>
-                            <span class="stat-label" data-i18n="bf6b1da2">RCAP Beijing Masters &mdash; Humanoid OnStage U12</span>
+                        <p class="section-intro" data-i18n="ec204968">Competitions, training camps, performances and milestones &mdash; the complete team journey, moving continuously from newest to first.</p>
+                    </div>
+
+                    <div class="activity-loop" aria-labelledby="activity-reel-title">
+                        <div class="activity-loop__status" aria-hidden="true">
+                            <span>LIVE FEED</span><i></i><span>2025—2026</span>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-value">Top <span data-count="8">8</span></div>
-                            <span class="stat-label" data-i18n="6d9f160c">World Humanoid Robot Games &mdash; Soccer 3v3 U19</span>
+                        <button class="activity-loop__toggle" type="button" aria-label="Pause automatic activity movement" title="Pause automatic activity movement">
+                            <i class="bi bi-pause-fill" aria-hidden="true"></i>
+                        </button>
+                        <div class="activity-loop__viewport">
+                            <div class="activity-loop__track">
+                                <div class="activity-loop__group" role="list">
+                                    <a class="activity-slide is-world" href="activities.html#act-whrg" role="listitem">
+                                        <div class="activity-result-badge" data-i18n="55d0b1f1">Top 8</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="092efc81">22&ndash;26 August 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="beddc069">2nd World Humanoid Robot Games &mdash; Soccer 3v3 U19</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="db98a68a">Competitions</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-gold" href="activities.html#act-rcap" role="listitem">
+                                        <div class="activity-result-badge" data-i18n="e1b8f472">1st Place</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="b5861ffb">20&ndash;23 August 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="c8c16088">RCAP Asia-Pacific Beijing Masters &mdash; Humanoid OnStage U12</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="db98a68a">Competitions</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-qualified" href="activities.html#act-booster-champion" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="4f12dc10">Qualified</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="3b1456cf">8&ndash;26 July 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="39031f3b">Booster Champion Night Season 1 &mdash; 3v3 Simulated Soccer</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="db98a68a">Competitions</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-robocup" href="activities.html#act-robocup" role="listitem">
+                                        <div class="activity-result-badge" data-i18n="2e550764">5th World</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="0fedef68">1&ndash;5 July 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="75da2e53">RoboCup 2026 &mdash; Humanoid Soccer League, Incheon</h3>
+                                            <span class="activity-slide__line"><b data-i18n="6a65bfc2">T1 Line</b><em data-i18n="db98a68a">Competitions</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-status" href="activities.html#act-marathon" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="a77366e9">Participant</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="e3b201f9">19 April 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="7a58daa3">Beijing Yizhuang Humanoid Robot Half Marathon</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="db98a68a">Competitions</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-status" href="activities.html#act-marathon-test" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="c2c0c436">Test event</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="2add6923">11&ndash;12 April 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="e19f5176">Humanoid Half Marathon &mdash; Full-Process Night Test</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="db98a68a">Competitions</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-status" href="activities.html#act-beijing-soccer" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="53469df1">Invited</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="b67cab21">7&ndash;12 April 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="aca40fd3">1st Beijing Middle School Humanoid Robot Soccer League</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="db98a68a">Competitions</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-outreach" href="activities.html#act-newyear" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="56491776">Outreach</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="c2ebaba7">February 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="04e65fd7">Chinese New Year Performance</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="56491776">Outreach</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-training" href="activities.html#act-beijing-camp" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="b6fe7f5e">Training</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="c2ebaba7">February 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="bfbdd0d2">Beijing Training Camp &mdash; Middle School Humanoid Soccer League</h3>
+                                            <span class="activity-slide__line"><b data-i18n="ab8a20dd">K1 Line</b><em data-i18n="b6fe7f5e">Training</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-training" href="activities.html#act-training" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="b6fe7f5e">Training</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="46c6ed8d">January 2026</time>
+                                            <h3 class="activity-slide__title" data-i18n="01e69caf">Regular Training Sessions</h3>
+                                            <span class="activity-slide__line"><b data-i18n="6a65bfc2">T1 Line</b><em data-i18n="b6fe7f5e">Training</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-outreach" href="activities.html#act-school" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="56491776">Outreach</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="e5c6b6e6">December 2025</time>
+                                            <h3 class="activity-slide__title" data-i18n="d6a4888a">Primary School Morning Exercise Performance</h3>
+                                            <span class="activity-slide__line"><b data-i18n="6a65bfc2">T1 Line</b><em data-i18n="56491776">Outreach</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="activity-slide is-training" href="activities.html#act-unboxing" role="listitem">
+                                        <div class="activity-result-badge is-status" data-i18n="b6fe7f5e">Training</div>
+                                        <div class="activity-slide__copy">
+                                            <time class="activity-slide__date" data-i18n="07c9a056">November 2025</time>
+                                            <h3 class="activity-slide__title" data-i18n="e1a62ca5">Booster T1 Unboxing &mdash; Day Zero</h3>
+                                            <span class="activity-slide__line"><b data-i18n="6a65bfc2">T1 Line</b><em data-i18n="b6fe7f5e">Training</em></span>
+                                        </div>
+                                        <i class="bi bi-arrow-up-right activity-slide__arrow" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="text-center mt-4">
-                        <a href="achievements.html" class="btn btn-tab-link" data-i18n="5af3cdad"><i class="bi bi-trophy me-1"></i>See the full record</a>
+
+                    <div class="activity-showcase__foot">
+                        <span aria-hidden="true">12 LOG ENTRIES // AUTONOMOUS LOOP</span>
+                        <a href="activities.html" class="btn btn-tab-link" data-i18n="98e22ac8"><i class="bi bi-calendar-event me-1"></i>Browse the full activity log</a>
                     </div>
                 </section>
 
