@@ -3,7 +3,7 @@
    ============================================================
 */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+TC:wght@400;500;600&display=swap');
 
 /* ---------- CSS Variables ---------- */
 :root {
@@ -19,8 +19,8 @@
     --text-muted:    #64748b;
     --border-color:  rgba(0, 240, 255, 0.15);
     --glow-cyan:     0 0 20px rgba(0, 240, 255, 0.3);
-    --font-tech:     'Space Grotesk', 'Inter', system-ui, sans-serif;
-    --font-body:     'Inter', 'Segoe UI', system-ui, sans-serif;
+    --font-tech:     'Spectral', 'Noto Serif TC', Georgia, 'Times New Roman', serif;
+    --font-body:     'Spectral', 'Noto Serif TC', Georgia, 'Times New Roman', serif;
 
     /* --- Programme line accents: T1 runs cyan, K1 runs amber --- */
     --accent-t1:     #00f0ff;
@@ -2773,9 +2773,9 @@ a.line-card:hover { color: inherit; }
 }
 .lang-option[aria-checked="true"]::after { content: ' ✓'; }
 
-/* Chinese sets its own face for CJK text. */
+/* Chinese keeps the same editorial serif voice as the English edition. */
 :root[data-lang="zh-Hant"] body {
-    font-family: 'Inter', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+    font-family: 'Noto Serif TC', 'Songti TC', 'PMingLiU', serif;
 }
 /* CJK has no word spaces, so justification opens ugly gaps in Latin runs. */
 :root[data-lang="zh-Hant"] p { text-align: left; }
