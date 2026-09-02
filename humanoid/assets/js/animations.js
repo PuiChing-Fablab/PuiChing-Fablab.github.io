@@ -283,10 +283,11 @@
     }
 
     // ============================================================
-    // 5. 3D TILT ON HOVER (cards)
+    // 5. Optional 3D tilt. Editorial content stays on a stable reading plane;
+    //    individual visual stages can opt in explicitly with data-tilt.
     // ============================================================
     function initTilt() {
-        var cards = document.querySelectorAll('.coach-card, .contact-coach-card, .member-card, .connect-card');
+        var cards = document.querySelectorAll('[data-tilt]');
         cards.forEach(function (card) {
             card.addEventListener('mousemove', function (e) {
                 card.classList.add('is-tilting');

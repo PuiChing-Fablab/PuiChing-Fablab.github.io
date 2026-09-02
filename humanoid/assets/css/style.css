@@ -3,7 +3,7 @@
    ============================================================
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* ---------- CSS Variables ---------- */
 :root {
@@ -19,7 +19,7 @@
     --text-muted:    #64748b;
     --border-color:  rgba(0, 240, 255, 0.15);
     --glow-cyan:     0 0 20px rgba(0, 240, 255, 0.3);
-    --font-tech:     'Orbitron', monospace;
+    --font-tech:     'Space Grotesk', 'Inter', system-ui, sans-serif;
     --font-body:     'Inter', 'Segoe UI', system-ui, sans-serif;
 
     /* --- Programme line accents: T1 runs cyan, K1 runs amber --- */
