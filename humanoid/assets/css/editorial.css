@@ -1441,6 +1441,17 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     aspect-ratio: auto;
     object-fit: contain;
 }
+.gallery-item.is-portrait {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(100%, 720px);
+}
+.gallery-item.is-portrait:first-child:not(:only-child) img,
+.gallery-item.is-portrait img {
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: contain;
+}
 .gallery:has(> .gallery-item:only-child) > .gallery-item,
 .gallery-item.is-feature {
     grid-column: 1 / -1;
