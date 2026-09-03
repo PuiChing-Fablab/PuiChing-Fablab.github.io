@@ -822,27 +822,33 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     color: var(--interface-cyan);
 }
 
-.section-intro { max-width: 760px; color: #a7b5ca; }
+.section-intro {
+    width: 100%;
+    max-width: none;
+    color: #a7b5ca;
+}
 
 /* Editorial copy follows the same measured alignment across every section. */
-.hero-sub,
-.page-content p:not(.text-center) {
+#page-main .hero-sub,
+#page-main .page-content p:not(.text-center) {
     text-align: justify;
+    text-align-last: start;
     text-justify: auto;
     text-wrap: pretty;
     hyphens: auto;
     -webkit-hyphens: auto;
 }
-.section-intro {
+#page-main .section-intro {
     text-align: justify;
+    text-align-last: start;
     text-justify: auto;
     text-wrap: pretty;
     hyphens: auto;
     -webkit-hyphens: auto;
 }
-:root[data-lang="zh-Hant"] .hero-sub,
-:root[data-lang="zh-Hant"] .page-content p:not(.text-center),
-:root[data-lang="zh-Hant"] .section-intro { text-justify: inter-character; }
+:root[data-lang="zh-Hant"] #page-main .hero-sub,
+:root[data-lang="zh-Hant"] #page-main .page-content p:not(.text-center),
+:root[data-lang="zh-Hant"] #page-main .section-intro { text-justify: inter-character; }
 .lead { line-height: 1.72; }
 
 :root[data-lang="zh-Hant"] .hero-title,
@@ -1169,6 +1175,33 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     font-size: 1.7rem;
 }
 
+.fronts-grid {
+    --bs-gutter-x: clamp(3rem, 6vw, 6.5rem);
+    --bs-gutter-y: 3rem;
+    margin-top: 0.35rem;
+}
+.fronts-grid > div { position: relative; }
+.fronts-grid .tech-card {
+    padding-top: 1.8rem;
+    border-top-color: rgba(92, 245, 255, 0.3);
+}
+.fronts-grid .tech-card p {
+    font-size: 1.03rem;
+    line-height: 1.82;
+}
+
+@media (min-width: 768px) {
+    .fronts-grid > div + div::before {
+        content: '';
+        position: absolute;
+        top: 0.35rem;
+        bottom: 0.25rem;
+        left: 0;
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, rgba(92, 245, 255, 0.24) 18%, rgba(165, 123, 255, 0.22) 82%, transparent);
+    }
+}
+
 .software-stack,
 .roster {
     padding: 1.5rem 0 0;
@@ -1466,6 +1499,15 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     margin: 0;
     padding: 0 0 0.25rem;
     border-top: 0;
+}
+
+/* Narrow margin notes read better ragged-right than with stretched word gaps. */
+#page-main .page-content .group-photo figcaption p {
+    text-align: left;
+    text-align-last: auto;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
 }
 
 /* ---------- Achievements as a ranked record ---------- */
