@@ -823,6 +823,26 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
 }
 
 .section-intro { max-width: 760px; color: #a7b5ca; }
+
+/* Editorial copy follows the same measured alignment across every section. */
+.hero-sub,
+.page-content p:not(.text-center) {
+    text-align: justify;
+    text-justify: auto;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+.section-intro {
+    text-align: justify;
+    text-justify: auto;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+:root[data-lang="zh-Hant"] .hero-sub,
+:root[data-lang="zh-Hant"] .page-content p:not(.text-center),
+:root[data-lang="zh-Hant"] .section-intro { text-justify: inter-character; }
 .lead { line-height: 1.72; }
 
 :root[data-lang="zh-Hant"] .hero-title,
@@ -963,11 +983,11 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     --rank-accent-2: #a57bff;
     position: relative;
     display: grid;
-    grid-template-columns: 118px minmax(0, 1fr);
+    grid-template-columns: minmax(190px, 0.82fr) minmax(0, 1.18fr);
     gap: 1.15rem;
     align-items: center;
     flex: none;
-    width: clamp(355px, 31vw, 430px);
+    width: clamp(480px, 39vw, 570px);
     min-height: 178px;
     padding: 1.15rem 2.5rem 1.15rem 1.05rem;
     color: inherit;
@@ -1014,11 +1034,14 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
 .activity-slide.is-training { --rank-accent: #68c9ff; --rank-accent-2: #6f7cff; }
 
 .activity-result-badge {
-    width: 118px;
-    min-height: 126px;
-    font-size: clamp(1.45rem, 2vw, 1.92rem);
+    width: 100%;
+    min-height: 132px;
+    font-size: clamp(1.9rem, 2.5vw, 2.55rem);
 }
-.activity-result-badge.is-status { font-size: clamp(1.03rem, 1.45vw, 1.35rem); letter-spacing: 0.015em; }
+.activity-result-badge.is-status {
+    font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+    letter-spacing: -0.012em;
+}
 
 .activity-slide__copy { min-width: 0; }
 .activity-slide__date {
@@ -1221,6 +1244,28 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     padding: 0.35rem 0;
 }
 .coach-email:hover { transform: none; box-shadow: none; }
+
+.coach-name,
+.contact-coach-name {
+    font-size: clamp(1.6rem, 2.15vw, 1.9rem);
+    font-weight: 700;
+}
+.member-name {
+    font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+    font-weight: 750;
+}
+.member-cn {
+    font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+    font-weight: 700;
+}
+.roster-names li {
+    font-size: 0.98rem;
+    font-weight: 650;
+}
+.roster-names li .rn-cn {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
 
 /* ---------- Activities as a mission log ---------- */
 .activity-block {
@@ -1688,13 +1733,18 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     .activity-showcase__head .section-intro { margin-top: 1.25rem; }
     .activity-loop { width: calc(100vw - 0.75rem); }
     .activity-slide {
-        grid-template-columns: 104px minmax(0, 1fr);
-        width: min(84vw, 390px);
-        min-height: 170px;
-        gap: 0.95rem;
-        padding: 0.95rem 2.15rem 0.95rem 0.85rem;
+        display: block;
+        width: min(88vw, 390px);
+        min-height: 0;
+        padding: 1rem 2.15rem 1.15rem 0.9rem;
     }
-    .activity-result-badge { width: 104px; min-height: 120px; }
+    .activity-result-badge {
+        width: min(230px, 100%);
+        min-height: 104px;
+        margin-bottom: 1.15rem;
+        font-size: 1.9rem;
+    }
+    .activity-result-badge.is-status { font-size: 1.22rem; }
     .activity-showcase__foot { align-items: flex-end; }
     .connect-card { grid-template-columns: 42px minmax(0, 1fr); }
     .gallery { grid-template-columns: 1fr; }
@@ -1732,19 +1782,17 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     .activity-loop::before,
     .activity-loop::after { width: 24px; }
     .activity-slide {
-        grid-template-columns: 91px minmax(0, 1fr);
         width: min(88vw, 345px);
-        min-height: 158px;
-        gap: 0.78rem;
-        padding: 0.8rem 1.8rem 0.8rem 0.7rem;
+        padding: 0.85rem 1.8rem 1rem 0.75rem;
     }
     .activity-result-badge {
-        width: 91px;
-        min-height: 108px;
-        padding-inline: 0.45rem;
-        font-size: 1.28rem;
+        width: min(210px, 100%);
+        min-height: 92px;
+        margin-bottom: 0.9rem;
+        padding-inline: 0.7rem;
+        font-size: 1.65rem;
     }
-    .activity-result-badge.is-status { font-size: 0.92rem; }
+    .activity-result-badge.is-status { font-size: 1.08rem; }
     .activity-slide__title { font-size: 0.98rem; }
     .activity-showcase__foot { display: grid; justify-items: start; }
     .activity-showcase__foot .btn { justify-self: stretch; }
