@@ -1778,6 +1778,16 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     overflow-wrap: normal;
     word-break: normal;
 }
+/* These descriptions sit in one-third-width columns. Full justification
+   stretches the few words on each line too far apart, so keep a natural
+   ragged edge while retaining balanced wrapping. */
+#page-main .page-content .connect-card .connect-desc {
+    text-align: left;
+    text-align-last: auto;
+    text-wrap: pretty;
+    hyphens: none;
+    -webkit-hyphens: none;
+}
 .connect-btn {
     grid-column: 1 / -1;
     grid-row: 3;
