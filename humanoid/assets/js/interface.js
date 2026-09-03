@@ -28,11 +28,7 @@
             '<span class="edge-field__side edge-field__side--left"><i></i><b></b></span>' +
             '<span class="edge-field__side edge-field__side--right"><i></i><b></b></span>' +
             '<span class="edge-field__side edge-field__side--top"><i></i><b></b></span>' +
-            '<span class="edge-field__side edge-field__side--bottom"><i></i><b></b></span>' +
-            '<span class="edge-field__corner edge-field__corner--tl"></span>' +
-            '<span class="edge-field__corner edge-field__corner--tr"></span>' +
-            '<span class="edge-field__corner edge-field__corner--bl"></span>' +
-            '<span class="edge-field__corner edge-field__corner--br"></span>';
+            '<span class="edge-field__side edge-field__side--bottom"><i></i><b></b></span>';
 
         var robotGhost = atmosphere.querySelector('.robot-ghost');
         document.body.insertBefore(atmosphere, document.body.firstChild);
