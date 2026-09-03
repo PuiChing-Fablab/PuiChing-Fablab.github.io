@@ -180,10 +180,21 @@
         var particles = [];
         var count = Math.min(100, Math.floor(window.innerWidth / 10));
         var mouse = { x: null, y: null };
+        var connectionRadius = 130;
+        var connectionRadiusSq = connectionRadius * connectionRadius;
+        var animationFrame = 0;
+        var lastDraw = 0;
+        var lastStep = performance.now();
+        var targetFrameTime = window.innerWidth < 768 ? 1000 / 30 : 1000 / 40;
 
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            targetFrameTime = window.innerWidth < 768 ? 1000 / 30 : 1000 / 40;
+            particles.forEach(function (p) {
+                p.x = Math.min(canvas.width, Math.max(0, p.x));
+                p.y = Math.min(canvas.height, Math.max(0, p.y));
+            });
         }
         resize();
         window.addEventListener('resize', resize);
@@ -211,53 +222,74 @@
         for (var i = 0; i < count; i++) particles.push(new Particle());
 
         var frame = 0;
-        function draw() {
+        function draw(now) {
+            animationFrame = requestAnimationFrame(draw);
+            if (now - lastDraw < targetFrameTime) return;
+
+            // These particles move slowly, so 30–40 visual updates per second
+            // look continuous while leaving the browser more time for scroll.
+            var stepScale = Math.min(2.4, (now - lastStep) / (1000 / 60));
+            lastDraw = now;
+            lastStep = now;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            frame++;
+            frame += stepScale;
+
+            var buckets = Object.create(null);
 
             particles.forEach(function (p, i) {
-                // Pulse opacity
                 p.opacity = p.baseOpacity + Math.sin(frame * p.pulseSpeed + p.pulseOffset) * 0.15;
 
-                p.x += p.vx;
-                p.y += p.vy;
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                p.x += p.vx * stepScale;
+                p.y += p.vy * stepScale;
+                if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx); }
+                else if (p.x > canvas.width) { p.x = canvas.width; p.vx = -Math.abs(p.vx); }
+                if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy); }
+                else if (p.y > canvas.height) { p.y = canvas.height; p.vy = -Math.abs(p.vy); }
 
                 // Mouse repulsion
                 if (mouse.x !== null) {
                     var dx = p.x - mouse.x;
                     var dy = p.y - mouse.y;
-                    var dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 150) {
+                    var distSq = dx * dx + dy * dy;
+                    if (distSq > 0 && distSq < 22500) {
+                        var dist = Math.sqrt(distSq);
                         var force = (150 - dist) / 150 * 0.8;
                         p.x += (dx / dist) * force;
                         p.y += (dy / dist) * force;
                     }
                 }
 
-                // Draw particle with glow
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 240, 255, ' + p.opacity + ')';
-                ctx.shadowBlur = 12;
-                ctx.shadowColor = 'rgba(0, 240, 255, 0.5)';
-                ctx.fill();
-                ctx.shadowBlur = 0;
+                var cellX = Math.floor(p.x / connectionRadius);
+                var cellY = Math.floor(p.y / connectionRadius);
+                var key = cellX + ',' + cellY;
+                if (!buckets[key]) buckets[key] = [];
+                buckets[key].push(i);
+            });
 
-                // Connections
-                for (var j = i + 1; j < particles.length; j++) {
-                    var p2 = particles[j];
-                    var ddx = p.x - p2.x;
-                    var ddy = p.y - p2.y;
-                    var d = Math.sqrt(ddx * ddx + ddy * ddy);
-                    if (d < 130) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = 'rgba(0, 240, 255, ' + (0.08 * (1 - d / 130)) + ')';
-                        ctx.lineWidth = 0.6;
-                        ctx.stroke();
+            // A small spatial grid finds exactly the same nearby pairs without
+            // comparing every particle with every other particle each frame.
+            particles.forEach(function (p, i) {
+                var cellX = Math.floor(p.x / connectionRadius);
+                var cellY = Math.floor(p.y / connectionRadius);
+                for (var offsetX = -1; offsetX <= 1; offsetX++) {
+                    for (var offsetY = -1; offsetY <= 1; offsetY++) {
+                        var nearby = buckets[(cellX + offsetX) + ',' + (cellY + offsetY)];
+                        if (!nearby) continue;
+                        nearby.forEach(function (j) {
+                            if (j <= i) return;
+                            var p2 = particles[j];
+                            var ddx = p.x - p2.x;
+                            var ddy = p.y - p2.y;
+                            var distanceSq = ddx * ddx + ddy * ddy;
+                            if (distanceSq >= connectionRadiusSq) return;
+                            var distance = Math.sqrt(distanceSq);
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = 'rgba(0, 240, 255, ' + (0.08 * (1 - distance / connectionRadius)) + ')';
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        });
                     }
                 }
 
@@ -277,9 +309,37 @@
                 }
             });
 
-            requestAnimationFrame(draw);
+            // Draw the glowing nodes together so the expensive canvas shadow
+            // state is configured once per frame rather than once per node.
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = 'rgba(0, 240, 255, 0.5)';
+            particles.forEach(function (p) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 240, 255, ' + p.opacity + ')';
+                ctx.fill();
+            });
+            ctx.shadowBlur = 0;
         }
-        draw();
+
+        function start() {
+            if (animationFrame) return;
+            lastDraw = 0;
+            lastStep = performance.now();
+            animationFrame = requestAnimationFrame(draw);
+        }
+
+        function stop() {
+            if (!animationFrame) return;
+            cancelAnimationFrame(animationFrame);
+            animationFrame = 0;
+        }
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) stop();
+            else start();
+        });
+        start();
     }
 
     // ============================================================
@@ -619,6 +679,23 @@
         });
     }
 
+    function initRankSweepVisibility() {
+        var cards = document.querySelectorAll('.honour-card');
+        if (!cards.length) return;
+
+        if (!('IntersectionObserver' in window)) {
+            cards.forEach(function (card) { card.classList.add('is-sweep-visible'); });
+            return;
+        }
+
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                entry.target.classList.toggle('is-sweep-visible', entry.isIntersecting);
+            });
+        }, { threshold: 0.01, rootMargin: '18% 0px' });
+        cards.forEach(function (card) { observer.observe(card); });
+    }
+
     // ============================================================
     // 11. HERO VISION HUD — machine-vision overlay on the banner photo
     // ============================================================
@@ -746,6 +823,7 @@
         initPageLoader();
         autoTag();
         initScrollAnimations();
+        initRankSweepVisibility();
         initParticles();
         initTilt();
         initParallax();

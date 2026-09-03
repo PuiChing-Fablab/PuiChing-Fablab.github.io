@@ -62,8 +62,8 @@ body.page-exit { transform: none !important; }
 
 #particle-canvas {
     z-index: 2;
-    opacity: 0.48;
-    mix-blend-mode: screen;
+    opacity: 0.52;
+    contain: strict;
 }
 
 /* ---------- Ambient robotic field ---------- */
@@ -94,7 +94,7 @@ body.page-exit { transform: none !important; }
     transform: perspective(680px) rotateX(61deg);
     transform-origin: center bottom;
     mask-image: linear-gradient(to top, #000 12%, transparent 78%);
-    animation: interface-grid-drift 22s linear infinite;
+    animation: interface-grid-drift 22s steps(74, end) infinite;
 }
 
 .robot-atmosphere__aurora {
@@ -102,8 +102,6 @@ body.page-exit { transform: none !important; }
     height: 58vw;
     border-radius: 50%;
     opacity: 0.3;
-    filter: blur(80px);
-    mix-blend-mode: screen;
     will-change: transform;
 }
 
@@ -148,7 +146,7 @@ body.page-exit { transform: none !important; }
     transform: translate(-50%, -50%) translate(var(--ghost-start-x), var(--ghost-start-y)) rotate(var(--ghost-tilt)) scaleX(var(--ghost-direction));
     transform-origin: center bottom;
     mix-blend-mode: screen;
-    will-change: opacity, transform, filter;
+    will-change: opacity, transform;
 }
 .robot-ghost.is-k1 {
     --ghost-image: url('../img/brand/Booster-K1.png');
@@ -167,6 +165,7 @@ body.page-exit { transform: none !important; }
         radial-gradient(ellipse, rgba(255, 255, 255, 0.16), rgba(50, 236, 255, 0.13) 18%, rgba(131, 71, 255, 0.1) 39%, rgba(255, 52, 194, 0.055) 57%, transparent 73%);
     filter: blur(18px) saturate(1.6);
     animation: robot-ghost-halo 0.34s steps(2, end) infinite;
+    animation-play-state: paused;
 }
 .robot-ghost__core {
     background: var(--ghost-image) center / contain no-repeat;
@@ -187,12 +186,14 @@ body.page-exit { transform: none !important; }
     color: #2cf5ff;
     transform: translateX(-5px);
     animation: robot-ghost-split-cyan 0.24s steps(2, end) infinite;
+    animation-play-state: paused;
 }
 .robot-ghost__spectre--magenta {
     color: #ff46cf;
     opacity: 0.46;
     transform: translateX(6px);
     animation: robot-ghost-split-magenta 0.31s steps(2, end) infinite reverse;
+    animation-play-state: paused;
 }
 .robot-ghost__scan {
     opacity: 0.68;
@@ -201,7 +202,11 @@ body.page-exit { transform: none !important; }
         linear-gradient(to bottom, transparent 0 37%, #fff 45%, #52f6ff 49%, rgba(171, 81, 255, 0.82) 53%, transparent 62%);
     background-size: 100% 100%, 100% 220%;
     animation: robot-ghost-scan 0.82s linear infinite;
+    animation-play-state: paused;
 }
+.robot-ghost.is-active .robot-ghost__halo,
+.robot-ghost.is-active .robot-ghost__spectre,
+.robot-ghost.is-active .robot-ghost__scan { animation-play-state: running; }
 .robot-ghost::before,
 .robot-ghost::after {
     content: '';
@@ -272,7 +277,6 @@ body.page-exit { transform: none !important; }
     height: 26vh;
     opacity: 0;
     background: linear-gradient(to bottom, transparent 0%, rgba(92, 245, 255, 0.025) 30%, rgba(92, 245, 255, 0.09) 62%, rgba(165, 123, 255, 0.035) 78%, transparent 100%);
-    filter: blur(10px) drop-shadow(0 0 24px rgba(92, 245, 255, 0.13));
     animation: interface-scan 11s linear infinite;
 }
 
@@ -313,13 +317,11 @@ body.page-exit { transform: none !important; }
     overflow: hidden;
     pointer-events: none;
     opacity: 0.58;
-    filter: saturate(1.2);
-    transition: opacity 0.34s ease, filter 0.34s ease;
+    transition: opacity 0.34s ease;
 }
 
 .edge-field.is-charging {
     opacity: 1;
-    filter: saturate(calc(1.45 + var(--scroll-energy) * 0.75)) brightness(calc(1 + var(--scroll-energy) * 0.22));
 }
 
 .edge-field::before {
@@ -336,10 +338,9 @@ body.page-exit { transform: none !important; }
 .edge-field.is-charging::before {
     border-color: rgba(44, 241, 255, 0.72);
     box-shadow:
-        inset 0 0 20px rgba(0, 239, 255, calc(0.16 + var(--scroll-energy) * 0.18)),
-        inset 0 0 56px rgba(112, 70, 255, calc(0.12 + var(--scroll-energy) * 0.15)),
-        inset 0 0 104px rgba(255, 42, 192, calc(0.06 + var(--scroll-energy) * 0.1));
-    animation: edge-frame-charge 0.72s ease-in-out infinite alternate;
+        inset 0 0 20px rgba(0, 239, 255, 0.29),
+        inset 0 0 56px rgba(112, 70, 255, 0.22),
+        inset 0 0 104px rgba(255, 42, 192, 0.12);
 }
 
 .edge-field::after {
@@ -353,19 +354,17 @@ body.page-exit { transform: none !important; }
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0.24;
-    transition: opacity 0.3s ease, filter 0.3s ease;
+    transition: opacity 0.3s ease;
     animation: edge-frame-breathe 4.6s ease-in-out infinite;
 }
 .edge-field.is-charging::after {
     opacity: calc(0.55 + var(--scroll-energy) * 0.36);
-    filter: drop-shadow(0 0 7px rgba(44, 241, 255, 0.56)) drop-shadow(0 0 15px rgba(167, 66, 255, 0.38));
 }
 
 .edge-field__side {
     position: absolute;
     display: block;
     overflow: hidden;
-    mix-blend-mode: screen;
     filter: saturate(1.32);
     transition: filter 0.28s ease, opacity 0.28s ease;
 }
@@ -624,10 +623,6 @@ body.page-exit { transform: none !important; }
 @keyframes edge-frame-breathe {
     0%, 100% { opacity: 0.16; }
     50% { opacity: 0.31; }
-}
-@keyframes edge-frame-charge {
-    from { filter: hue-rotate(-8deg); }
-    to { filter: hue-rotate(20deg); }
 }
 @keyframes edge-charge-head {
     from { opacity: 0.62; transform: scale(0.76); }
@@ -1647,9 +1642,12 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     opacity: 0.7;
     background: linear-gradient(105deg, transparent 38%, color-mix(in srgb, var(--rank-accent) 62%, transparent) 48%, rgba(255, 255, 255, 0.78) 50%, color-mix(in srgb, var(--rank-accent-2) 55%, transparent) 52%, transparent 62%);
     transform: translateX(-34%) skewX(-12deg);
-    mix-blend-mode: screen;
     animation: rank-energy-sweep 4.8s cubic-bezier(0.55, 0.02, 0.24, 1) infinite;
+    animation-play-state: paused;
 }
+
+.honour-card.is-sweep-visible .honour-rank::before,
+.activity-slide.is-sweep-visible .activity-result-badge::before { animation-play-state: running; }
 
 .honour-rank::after,
 .activity-result-badge::after {

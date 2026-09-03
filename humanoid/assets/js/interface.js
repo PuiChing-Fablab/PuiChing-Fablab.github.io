@@ -91,6 +91,7 @@
     function initScrollTelemetry() {
         var root = document.documentElement;
         var edgeField = document.querySelector('.edge-field');
+        var telemetryTarget = edgeField || root;
         var ticking = false;
         var lastY = window.scrollY;
         var chargeTimer = 0;
@@ -101,18 +102,18 @@
             var delta = window.scrollY - lastY;
             var distance = Math.abs(delta);
             var energy = Math.min(1, 0.16 + distance / 78);
-            root.style.setProperty('--page-progress', progress.toFixed(4));
+            telemetryTarget.style.setProperty('--page-progress', progress.toFixed(4));
 
             if (edgeField && distance > 1) {
-                root.style.setProperty('--scroll-energy', energy.toFixed(3));
-                root.style.setProperty('--charge-speed', (0.82 - energy * 0.46).toFixed(3) + 's');
+                telemetryTarget.style.setProperty('--scroll-energy', energy.toFixed(3));
+                telemetryTarget.style.setProperty('--charge-speed', (0.82 - energy * 0.46).toFixed(3) + 's');
                 edgeField.classList.add('is-charging');
                 edgeField.classList.toggle('is-reversing', delta < 0);
                 window.clearTimeout(chargeTimer);
                 chargeTimer = window.setTimeout(function () {
                     edgeField.classList.remove('is-charging');
-                    root.style.setProperty('--scroll-energy', '0');
-                    root.style.setProperty('--charge-speed', '0.82s');
+                    telemetryTarget.style.setProperty('--scroll-energy', '0');
+                    telemetryTarget.style.setProperty('--charge-speed', '0.82s');
                 }, 520);
             }
 

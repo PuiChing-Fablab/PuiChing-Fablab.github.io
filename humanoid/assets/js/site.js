@@ -161,6 +161,51 @@
             track.appendChild(clone);
         }
 
+        // Only the result plates near the horizontal viewport need their
+        // chromatic sweep running. Pausing the off-screen copies avoids two
+        // dozen simultaneous paint animations while preserving the visible
+        // reel exactly as designed.
+        var sweepSlides = Array.prototype.slice.call(track.querySelectorAll('.activity-slide'));
+        var sweepTimer = 0;
+
+        if (!reduceMotion) {
+
+            function refreshVisibleSweeps() {
+                sweepTimer = 0;
+                var viewportRect = viewport.getBoundingClientRect();
+                if (viewportRect.bottom <= 0 || viewportRect.top >= window.innerHeight) {
+                    sweepSlides.forEach(function (slide) { slide.classList.remove('is-sweep-visible'); });
+                    sweepTimer = window.setTimeout(refreshVisibleSweeps, 600);
+                    return;
+                }
+                var preload = Math.min(240, viewportRect.width * 0.18);
+                var visibleStates = sweepSlides.map(function (slide) {
+                    var rect = slide.getBoundingClientRect();
+                    return rect.right > viewportRect.left - preload && rect.left < viewportRect.right + preload;
+                });
+                sweepSlides.forEach(function (slide, index) {
+                    slide.classList.toggle('is-sweep-visible', visibleStates[index]);
+                });
+                sweepTimer = window.setTimeout(refreshVisibleSweeps, 400);
+            }
+
+            function startVisibleSweeps() {
+                if (!sweepTimer) refreshVisibleSweeps();
+            }
+
+            function stopVisibleSweeps() {
+                window.clearTimeout(sweepTimer);
+                sweepTimer = 0;
+                sweepSlides.forEach(function (slide) { slide.classList.remove('is-sweep-visible'); });
+            }
+
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) stopVisibleSweeps();
+                else startVisibleSweeps();
+            });
+            startVisibleSweeps();
+        }
+
         var paused = reduceMotion;
 
         function setPaused(value) {
