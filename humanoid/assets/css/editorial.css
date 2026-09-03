@@ -1432,6 +1432,7 @@ h2.section-title { font-size: clamp(2rem, 3.4vw, 2.95rem); }
     transition: border-color 0.25s ease, filter 0.35s ease, transform 0.35s ease;
 }
 .gallery-item:first-child:not(:only-child) img { aspect-ratio: 16 / 9; }
+.gallery-item.is-team-hero img { object-position: center 85%; }
 .gallery-item.is-wide {
     grid-column: 1 / -1;
     aspect-ratio: auto !important;
