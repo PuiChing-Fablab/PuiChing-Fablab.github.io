@@ -11,6 +11,7 @@ assets/i18n/de.js       German dictionary                   (generated)
 assets/i18n/it.js       Italian dictionary                  (generated)
 assets/i18n/zh-Hant.js  Traditional Chinese dictionary      (generated)
 tools/translations/     the translations you edit           (source of truth)
+tools/ui_strings.json   English labels used by live controls and the game
 ```
 
 Keys are a hash of the English text, so a string is translated once and reused
@@ -24,8 +25,8 @@ everywhere it appears — "Home" in the nav is one entry, not six.
    python3 tools/i18n_extract.py
    ```
 
-   Existing `data-i18n` markers are left alone; changed or new text gets a new
-   hash. Nothing breaks in the meantime — a string with no translation simply
+   Existing `data-i18n` markers are refreshed when their English text changes.
+   New text gets a new hash. A string with no translation simply
    shows in English.
 
 2. Rebuild the dictionaries and see what is missing:
@@ -38,6 +39,12 @@ everywhere it appears — "Home" in the nav is one entry, not six.
 
 3. Add the missing entries to `tools/translations/<lang>.py` — each is a plain
    `"English": "translation"` pair — and run step 2 again.
+
+For runtime labels, add the English string to `tools/ui_strings.json`, then
+use `window.PCMSI18n.text(english, values)` in JavaScript. Placeholders such as
+`{score}` are substituted from `values`; refresh live labels on `i18n:applied`.
+Mark names and live display containers with `data-i18n-skip` so extraction
+does not translate or replace them.
 
 ## Rules for translations
 

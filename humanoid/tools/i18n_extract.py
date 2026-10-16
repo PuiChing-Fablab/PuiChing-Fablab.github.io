@@ -32,6 +32,7 @@ ATTRS = {
     "img": ["alt"],
     "a": ["title", "aria-label"],
     "button": ["aria-label"],
+    "input": ["aria-label", "placeholder"],
     "div": ["aria-label"],
     "nav": ["aria-label"],
     "section": ["aria-label"],
@@ -175,6 +176,8 @@ def process(path, strings):
     def add_attr(idx, name, value):
         kind, tag, attrs, raw = out[idx]
         if f" {name}=" in raw:
+            raw = re.sub(r' ' + re.escape(name) + r'="[^"]*"', f' {name}="{value}"', raw)
+            out[idx] = (kind, tag, attrs, raw)
             return
         insert = f' {name}="{value}"'
         closing = "/>" if raw.rstrip().endswith("/>") else ">"
@@ -188,6 +191,9 @@ def process(path, strings):
             kind, tag, attrs, raw = toks[k]
             if kind in ("start", "startend"):
                 a = attr_dict(attrs)
+                if "data-i18n-skip" in a:
+                    k = spans.get(k, k) + 1
+                    continue
                 # translatable attributes on any element
                 for an in ATTRS.get(tag, []):
                     val = re.sub(r"\s+", " ", a.get(an, "")).strip()
@@ -257,7 +263,9 @@ def process(path, strings):
 
 
 def main():
-    strings = {}
+    # Runtime labels use the same translation sources as page content.
+    ui = json.load(open(os.path.join(ROOT, "tools", "ui_strings.json"), encoding="utf-8"))
+    strings = {key_of(text): text for text in ui}
     total = 0
     for page in sorted(glob.glob(os.path.join(ROOT, "pages", "*.html"))):
         n = process(page, strings)

@@ -1,767 +1,20 @@
-// ============================================================
-// PCMS-HRG — Advanced Dynamic Animations
-// ============================================================
-
+/* Chromatic titles, hero slideshow, circuit pulses and scroll control. */
 (function () {
     'use strict';
 
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    var motionListeners = [];
 
-    // ============================================================
-    // 1. PAGE LOAD OVERLAY + ENERGY BAR
-    // ============================================================
-    function initPageLoader() {
-        var overlay = document.createElement('div');
-        overlay.className = 'page-loader';
-        overlay.innerHTML = '<div class="loader-bar"></div><div class="loader-text">INITIALIZING</div>';
-        document.body.appendChild(overlay);
-
-        window.addEventListener('load', function () {
-            setTimeout(function () {
-                overlay.classList.add('loaded');
-                setTimeout(function () { overlay.remove(); }, 600);
-            }, 400);
-        });
+    function motionEnabled() { return !preference.matches; }
+    function syncMotion() {
+        document.documentElement.classList.toggle('effects-paused', !motionEnabled());
+        motionListeners.forEach(function (listener) { listener(); });
     }
+    preference.addEventListener('change', syncMotion);
+    document.addEventListener('visibilitychange', syncMotion);
+    window.addEventListener('pageshow', syncMotion);
 
-    // ============================================================
-    // 2. TYPEWRITER EFFECT — INFINITE LOOP WITH BACKSPACE
-    // ============================================================
-    function initTypewriter() {
-        // One-shot typewriter for the page heading only. Section sub-headings stay
-        // static: on long pages, a heading that never crosses the observer
-        // threshold would otherwise be left permanently blank.
-        // One-shot typewriter for the page heading. It renders from the text
-        // i18n stashed on the element, and re-renders on a language change —
-        // otherwise switching mid-type leaves the old and new text concatenated.
-        document.querySelectorAll('h1.section-title').forEach(function (el) {
-            var iv = null;
-            var started = false;
-
-            function intended() {
-                return el.__i18nText != null ? el.__i18nText : el.textContent;
-            }
-
-            function render(text) {
-                if (iv) { clearInterval(iv); iv = null; }
-                var i = 0;
-                el.textContent = '';
-                el.classList.remove('typewriter-done');
-                el.classList.add('typewriter-active');
-                iv = setInterval(function () {
-                    if (i < text.length) { el.textContent += text.charAt(i); i++; }
-                    else {
-                        clearInterval(iv); iv = null;
-                        el.classList.remove('typewriter-active');
-                        el.classList.add('typewriter-done');
-                    }
-                }, 50);
-            }
-
-            function start() {
-                if (started) return;
-                started = true;
-                render(intended());
-            }
-
-            document.addEventListener('i18n:applied', function () {
-                if (started) render(intended());
-            });
-
-            if (!('IntersectionObserver' in window)) { start(); return; }
-            var obs = new IntersectionObserver(function (entries) {
-                if (entries[0].isIntersecting) { obs.disconnect(); start(); }
-            }, { threshold: 0.3 });
-            obs.observe(el);
-            // Safety net: never leave the heading unwritten.
-            setTimeout(function () { obs.disconnect(); start(); }, 4000);
-        });
-
-        // Infinite cycling typewriter for home intro title
-        document.querySelectorAll('.home-intro-title').forEach(function (el) {
-            // Alternate phrases live in the markup (data-phrases, pipe
-            // separated) so that they are translatable like everything else.
-            function phraseList() {
-                var base = el.__i18nText != null ? el.__i18nText : el.getAttribute('data-base') || el.textContent;
-                var extra = (el.getAttribute('data-phrases') || '').split('|')
-                                .map(function (t) { return t.trim(); })
-                                .filter(Boolean);
-                return [base].concat(extra);
-            }
-            if (!el.getAttribute('data-base')) el.setAttribute('data-base', el.textContent.trim());
-            var phrases = phraseList();
-            el.textContent = '';
-            el.style.visibility = 'visible';
-            el.classList.add('typewriter-active');
-
-            var phraseIdx = 0;
-            var charIdx = 0;
-            var isDeleting = false;
-            var typeSpeed = 55;      // ms per char typing
-            var deleteSpeed = 35;    // ms per char deleting (faster)
-            var pauseAfterType = 1800; // pause after full text
-            var pauseAfterDelete = 500; // pause after deletion
-
-            function tick() {
-                var current = phrases[phraseIdx];
-                if (!isDeleting) {
-                    // Typing
-                    el.textContent = current.substring(0, charIdx + 1);
-                    charIdx++;
-                    if (charIdx >= current.length) {
-                        // Finished typing — pause then start deleting
-                        setTimeout(function () {
-                            isDeleting = true;
-                            tick();
-                        }, pauseAfterType);
-                        return;
-                    }
-                    setTimeout(tick, typeSpeed);
-                } else {
-                    // Deleting
-                    el.textContent = current.substring(0, charIdx - 1);
-                    charIdx--;
-                    if (charIdx <= 0) {
-                        // Finished deleting — move to next phrase
-                        isDeleting = false;
-                        phraseIdx = (phraseIdx + 1) % phrases.length;
-                        charIdx = 0;
-                        setTimeout(tick, pauseAfterDelete);
-                        return;
-                    }
-                    setTimeout(tick, deleteSpeed);
-                }
-            }
-
-            document.addEventListener('i18n:applied', function () {
-                phrases = phraseList();
-                phraseIdx = 0;
-                charIdx = 0;
-                isDeleting = false;
-            });
-
-            var obs = new IntersectionObserver(function (entries) {
-                if (entries[0].isIntersecting) {
-                    tick();
-                    obs.disconnect();
-                }
-            }, { threshold: 0.3 });
-            obs.observe(el);
-        });
-    }
-
-    // ============================================================
-    // 3. SCROLL-TRIGGERED ANIMATIONS (IntersectionObserver)
-    // ============================================================
-    function initScrollAnimations() {
-        var elements = document.querySelectorAll(
-            '.animate-on-scroll, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-flip'
-        );
-        if (!elements.length) return;
-
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-visible');
-                }
-            });
-        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-
-        elements.forEach(function (el) { observer.observe(el); });
-    }
-
-    // ============================================================
-    // 4. PARTICLE / STARDUST BACKGROUND
-    // ============================================================
-    function initParticles() {
-        var canvas = document.getElementById('particle-canvas');
-        if (!canvas) return;
-        var ctx = canvas.getContext('2d');
-        var particles = [];
-        var count = Math.min(100, Math.floor(window.innerWidth / 10));
-        var mouse = { x: null, y: null };
-        var connectionRadius = 130;
-        var connectionRadiusSq = connectionRadius * connectionRadius;
-        var animationFrame = 0;
-        var lastDraw = 0;
-        var lastStep = performance.now();
-        var targetFrameTime = window.innerWidth < 768 ? 1000 / 30 : 1000 / 40;
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            targetFrameTime = window.innerWidth < 768 ? 1000 / 30 : 1000 / 40;
-            particles.forEach(function (p) {
-                p.x = Math.min(canvas.width, Math.max(0, p.x));
-                p.y = Math.min(canvas.height, Math.max(0, p.y));
-            });
-        }
-        resize();
-        window.addEventListener('resize', resize);
-        window.addEventListener('mousemove', function (e) {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-        window.addEventListener('mouseout', function () {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        function Particle() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.8;
-            this.vy = (Math.random() - 0.5) * 0.8;
-            this.radius = Math.random() * 2.5 + 0.8;
-            this.baseOpacity = Math.random() * 0.5 + 0.15;
-            this.opacity = this.baseOpacity;
-            this.pulseSpeed = Math.random() * 0.02 + 0.005;
-            this.pulseOffset = Math.random() * Math.PI * 2;
-        }
-
-        for (var i = 0; i < count; i++) particles.push(new Particle());
-
-        var frame = 0;
-        function draw(now) {
-            animationFrame = requestAnimationFrame(draw);
-            if (now - lastDraw < targetFrameTime) return;
-
-            // These particles move slowly, so 30–40 visual updates per second
-            // look continuous while leaving the browser more time for scroll.
-            var stepScale = Math.min(2.4, (now - lastStep) / (1000 / 60));
-            lastDraw = now;
-            lastStep = now;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            frame += stepScale;
-
-            var buckets = Object.create(null);
-
-            particles.forEach(function (p, i) {
-                p.opacity = p.baseOpacity + Math.sin(frame * p.pulseSpeed + p.pulseOffset) * 0.15;
-
-                p.x += p.vx * stepScale;
-                p.y += p.vy * stepScale;
-                if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx); }
-                else if (p.x > canvas.width) { p.x = canvas.width; p.vx = -Math.abs(p.vx); }
-                if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy); }
-                else if (p.y > canvas.height) { p.y = canvas.height; p.vy = -Math.abs(p.vy); }
-
-                // Mouse repulsion
-                if (mouse.x !== null) {
-                    var dx = p.x - mouse.x;
-                    var dy = p.y - mouse.y;
-                    var distSq = dx * dx + dy * dy;
-                    if (distSq > 0 && distSq < 22500) {
-                        var dist = Math.sqrt(distSq);
-                        var force = (150 - dist) / 150 * 0.8;
-                        p.x += (dx / dist) * force;
-                        p.y += (dy / dist) * force;
-                    }
-                }
-
-                var cellX = Math.floor(p.x / connectionRadius);
-                var cellY = Math.floor(p.y / connectionRadius);
-                var key = cellX + ',' + cellY;
-                if (!buckets[key]) buckets[key] = [];
-                buckets[key].push(i);
-            });
-
-            // A small spatial grid finds exactly the same nearby pairs without
-            // comparing every particle with every other particle each frame.
-            particles.forEach(function (p, i) {
-                var cellX = Math.floor(p.x / connectionRadius);
-                var cellY = Math.floor(p.y / connectionRadius);
-                for (var offsetX = -1; offsetX <= 1; offsetX++) {
-                    for (var offsetY = -1; offsetY <= 1; offsetY++) {
-                        var nearby = buckets[(cellX + offsetX) + ',' + (cellY + offsetY)];
-                        if (!nearby) continue;
-                        nearby.forEach(function (j) {
-                            if (j <= i) return;
-                            var p2 = particles[j];
-                            var ddx = p.x - p2.x;
-                            var ddy = p.y - p2.y;
-                            var distanceSq = ddx * ddx + ddy * ddy;
-                            if (distanceSq >= connectionRadiusSq) return;
-                            var distance = Math.sqrt(distanceSq);
-                            ctx.beginPath();
-                            ctx.moveTo(p.x, p.y);
-                            ctx.lineTo(p2.x, p2.y);
-                            ctx.strokeStyle = 'rgba(0, 240, 255, ' + (0.08 * (1 - distance / connectionRadius)) + ')';
-                            ctx.lineWidth = 0.6;
-                            ctx.stroke();
-                        });
-                    }
-                }
-
-                // Mouse connections
-                if (mouse.x !== null) {
-                    var mdx = p.x - mouse.x;
-                    var mdy = p.y - mouse.y;
-                    var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-                    if (mdist < 180) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(mouse.x, mouse.y);
-                        ctx.strokeStyle = 'rgba(0, 240, 255, ' + (0.2 * (1 - mdist / 180)) + ')';
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-                    }
-                }
-            });
-
-            // Draw the glowing nodes together so the expensive canvas shadow
-            // state is configured once per frame rather than once per node.
-            ctx.shadowBlur = 12;
-            ctx.shadowColor = 'rgba(0, 240, 255, 0.5)';
-            particles.forEach(function (p) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 240, 255, ' + p.opacity + ')';
-                ctx.fill();
-            });
-            ctx.shadowBlur = 0;
-        }
-
-        function start() {
-            if (animationFrame) return;
-            lastDraw = 0;
-            lastStep = performance.now();
-            animationFrame = requestAnimationFrame(draw);
-        }
-
-        function stop() {
-            if (!animationFrame) return;
-            cancelAnimationFrame(animationFrame);
-            animationFrame = 0;
-        }
-
-        document.addEventListener('visibilitychange', function () {
-            if (document.hidden) stop();
-            else start();
-        });
-        start();
-    }
-
-    // ============================================================
-    // 5. Optional 3D tilt. Editorial content stays on a stable reading plane;
-    //    individual visual stages can opt in explicitly with data-tilt.
-    // ============================================================
-    function initTilt() {
-        var cards = document.querySelectorAll('[data-tilt]');
-        cards.forEach(function (card) {
-            card.addEventListener('mousemove', function (e) {
-                card.classList.add('is-tilting');
-                var rect = card.getBoundingClientRect();
-                var x = e.clientX - rect.left;
-                var y = e.clientY - rect.top;
-                var centerX = rect.width / 2;
-                var centerY = rect.height / 2;
-                var rotateX = (y - centerY) / centerY * -8;
-                var rotateY = (x - centerX) / centerX * 8;
-                card.style.transform = 'perspective(600px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
-            });
-            card.addEventListener('mouseleave', function () {
-                card.classList.remove('is-tilting');
-                card.style.transform = '';
-            });
-        });
-    }
-
-    // ============================================================
-    // 6. PARALLAX SCROLLING
-    // ============================================================
-    function initParallax() {
-        var hero = document.querySelector('.hero-bg');
-        if (!hero) return;
-        // The image fills its container, so the drift has to stay inside the
-        // headroom that scale() creates — otherwise an edge is exposed.
-        var MAX = 26;
-        var ticking = false;
-        function update() {
-            var offset = Math.min(window.pageYOffset * 0.18, MAX);
-            hero.style.transform = 'translateY(' + offset + 'px) scale(1.12)';
-            ticking = false;
-        }
-        window.addEventListener('scroll', function () {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(update);
-        }, { passive: true });
-        update();
-    }
-
-    // ============================================================
-    // 7. PAGE TRANSITION (fade out on link click)
-    // ============================================================
-    function initPageTransitions() {
-        document.body.classList.add('page-enter');
-        setTimeout(function () {
-            document.body.classList.add('page-enter-active');
-        }, 10);
-
-        document.querySelectorAll('a[href]').forEach(function (link) {
-            if (link.hostname === window.location.hostname && !link.getAttribute('target')) {
-                link.addEventListener('click', function (e) {
-                    var href = link.getAttribute('href');
-                    if (href && href !== '#' && !href.startsWith('#')) {
-                        e.preventDefault();
-                        document.body.classList.add('page-exit');
-                        setTimeout(function () {
-                            window.location.href = href;
-                        }, 350);
-                    }
-                });
-            }
-        });
-    }
-
-    // ============================================================
-    // 8. NEON RIPPLE ON SOCIAL BUTTONS
-    // ============================================================
-    function initRipple() {
-        document.querySelectorAll('.social-link-named, .btn-tab-link, .connect-btn').forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
-                var ripple = document.createElement('span');
-                ripple.className = 'neon-ripple';
-                var rect = btn.getBoundingClientRect();
-                ripple.style.left = (e.clientX - rect.left) + 'px';
-                ripple.style.top = (e.clientY - rect.top) + 'px';
-                btn.style.position = 'relative';
-                btn.style.overflow = 'hidden';
-                btn.appendChild(ripple);
-                setTimeout(function () { ripple.remove(); }, 600);
-            });
-        });
-    }
-
-    // ============================================================
-    // 9. TEAM PREVIEW — DRIFTING CLUSTER OVER A METEOR SHOWER
-    // ============================================================
-    function initTeamPreviewDrift() {
-        document.querySelectorAll('.team-preview-grid').forEach(function (grid) {
-            var items = Array.prototype.slice.call(grid.querySelectorAll('.team-preview-item'));
-            if (items.length < 2) return;
-
-            var drifters = [];
-            var frame = null;
-            var lastTime = 0;
-            var resizeTimer = null;
-            var isPaused = false;
-            var isVisible = true;
-            var width = 0;
-            var height = 0;
-
-            // The shower is decoration only: aria-hidden spans, appended after
-            // the links, so they never reach the tab order or the a11y tree.
-            function buildMeteors(count) {
-                for (var i = 0; i < count; i++) {
-                    var meteor = document.createElement('span');
-                    meteor.className = 'team-preview-meteor';
-                    meteor.setAttribute('aria-hidden', 'true');
-                    meteor.style.setProperty('--meteor-top', (Math.random() * 96).toFixed(1) + '%');
-                    meteor.style.setProperty('--meteor-left', (-14 + Math.random() * 46).toFixed(1) + '%');
-                    meteor.style.setProperty('--meteor-len', (70 + Math.random() * 95).toFixed(0) + 'px');
-                    meteor.style.setProperty('--meteor-dur', (2.6 + Math.random() * 3.6).toFixed(2) + 's');
-                    meteor.style.setProperty('--meteor-delay', (Math.random() * 9).toFixed(2));
-                    grid.appendChild(meteor);
-                }
-            }
-
-            function build() {
-                drifters = items.map(function (item) {
-                    var angle = Math.random() * Math.PI * 2;
-                    var speed = 10 + Math.random() * 16;
-                    return {
-                        el: item,
-                        // Size spread gives the cluster depth. The robots sit at
-                        // the top of the range so the full-body cut-outs stay
-                        // legible, but not so large that they dominate.
-                        scale: (item.classList.contains('is-robot') ? 0.94 : 0.76) + Math.random() * 0.3,
-                        size: 0,
-                        r: 0,
-                        x: 0,
-                        y: 0,
-                        vx: Math.cos(angle) * speed,
-                        vy: Math.sin(angle) * speed
-                    };
-                });
-            }
-
-            function write(d) {
-                d.el.style.setProperty('--drift-x', (d.x - d.r) + 'px');
-                d.el.style.setProperty('--drift-y', (d.y - d.r) + 'px');
-            }
-
-            function measure() {
-                width = grid.clientWidth;
-                if (width <= 0) return false;
-                height = Math.max(230, Math.min(330, Math.round(width * 0.66)));
-                grid.style.height = height + 'px';
-                return true;
-            }
-
-            // Diameters come from a target fill of the panel, not a fixed pixel
-            // value: below ~30% coverage the items have room to drift, above it
-            // they spend the whole time colliding.
-            function place(keepPositions) {
-                var base = Math.sqrt((width * height * 0.3 / drifters.length) / Math.PI) * 2;
-                base = Math.max(38, Math.min(84, base));
-
-                drifters.forEach(function (d) {
-                    d.size = Math.round(base * d.scale);
-                    d.r = d.size / 2;
-                    d.el.style.setProperty('--drift-size', d.size + 'px');
-
-                    if (keepPositions) {
-                        d.x = Math.min(Math.max(d.x, d.r), width - d.r);
-                        d.y = Math.min(Math.max(d.y, d.r), height - d.r);
-                    } else {
-                        d.x = d.r + Math.random() * Math.max(1, width - d.size);
-                        d.y = d.r + Math.random() * Math.max(1, height - d.size);
-                    }
-                    write(d);
-                });
-            }
-
-            // Equal-mass elastic bounce, resolved exactly. Fifteen items is 105
-            // pairs a frame — cheap enough to skip a spatial index, and it keeps
-            // the portraits from stacking into an unreadable pile.
-            function collide() {
-                for (var i = 0; i < drifters.length; i++) {
-                    for (var j = i + 1; j < drifters.length; j++) {
-                        var a = drifters[i];
-                        var b = drifters[j];
-                        var dx = b.x - a.x;
-                        var dy = b.y - a.y;
-                        var min = a.r + b.r;
-                        var d2 = dx * dx + dy * dy;
-                        if (d2 >= min * min || d2 === 0) continue;
-
-                        var d = Math.sqrt(d2);
-                        var nx = dx / d;
-                        var ny = dy / d;
-                        var push = (min - d) / 2;
-                        a.x -= nx * push;
-                        a.y -= ny * push;
-                        b.x += nx * push;
-                        b.y += ny * push;
-
-                        var approach = (b.vx * nx + b.vy * ny) - (a.vx * nx + a.vy * ny);
-                        if (approach >= 0) continue;
-                        a.vx += nx * approach;
-                        a.vy += ny * approach;
-                        b.vx -= nx * approach;
-                        b.vy -= ny * approach;
-                    }
-                }
-            }
-
-            function step(now) {
-                // A backgrounded tab resumes with a huge delta; clamping keeps
-                // the cluster from teleporting across the panel on return.
-                var dt = Math.min(0.05, (now - lastTime) / 1000);
-                lastTime = now;
-
-                drifters.forEach(function (d) {
-                    d.x += d.vx * dt;
-                    d.y += d.vy * dt;
-
-                    if (d.x < d.r) { d.x = d.r; d.vx = Math.abs(d.vx); }
-                    else if (d.x > width - d.r) { d.x = width - d.r; d.vx = -Math.abs(d.vx); }
-                    if (d.y < d.r) { d.y = d.r; d.vy = Math.abs(d.vy); }
-                    else if (d.y > height - d.r) { d.y = height - d.r; d.vy = -Math.abs(d.vy); }
-                });
-
-                collide();
-                drifters.forEach(write);
-                frame = requestAnimationFrame(step);
-            }
-
-            function start() {
-                if (frame || isPaused || !isVisible) return;
-                lastTime = performance.now();
-                frame = requestAnimationFrame(step);
-            }
-
-            function stop() {
-                if (!frame) return;
-                cancelAnimationFrame(frame);
-                frame = null;
-            }
-
-            grid.classList.add('is-drifting');
-            build();
-            if (!measure()) return;
-            place(false);
-            buildMeteors(9);
-            start();
-
-            grid.addEventListener('pointerenter', function () { isPaused = true; stop(); });
-            grid.addEventListener('pointerleave', function () { isPaused = false; start(); });
-            grid.addEventListener('focusin', function () { isPaused = true; stop(); });
-            grid.addEventListener('focusout', function () {
-                setTimeout(function () {
-                    if (!grid.contains(document.activeElement)) { isPaused = false; start(); }
-                }, 0);
-            });
-
-            if ('IntersectionObserver' in window) {
-                var visibilityObserver = new IntersectionObserver(function (entries) {
-                    isVisible = entries[0].isIntersecting;
-                    if (isVisible) start();
-                    else stop();
-                }, { threshold: 0.15 });
-                visibilityObserver.observe(grid);
-            }
-
-            window.addEventListener('resize', function () {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function () {
-                    if (measure()) place(true);
-                }, 120);
-            }, { passive: true });
-        });
-    }
-
-    // ============================================================
-    // 10. AUTO-TAG ANIMATION CLASSES
-    // ============================================================
-    function autoTag() {
-        document.querySelectorAll('.activity-block').forEach(function (el, i) {
-            el.classList.add('animate-on-scroll');
-            el.classList.add('delay-' + ((i % 3) + 1));
-        });
-        document.querySelectorAll('.coach-card, .contact-coach-card').forEach(function (el, i) {
-            el.classList.add('animate-scale');
-            el.classList.add('delay-' + (i + 1));
-        });
-        document.querySelectorAll('.member-card').forEach(function (el, i) {
-            el.classList.add('animate-on-scroll');
-            el.classList.add('delay-' + ((i % 5) + 1));
-        });
-        document.querySelectorAll('.connect-card').forEach(function (el, i) {
-            el.classList.add('animate-scale');
-            el.classList.add('delay-' + (i + 1));
-        });
-        document.querySelectorAll('.journey-item').forEach(function (el, i) {
-            el.classList.add('animate-slide-left');
-            el.classList.add('delay-' + ((i % 5) + 1));
-        });
-        document.querySelectorAll('.stat-card').forEach(function (el, i) {
-            el.classList.add('animate-on-scroll');
-            el.classList.add('delay-' + ((i % 5) + 1));
-        });
-        document.querySelectorAll('.line-card').forEach(function (el, i) {
-            el.classList.add('animate-scale');
-            el.classList.add('delay-' + (i + 1));
-        });
-        document.querySelectorAll('.tech-card').forEach(function (el, i) {
-            el.classList.add('animate-on-scroll');
-            el.classList.add('delay-' + ((i % 3) + 1));
-        });
-        document.querySelectorAll('.honour-card').forEach(function (el, i) {
-            el.classList.add('animate-on-scroll');
-            el.classList.add('delay-' + ((i % 3) + 1));
-        });
-        document.querySelectorAll('.fleet-unit').forEach(function (el, i) {
-            el.classList.add('animate-scale');
-            el.classList.add('delay-' + ((i % 4) + 1));
-        });
-        document.querySelectorAll('.result-table-wrap, .roster').forEach(function (el) {
-            el.classList.add('animate-on-scroll');
-        });
-        document.querySelectorAll('.robot-showcase').forEach(function (el) {
-            el.classList.add('animate-scale');
-        });
-        document.querySelectorAll('.press-link').forEach(function (el, i) {
-            el.classList.add('animate-on-scroll');
-            el.classList.add('delay-' + ((i % 4) + 1));
-        });
-    }
-
-    function initRankSweepVisibility() {
-        var cards = document.querySelectorAll('.honour-card');
-        if (!cards.length) return;
-
-        if (!('IntersectionObserver' in window)) {
-            cards.forEach(function (card) { card.classList.add('is-sweep-visible'); });
-            return;
-        }
-
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                entry.target.classList.toggle('is-sweep-visible', entry.isIntersecting);
-            });
-        }, { threshold: 0.01, rootMargin: '18% 0px' });
-        cards.forEach(function (card) { observer.observe(card); });
-    }
-
-    // ============================================================
-    // 11. HERO VISION HUD — machine-vision overlay on the banner photo
-    // ============================================================
-    function initVisionHUD() {
-        var hud = document.getElementById('vision-hud');
-        if (!hud) return;
-
-        // A live clock in the top-right readout — a cheap way to make the
-        // frame read as a running feed rather than a static graphic.
-        var clock = document.getElementById('vf-clock');
-        if (clock) {
-            (function tick() {
-                var d = new Date();
-                var pad = function (n) { return String(n).padStart(2, '0'); };
-                clock.textContent = 'CAM_01 · ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
-                setTimeout(tick, 1000);
-            })();
-        }
-
-        function countConf(el) {
-            var target = parseInt(el.getAttribute('data-conf'), 10);
-            if (isNaN(target)) return;
-            // Matches the stat-strip counters in site.js: a numeric tween is
-            // still motion, so reduced-motion users get the settled value.
-            if (reducedMotion) { el.textContent = target; return; }
-            var start = performance.now();
-            var duration = 550;
-            (function step(now) {
-                var p = Math.min((now - start) / duration, 1);
-                el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-                if (p < 1) requestAnimationFrame(step);
-            })(start);
-        }
-
-        function reveal() {
-            hud.classList.add('is-active');
-            hud.querySelectorAll('.vision-conf').forEach(countConf);
-        }
-
-        if (reducedMotion) { reveal(); return; }
-
-        // The sweep plays once on arrival, revealing the boxes as it crosses,
-        // then repeats every so often so the frame still feels alive to
-        // anyone who lingers on the page.
-        function sweep() {
-            hud.classList.remove('is-scanning');
-            // Force reflow so the animation restarts on repeat plays.
-            void hud.offsetWidth;
-            hud.classList.add('is-scanning');
-        }
-
-        sweep();
-        setTimeout(reveal, 550);
-        setInterval(sweep, 16000);
-    }
-
-    // ============================================================
-    // 12. SCANLINE
-    // ============================================================
-    function initScanline() {
-        document.body.classList.add('scanline-overlay');
-    }
-
-    // ============================================================
-    // 13. BRAND NAME — FIXED LINES
-    // ============================================================
     function initBrandName() {
         document.querySelectorAll('.brand-name').forEach(function (el) {
             var probe = document.createElement('div');
@@ -783,13 +36,13 @@
             }
 
             function render() {
+                var text = intended();
                 el.textContent = '';
-                split(intended()).forEach(function (text) {
+                split(text).forEach(function (text, index) {
+                    if (index) el.appendChild(document.createTextNode(' '));
                     var line = document.createElement('span');
                     line.className = 'brand-line';
                     line.textContent = text;
-                    // The glitch copies are drawn from this by CSS.
-                    line.setAttribute('data-text', text);
                     el.appendChild(line);
                 });
             }
@@ -801,40 +54,558 @@
         });
     }
 
-    // ============================================================
-    // INIT
-    // ============================================================
-    function init() {
-        // The name is split into lines whatever the motion setting; the
-        // defocus flicker on it is CSS, and reduced motion already stops that.
-        initBrandName();
+    function initTitleTyping() {
+        document.querySelectorAll('#page-main h1').forEach(function (title) {
+            var original = title.innerHTML;
+            var characters = [];
+            var timer = 0;
+            var visible = false;
+            var cursor = null;
+            var position = 0;
+            var segmenter = typeof Intl.Segmenter === 'function'
+                ? new Intl.Segmenter(undefined, { granularity: 'grapheme' }) : null;
 
-        if (reducedMotion) {
-            // Skip all animations for users who prefer reduced motion
-            document.querySelectorAll('.animate-on-scroll, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-flip').forEach(function (el) {
-                el.classList.add('animate-visible');
-            });
-            // The HUD itself still renders — reducedMotion inside it drops
-            // straight to the settled, non-animated state.
-            initVisionHUD();
-            return;
+            function stop() {
+                clearTimeout(timer);
+                timer = 0;
+                title.classList.remove('is-title-running', 'is-title-resetting');
+                if (cursor) cursor.classList.remove('is-cursor');
+                cursor = null;
+            }
+
+            function typeNext() {
+                if (cursor) cursor.classList.remove('is-cursor');
+                cursor = characters[position++];
+                cursor.classList.add('is-revealed', 'is-cursor');
+                if (position < characters.length) {
+                    timer = setTimeout(typeNext, Math.min(180, Math.max(38, 1800 / characters.length)));
+                } else {
+                    timer = setTimeout(function () {
+                        title.classList.add('is-title-resetting');
+                        timer = setTimeout(start, 240);
+                    }, 4200);
+                }
+            }
+
+            function start() {
+                stop();
+                if (!visible || !motionEnabled() || document.hidden || !characters.length) return;
+                characters.forEach(function (character) { character.classList.remove('is-revealed'); });
+                position = 0;
+                title.classList.add('is-title-running');
+                typeNext();
+            }
+
+            function sync() {
+                if (visible && motionEnabled() && !document.hidden) {
+                    if (!timer) start();
+                } else {
+                    stop();
+                }
+            }
+
+            function render() {
+                stop();
+                characters = [];
+                var visual = document.createElement('span');
+                visual.className = 'title-type__visual';
+                visual.setAttribute('aria-hidden', 'true');
+                visual.innerHTML = title.__i18nText != null ? title.__i18nText : original;
+                var label = visual.cloneNode(true);
+                label.querySelectorAll('br').forEach(function (br) { br.replaceWith(' '); });
+                // Assistive technology receives one complete, stable heading.
+                title.setAttribute('aria-label', label.textContent.replace(/\s+/g, ' ').trim());
+                var walker = document.createTreeWalker(visual, NodeFilter.SHOW_TEXT);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function (node) {
+                    var fragment = document.createDocumentFragment();
+                    var letters = segmenter ? Array.from(segmenter.segment(node.textContent), function (part) { return part.segment; }) : Array.from(node.textContent);
+                    letters.forEach(function (letter) {
+                        if (/^\s+$/.test(letter)) {
+                            fragment.appendChild(document.createTextNode(letter));
+                            return;
+                        }
+                        var character = document.createElement('span');
+                        character.className = 'title-character';
+                        character.textContent = letter;
+                        characters.push(character);
+                        fragment.appendChild(character);
+                    });
+                    node.replaceWith(fragment);
+                });
+                characters.forEach(function (character, index) {
+                    character.style.setProperty('--ink-delay', (-index / characters.length * 4).toFixed(3) + 's');
+                });
+                // Inline characters keep normal word wrapping and reserve the
+                // entire title's space, including while only a few are visible.
+                title.replaceChildren(visual);
+                title.classList.add('title-type');
+                sync();
+            }
+
+            render();
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (entries) {
+                    visible = entries[0].isIntersecting;
+                    sync();
+                }, { threshold: 0.1 }).observe(title);
+            } else {
+                visible = true;
+                sync();
+            }
+            motionListeners.push(sync);
+            window.addEventListener('pagehide', stop);
+            document.addEventListener('i18n:applied', render);
+        });
+    }
+
+    function initMotion() {
+        if (!('IntersectionObserver' in window) || !Element.prototype.animate) return;
+        var running = new Set();
+        var revealed = new WeakSet();
+
+        function play(el, frames, options) {
+            if (!motionEnabled()) return;
+            var animation = el.animate(frames, options);
+            running.add(animation);
+            animation.finished.then(function () { running.delete(animation); }, function () { running.delete(animation); });
         }
 
-        initPageLoader();
-        autoTag();
-        initScrollAnimations();
-        initRankSweepVisibility();
-        initParticles();
-        initTilt();
-        initParallax();
-        initPageTransitions();
-        initRipple();
-        initTeamPreviewDrift();
-        initVisionHUD();
-        initScanline();
+        // Content is visible in the document even if motion is unavailable.
+        // Nothing depends on a hidden-until-JavaScript class or a page loader.
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry, index) {
+                if (!entry.isIntersecting) return;
+                var el = entry.target;
+                observer.unobserve(el);
+                if (revealed.has(el) || !motionEnabled()) return;
+                revealed.add(el);
+                play(el, [
+                    { opacity: 0, transform: 'translateY(18px)' },
+                    { opacity: 1, transform: 'translateY(0)' }
+                ], { duration: 560, delay: (index % 4) * 55, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+                if (el.matches('.team-console')) {
+                    var scan = document.createElement('span');
+                    scan.className = 'team-scan';
+                    scan.setAttribute('aria-hidden', 'true');
+                    var beam = document.createElement('span');
+                    beam.className = 'team-scan__beam';
+                    scan.appendChild(beam);
+                    el.appendChild(scan);
+                    play(beam, [
+                        { transform: 'translateY(-64px)', opacity: 0 },
+                        { opacity: 1, offset: 0.12 },
+                        { opacity: 1, offset: 0.85 },
+                        { transform: 'translateY(' + el.clientHeight + 'px)', opacity: 0 }
+                    ], { duration: 2000, delay: 180, easing: 'linear' });
+                    el.querySelectorAll('.team-portrait').forEach(function (portrait, i) {
+                        play(portrait, [
+                            { opacity: 0.25, transform: 'translateY(10px) scale(.94)' },
+                            { opacity: 1, transform: 'translateY(0) scale(1)' }
+                        ], { duration: 480, delay: 180 + i * 38, easing: 'ease-out', fill: 'backwards' });
+                    });
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
 
-        // Delay typewriter slightly for page load effect
-        setTimeout(initTypewriter, 800);
+        document.querySelectorAll('.hero-kicker, .hero-title, .hero-sub, .hero-actions, .section-title, .home-intro-title, .team-console, .line-card, .tech-card, .member-card, .coach-card, .activity-header, .honour-card, .connect-card, .gallery-item').forEach(function (el) {
+            if (el.tagName !== 'H1') observer.observe(el);
+        });
+        var hero = document.querySelector('.hero-bg');
+        if (hero) play(hero, [{ transform: 'scale(1.045)' }, { transform: 'scale(1)' }], { duration: 1800, easing: 'ease-out' });
+
+        motionListeners.push(function () {
+            if (motionEnabled()) return;
+            running.forEach(function (animation) { animation.cancel(); });
+            running.clear();
+        });
+    }
+
+    function initPointerDepth() {
+        document.querySelectorAll('.team-console, .robot-showcase, .honour-card').forEach(function (el) {
+            var frame = 0;
+            var point;
+            function reset() {
+                cancelAnimationFrame(frame);
+                frame = 0;
+                el.classList.remove('has-pointer-motion');
+                el.style.removeProperty('--pointer-x');
+                el.style.removeProperty('--pointer-y');
+            }
+            el.addEventListener('pointermove', function (event) {
+                if (!motionEnabled() || !finePointer.matches || event.pointerType === 'touch') return;
+                point = { x: event.clientX, y: event.clientY };
+                if (frame) return;
+                frame = requestAnimationFrame(function () {
+                    frame = 0;
+                    var box = el.getBoundingClientRect();
+                    if (!box.width || !box.height) return;
+                    var x = Math.max(-1, Math.min(1, (point.x - box.left) / box.width * 2 - 1));
+                    var y = Math.max(-1, Math.min(1, (point.y - box.top) / box.height * 2 - 1));
+                    el.style.setProperty('--pointer-x', x.toFixed(3));
+                    el.style.setProperty('--pointer-y', y.toFixed(3));
+                    el.classList.add('has-pointer-motion');
+                });
+            }, { passive: true });
+            el.addEventListener('pointerleave', reset);
+            el.addEventListener('pointercancel', reset);
+            window.addEventListener('scroll', reset, { passive: true });
+            window.addEventListener('pagehide', reset);
+            document.addEventListener('visibilitychange', function () { if (document.hidden) reset(); });
+            finePointer.addEventListener('change', reset);
+            motionListeners.push(reset);
+        });
+    }
+
+    function initHeroNetwork() {
+        var hero = document.querySelector('.hero');
+        if (!hero || !('IntersectionObserver' in window) || !('ResizeObserver' in window)) return;
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        if (!context) return;
+        canvas.className = 'hero-network';
+        canvas.setAttribute('aria-hidden', 'true');
+        hero.appendChild(canvas);
+
+        var width = 0, height = 0, frame = 0, previous = 0, elapsed = 0;
+        var visible = false, suspended = false, pointer = null;
+        var nodes = [];
+
+        function render() {
+            context.clearRect(0, 0, width, height);
+            var time = elapsed / 1000;
+            // Asymmetric angular paths carry light across the lower image.
+            var paths = [
+                [[0.3, 0.96], [0.55, 0.96], [0.72, 0.65], [1.08, 0.65]],
+                [[0.62, 1.04], [0.78, 0.76], [0.94, 0.76], [1.08, 0.48]],
+                [[0.48, 0.91], [0.68, 0.91], [0.84, 0.60], [1.04, 0.60]]
+            ];
+            paths.forEach(function (path, i) {
+                var points = path.map(function (p) { return { x: p[0] * width, y: p[1] * height }; });
+                var color = i === 1 ? '185,120,255' : '92,233,255';
+                context.beginPath();
+                points.forEach(function (p, j) { if (j) context.lineTo(p.x, p.y); else context.moveTo(p.x, p.y); });
+                context.lineWidth = 0.8;
+                context.strokeStyle = 'rgba(' + color + ',.17)';
+                context.stroke();
+                var progress = (time * 0.16 + i * 0.92) % (points.length - 1);
+                var segment = Math.floor(progress), amount = progress - segment;
+                var from = points[segment], to = points[segment + 1];
+                var x = from.x + (to.x - from.x) * amount;
+                var y = from.y + (to.y - from.y) * amount;
+                context.save();
+                context.strokeStyle = 'rgba(' + color + ',.9)';
+                context.shadowColor = context.strokeStyle;
+                context.shadowBlur = 12;
+                context.lineWidth = 2;
+                context.beginPath();
+                context.moveTo(x - (to.x - from.x) * 0.1, y - (to.y - from.y) * 0.1);
+                context.lineTo(x, y);
+                context.stroke();
+                context.fillStyle = '#e1faff';
+                context.fillRect(x - 1.5, y - 1.5, 3, 3);
+                context.restore();
+            });
+            nodes.forEach(function (node, i) {
+                var x = node.x * width + Math.sin(time * 0.35 + node.phase) * 20;
+                var y = (0.45 + node.y * 0.5) * height + Math.cos(time * 0.28 + node.phase) * 14;
+                var near = pointer && Math.hypot(x - pointer.x, y - pointer.y) < 150;
+                context.fillStyle = near ? '#e2b2ff' : 'rgba(136,224,255,.55)';
+                context.beginPath();
+                context.arc(x, y, near ? 2.8 : 1.2, 0, Math.PI * 2);
+                context.fill();
+            });
+        }
+
+        function canRun() { return visible && !suspended && !document.hidden && motionEnabled(); }
+        function tick(now) {
+            frame = 0;
+            if (!canRun()) return;
+            if (!previous || now - previous >= 32) {
+                elapsed += previous ? Math.min(now - previous, 80) : 0;
+                previous = now;
+                render();
+            }
+            frame = requestAnimationFrame(tick);
+        }
+        function sync() {
+            canvas.hidden = !motionEnabled();
+            if (canRun()) {
+                if (!frame) { previous = 0; frame = requestAnimationFrame(tick); }
+            } else {
+                cancelAnimationFrame(frame);
+                frame = 0;
+                previous = 0;
+                pointer = null;
+            }
+        }
+        function resize() {
+            width = hero.clientWidth;
+            height = hero.clientHeight;
+            var ratio = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(width * ratio);
+            canvas.height = Math.round(height * ratio);
+            context.setTransform(ratio, 0, 0, ratio, 0, 0);
+            nodes = [];
+            for (var i = 0; i < (width < 600 ? 8 : 16); i++) {
+                nodes.push({ x: (i * 0.618 + 0.05) % 1, y: (i * 0.317 + 0.12) % 1, phase: i * 2.399 });
+            }
+            render();
+        }
+        hero.addEventListener('pointermove', function (event) {
+            if (!canRun() || !finePointer.matches || event.pointerType === 'touch') return;
+            var box = hero.getBoundingClientRect();
+            pointer = { x: event.clientX - box.left, y: event.clientY - box.top };
+        }, { passive: true });
+        hero.addEventListener('pointerleave', function () { pointer = null; });
+        hero.addEventListener('pointercancel', function () { pointer = null; });
+        new ResizeObserver(resize).observe(hero);
+        new IntersectionObserver(function (entries) {
+            visible = entries[0].isIntersecting;
+            sync();
+        }).observe(hero);
+        document.addEventListener('visibilitychange', sync);
+        document.addEventListener('i18n:applied', sync);
+        window.addEventListener('pagehide', function () { suspended = true; sync(); });
+        window.addEventListener('pageshow', function () { suspended = false; sync(); });
+        motionListeners.push(sync);
+        resize();
+        sync();
+    }
+
+    function initVisibleEffects() {
+        function visibility() { document.documentElement.classList.toggle('motion-suspended', document.hidden); }
+        document.addEventListener('visibilitychange', visibility);
+        visibility();
+        var elements = document.querySelectorAll('.honour-card, .activity-loop');
+        if (!('IntersectionObserver' in window)) return;
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) { entry.target.classList.toggle('is-sweep-visible', entry.isIntersecting); });
+        }, { threshold: 0.05 });
+        elements.forEach(function (element) { observer.observe(element); });
+    }
+
+    function initHeroCarousel() {
+        var media = document.querySelector('[data-hero-carousel]');
+        if (!media) return;
+        var slides = Array.from(media.querySelectorAll('.hero-slide'));
+        var hero = media.closest('.hero');
+        var nav = hero.querySelector('.hero-slideshow-nav');
+        var counter = nav.querySelector('.hero-slide-count');
+        var current = 0, timer = 0, visible = true, suspended = false;
+        function preload(index) {
+            var img = slides[index].querySelector('img');
+            img.loading = 'eager';
+        }
+        function eligible() {
+            return visible && !suspended && !document.hidden && motionEnabled() && !nav.contains(document.activeElement);
+        }
+        function schedule() {
+            clearTimeout(timer);
+            timer = 0;
+            if (eligible()) timer = setTimeout(function () { show(current + 1); }, 5000);
+        }
+        function show(index) {
+            current = (index + slides.length) % slides.length;
+            preload(current);
+            slides.forEach(function (slide, i) {
+                slide.classList.toggle('is-active', i === current);
+                slide.setAttribute('aria-hidden', String(i !== current));
+            });
+            counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+            preload((current + 1) % slides.length);
+            schedule();
+        }
+        nav.querySelector('.hero-slide-prev').addEventListener('click', function () { show(current - 1); });
+        nav.querySelector('.hero-slide-next').addEventListener('click', function () { show(current + 1); });
+        nav.addEventListener('focusin', schedule);
+        nav.addEventListener('focusout', function () { setTimeout(schedule, 0); });
+        document.addEventListener('visibilitychange', schedule);
+        window.addEventListener('pagehide', function () { suspended = true; schedule(); });
+        window.addEventListener('pageshow', function () { suspended = false; schedule(); });
+        if ('IntersectionObserver' in window) new IntersectionObserver(function (entries) {
+            visible = entries[0].isIntersecting;
+            schedule();
+        }).observe(hero);
+        motionListeners.push(schedule);
+        preload(1);
+        schedule();
+    }
+
+    function initLightning() {
+        var canvas = document.createElement('canvas');
+        canvas.className = 'science-lightning';
+        canvas.setAttribute('aria-hidden', 'true');
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        document.body.prepend(canvas);
+        var width = 0, height = 0, frame = 0, previous = 0, elapsed = 0, suspended = false;
+        function hash(n) { var value = Math.sin(n * 127.1 + 311.7) * 43758.5453; return (value - Math.floor(value)) * 2 - 1; }
+        function noise(index, time, seed) {
+            var step = Math.floor(time), blend = time - step;
+            blend = blend * blend * (3 - 2 * blend);
+            return hash(index + step * 97 + seed) * (1 - blend) + hash(index + (step + 1) * 97 + seed) * blend;
+        }
+        function filament(x1, y1, x2, y2, seed, time, strength, branch) {
+            var dx = x2 - x1, dy = y2 - y1, length = Math.hypot(dx, dy);
+            var count = Math.max(18, Math.round(length / 7));
+            var points = [];
+            for (var i = 0; i <= count; i++) {
+                var t = i / count, envelope = Math.sin(t * Math.PI);
+                // Multiple spatial scales create fine, irregular electrical branches.
+                var coarse = noise(Math.floor(i / 11), time * 1.3, seed) * (branch ? 9 : 31);
+                var medium = noise(Math.floor(i / 3), time * 2.1, seed + 53) * (branch ? 5 : 13);
+                var fine = noise(i, time * 3.2, seed + 107) * (branch ? 3 : 7);
+                var offset = (coarse + medium + fine) * envelope;
+                points.push({ x: x1 + dx * t - dy / length * offset, y: y1 + dy * t + dx / length * offset });
+            }
+            var gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+            gradient.addColorStop(0, '#61f4ff'); gradient.addColorStop(.32, '#639bff');
+            gradient.addColorStop(.68, '#b66aff'); gradient.addColorStop(1, '#ff83d4');
+            ctx.beginPath(); points.forEach(function (p, j) { if (j) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); });
+            ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+            ctx.strokeStyle = gradient; ctx.shadowColor = '#777dff'; ctx.shadowBlur = branch ? 7 : 17;
+            ctx.globalAlpha = strength * .4; ctx.lineWidth = branch ? 2 : 4; ctx.stroke();
+            ctx.shadowBlur = branch ? 4 : 9; ctx.globalAlpha = strength; ctx.lineWidth = branch ? .65 : 1.15; ctx.stroke();
+            ctx.shadowBlur = 0; ctx.strokeStyle = '#e0f5ff'; ctx.globalAlpha = strength * .8; ctx.lineWidth = branch ? .25 : .45; ctx.stroke();
+            if (!branch) {
+                for (var b = 1; b <= 3; b++) {
+                    var index = Math.floor(count * b / 5), p = points[index];
+                    var side = hash(seed + b * 7) > 0 ? 1 : -1;
+                    filament(p.x, p.y, p.x + side * (35 + Math.abs(hash(b + seed)) * 90), p.y + 40 + hash(b * 4 + seed) * 65, seed + b * 31, time, strength * .65, true);
+                }
+            }
+        }
+        function render() {
+            ctx.clearRect(0, 0, width, height);
+            var time = elapsed / 1000;
+            var edge = width < 768 ? 11 : Math.max(24, (width - 1180) / 4);
+            var routes = [
+                [[edge, -35], [edge, height * .17], [edge + 34, height * .17 + 34], [edge + 34, height * .49], [edge + 8, height * .49 + 26], [edge + 8, height * .82], [edge + 52, height * .82 + 44], [edge + 52, height + 35]],
+                [[width - edge, -40], [width - edge, height * .3], [width - edge - 42, height * .3 + 42], [width - edge - 42, height * .68], [width - edge - 14, height * .68 + 28], [width - edge - 14, height + 40]]
+            ];
+            ctx.globalCompositeOperation = 'lighter';
+            routes.forEach(function (route, side) {
+                ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+                ctx.strokeStyle = 'rgba(92,154,202,.22)'; ctx.lineWidth = .8;
+                ctx.beginPath(); route.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+                route.slice(1, -1).forEach(function (p) { ctx.strokeRect(p[0] - 2, p[1] - 2, 4, 4); });
+                var lengths = [], total = 0;
+                for (var i = 1; i < route.length; i++) { var length = Math.hypot(route[i][0] - route[i - 1][0], route[i][1] - route[i - 1][1]); lengths.push(length); total += length; }
+                var head = ((time * .55 + side * .47) % 1) * total;
+                var tail = Math.min(190, total * .24);
+                [head, head + total].forEach(function (end) {
+                    var start = end - tail, distance = 0;
+                    lengths.forEach(function (length, i) {
+                        var from = Math.max(distance, start), to = Math.min(distance + length, end);
+                        if (to > from) {
+                            var a = route[i], b = route[i + 1];
+                            var t0 = (from - distance) / length, t1 = (to - distance) / length;
+                            filament(a[0] + (b[0] - a[0]) * t0, a[1] + (b[1] - a[1]) * t0, a[0] + (b[0] - a[0]) * t1, a[1] + (b[1] - a[1]) * t1, 13 + side * 71 + i * 9, time * 1.8, .85, false);
+                        }
+                        distance += length;
+                    });
+                });
+            });
+            ctx.globalAlpha = 1;
+        }
+        function canRun() { return motionEnabled() && !document.hidden && !suspended; }
+        function tick(now) {
+            frame = 0;
+            if (!canRun()) return;
+            if (!previous || now - previous >= 48) {
+                elapsed += previous ? Math.min(now - previous, 100) : 0;
+                previous = now; render();
+            }
+            frame = requestAnimationFrame(tick);
+        }
+        function sync() {
+            canvas.hidden = !motionEnabled();
+            if (canRun()) { if (!frame) { previous = 0; frame = requestAnimationFrame(tick); } }
+            else { cancelAnimationFrame(frame); frame = 0; previous = 0; }
+        }
+        function resize() {
+            width = innerWidth; height = innerHeight;
+            var ratio = Math.min(devicePixelRatio || 1, 1.5);
+            canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0); render();
+        }
+        window.addEventListener('resize', resize);
+        document.addEventListener('visibilitychange', sync);
+        window.addEventListener('pagehide', function () { suspended = true; sync(); });
+        window.addEventListener('pageshow', function () { suspended = false; sync(); });
+        motionListeners.push(sync); resize(); sync();
+    }
+
+    function initChargeScrollbar() {
+        var eligible = window.matchMedia('(min-width: 992px) and (pointer: fine)');
+        var rail = document.createElement('div');
+        rail.className = 'charge-scrollbar'; rail.tabIndex = 0;
+        rail.setAttribute('role', 'scrollbar'); rail.setAttribute('aria-controls', 'page-main');
+        rail.setAttribute('aria-orientation', 'vertical'); rail.setAttribute('aria-valuemin', '0'); rail.setAttribute('aria-valuemax', '100');
+        var thumb = document.createElement('span'); thumb.className = 'charge-scrollbar__thumb'; rail.appendChild(thumb);
+        document.body.appendChild(rail);
+        var frame = 0, drag = null, travel = 0, maximum = 0;
+        function label() { rail.setAttribute('aria-label', window.PCMSI18n ? window.PCMSI18n.text('Page position') : 'Page position'); }
+        function update() {
+            frame = 0;
+            maximum = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+            var active = eligible.matches && maximum > 0;
+            document.documentElement.classList.toggle('has-charge-scrollbar', active);
+            rail.hidden = !active;
+            if (!active) return;
+            var height = rail.clientHeight;
+            var size = Math.min(height, Math.max(64, height * innerHeight / document.documentElement.scrollHeight));
+            travel = height - size;
+            var ratio = maximum ? Math.max(0, Math.min(1, scrollY / maximum)) : 0;
+            thumb.style.height = size + 'px'; thumb.style.transform = 'translateY(' + ratio * travel + 'px)';
+            rail.style.setProperty('--charge', ratio * 100 + '%');
+            rail.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
+        }
+        function schedule() { if (!frame) frame = requestAnimationFrame(update); }
+        rail.addEventListener('pointerdown', function (event) {
+            if (event.button !== 0) return;
+            event.preventDefault(); rail.focus({ preventScroll: true });
+            if (event.target !== thumb) {
+                var y = event.clientY - rail.getBoundingClientRect().top - thumb.clientHeight / 2;
+                window.scrollTo({ top: Math.max(0, Math.min(1, y / travel)) * maximum, behavior: 'instant' });
+            }
+            drag = { y: event.clientY, scroll: scrollY };
+            rail.classList.add('is-charging'); rail.setPointerCapture(event.pointerId);
+        });
+        rail.addEventListener('pointermove', function (event) {
+            if (!drag || !travel) return;
+            window.scrollTo({ top: drag.scroll + (event.clientY - drag.y) / travel * maximum, behavior: 'instant' });
+        });
+        function end() { drag = null; rail.classList.remove('is-charging'); }
+        rail.addEventListener('pointerup', end); rail.addEventListener('pointercancel', end); rail.addEventListener('lostpointercapture', end);
+        rail.addEventListener('keydown', function (event) {
+            var next = { ArrowDown: scrollY + 80, ArrowUp: scrollY - 80, PageDown: scrollY + innerHeight * .85, PageUp: scrollY - innerHeight * .85, Home: 0, End: maximum }[event.key];
+            if (next == null) return;
+            event.preventDefault(); window.scrollTo({ top: next, behavior: 'instant' });
+        });
+        window.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', schedule); eligible.addEventListener('change', schedule);
+        document.addEventListener('i18n:applied', function () { label(); schedule(); });
+        if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.body);
+        label(); update();
+    }
+
+    function init() {
+        initBrandName();
+        document.querySelectorAll('.animate-on-scroll, .animate-slide-left, .animate-slide-right, .animate-scale, .animate-flip').forEach(function (el) {
+            el.classList.add('animate-visible');
+        });
+        syncMotion();
+        initTitleTyping();
+        initMotion();
+        initPointerDepth();
+        initHeroNetwork();
+        initHeroCarousel();
+        initVisibleEffects();
+        initLightning();
+        initChargeScrollbar();
     }
 
     if (document.readyState === 'loading') {

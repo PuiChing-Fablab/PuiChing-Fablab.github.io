@@ -77,6 +77,15 @@
                 animation: gradientShift 3s linear infinite;
             }
 
+            .game-screen::before,
+            .game-screen .matrix-col { animation-play-state: paused; }
+            .game-screen.is-playing::before,
+            .game-screen.is-playing .matrix-col { animation-play-state: running; }
+            @media (prefers-reduced-motion: reduce) {
+                .game-screen::before, .matrix-col { animation: none !important; }
+                .matrix-rain { display: none; }
+            }
+
             /* Matrix rain background */
             .matrix-rain {
                 position: absolute;
@@ -311,7 +320,6 @@
     </head>
     <body>
         <a class="skip-link" href="#page-main" data-i18n="be504f61">Skip to main content</a>
-        <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
         <!-- Top Bar -->
         <div class="top-bar">
@@ -322,9 +330,9 @@
                     <span class="brand-name" data-i18n="7442115c">Pui Ching Middle School (Macau) Humanoid Robot Group</span>
                 </a>
                 <div class="d-flex gap-2 align-items-center flex-wrap">
-                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named" data-i18n="2a8b5ce4"><i class="bi bi-instagram"></i> <span data-i18n="5721bbef">Instagram</span></a>
-                    <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named" data-i18n="3c3d571e"><i class="bi bi-youtube"></i> <span data-i18n="d5633ec1">YouTube Channel</span></a>
-                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named" data-i18n="1036dfe1"><i class="bi bi-journal-text"></i> <span data-i18n="bab7f859">Learning Notes</span></a>
+                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named" aria-label="Instagram" data-i18n-aria-label="5721bbef"><i class="bi bi-instagram" aria-hidden="true"></i> <span data-i18n="5721bbef">Instagram</span></a>
+                    <a href="https://www.youtube.com/@pcms-hrg" target="_blank" rel="noopener" class="social-link-named" aria-label="YouTube Channel" data-i18n-aria-label="d5633ec1"><i class="bi bi-youtube" aria-hidden="true"></i> <span data-i18n="d5633ec1">YouTube Channel</span></a>
+                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named" aria-label="Learning Notes" data-i18n-aria-label="bab7f859"><i class="bi bi-journal-text" aria-hidden="true"></i> <span data-i18n="bab7f859">Learning Notes</span></a>
                     <div class="lang-switch">
                         <button type="button" class="lang-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Change language" data-i18n-aria-label="789b14df">
                             <i class="bi bi-translate" aria-hidden="true"></i><span class="lang-current">EN</span>
@@ -339,13 +347,13 @@
         <nav class="tab-nav" aria-label="Primary" data-i18n-aria-label="a9a96ec0">
             <div class="container">
                 <ul class="tab-list">
-                    <li data-i18n="a1f38ce2"><a href="home.html" class="tab-btn" data-i18n="cd56f8e3"><i class="bi bi-house-fill me-1"></i>Home</a></li>
-                    <li data-i18n="3c2a1f95"><a href="about.html" class="tab-btn" data-i18n="c6ad7d1d"><i class="bi bi-info-circle-fill me-1"></i>About</a></li>
-                    <li data-i18n="51e27aad"><a href="activities.html" class="tab-btn" data-i18n="0bff6f79"><i class="bi bi-calendar-event-fill me-1"></i>Activities</a></li>
-                    <li data-i18n="fd8a1e03"><a href="achievements.html" class="tab-btn" data-i18n="6fe0150e"><i class="bi bi-trophy-fill me-1"></i>Achievements</a></li>
-                    <li data-i18n="1fe383af"><a href="connect.html" class="tab-btn" data-i18n="b6f46901"><i class="bi bi-link-45deg me-1"></i>Connect</a></li>
+                    <li><a href="home.html" class="tab-btn" data-i18n="cd56f8e3"><i class="bi bi-house-fill me-1"></i>Home</a></li>
+                    <li><a href="about.html" class="tab-btn" data-i18n="c6ad7d1d"><i class="bi bi-info-circle-fill me-1"></i>About</a></li>
+                    <li><a href="activities.html" class="tab-btn" data-i18n="0bff6f79"><i class="bi bi-calendar-event-fill me-1"></i>Activities</a></li>
+                    <li><a href="achievements.html" class="tab-btn" data-i18n="6fe0150e"><i class="bi bi-trophy-fill me-1"></i>Achievements</a></li>
+                    <li><a href="connect.html" class="tab-btn" data-i18n="b6f46901"><i class="bi bi-link-45deg me-1"></i>Connect</a></li>
                     <li><a href="https://puiching-fablab.github.io/index.html" class="tab-btn tab-btn-back" data-i18n="1aed3e28"><i class="bi bi-arrow-left me-1"></i>puiching-fablab</a></li>
-                    <li class="ms-auto" data-i18n="525d559c"><a href="game.html" class="tab-btn" data-i18n="d368b28a"><i class="bi bi-robot me-1"></i>Robot Decode</a></li>
+                    <li class="ms-auto"><a href="game.html" class="tab-btn active" aria-current="page" data-i18n="d368b28a"><i class="bi bi-robot me-1"></i>Robot Decode</a></li>
                 </ul>
             </div>
         </nav>
@@ -358,7 +366,7 @@
 
                     <div class="game-screen" id="gameScreen">
                         <!-- Matrix rain background -->
-                        <div class="matrix-rain" id="matrixRain"></div>
+                        <div class="matrix-rain" id="matrixRain" aria-hidden="true"></div>
 
                         <div class="game-content">
                             <!-- Stats -->
@@ -378,7 +386,7 @@
                             </div>
 
                             <!-- Level badge -->
-                            <div class="level-badge" id="levelBadge" data-i18n="c0ded605">LEVEL 1 — INITIATE</div>
+                            <div class="level-badge" id="levelBadge" data-i18n-skip>LEVEL 1 — INITIATE</div>
 
                             <!-- Timer -->
                             <div class="timer-bar-container">
@@ -389,11 +397,11 @@
                             <div class="hint-text" data-i18n="003a0148">DECODE THIS TERM:</div>
 
                             <!-- Scrambled display -->
-                            <div class="scramble-display" id="scrambleDisplay" data-i18n="45d7bc78">PRESS START</div>
+                            <div class="scramble-display" id="scrambleDisplay" data-i18n-skip>PRESS START</div>
 
                             <!-- Input -->
                             <div class="mt-3">
-                                <input type="text" class="game-input" id="gameInput" placeholder="Type your answer..." autocomplete="off" disabled>
+                                <input type="text" class="game-input" id="gameInput" aria-label="Your answer" autocapitalize="characters" spellcheck="false" placeholder="Type your answer..." autocomplete="off" disabled data-i18n-aria-label="3ae5ff6e" data-i18n-placeholder="9c26bfa0">
                             </div>
 
                             <!-- Start button -->
@@ -405,11 +413,11 @@
                         </div>
 
                         <!-- Game Over Overlay -->
-                        <div class="game-over" id="gameOver">
+                        <div class="game-over" id="gameOver" aria-hidden="true" inert>
                             <div class="game-over-title" data-i18n="81a173b1">DECODE FAILED</div>
                             <div class="game-over-score" id="finalScore">0</div>
                             <div class="game-over-label" data-i18n="b076b8e1">Final Score</div>
-                            <div class="game-over-high" id="highScoreDisplay" data-i18n="bbfe3524">HIGH SCORE: 0</div>
+                            <div class="game-over-high" id="highScoreDisplay" data-i18n-skip>HIGH SCORE: 0</div>
                             <button class="btn-game" id="restartBtn" data-i18n="20d2a91e">
                                 <i class="bi bi-arrow-clockwise me-1"></i> TRY AGAIN
                             </button>
@@ -426,19 +434,19 @@
                             <div class="glossary-table-wrap">
                                 <table class="table table-dark table-borderless mb-0 glossary-table">
                                     <thead>
-                                        <tr><th class="glossary-th">TERM</th><th class="glossary-th">DEFINITION</th></tr>
+                                        <tr><th class="glossary-th" data-i18n="770bce19">Term</th><th class="glossary-th" data-i18n="bf1be2b7">Definition</th></tr>
                                     </thead>
                                     <tbody class="glossary-tbody">
-                                        <tr><td data-i18n="bf0f01d9"><strong class="glossary-term" data-i18n="7cd45b9c">Robot</strong></td><td data-i18n="9fb9978f">A programmable machine capable of autonomous actions</td></tr>
-                                        <tr><td data-i18n="1b10f9bb"><strong class="glossary-term" data-i18n="d08c1f2d">Servo</strong></td><td data-i18n="2553dc7d">A motor with precise position control for robot joints</td></tr>
-                                        <tr><td data-i18n="a18c9dfc"><strong class="glossary-term" data-i18n="ceaed797">Motor</strong></td><td data-i18n="ba6dcaec">An electric actuator that converts energy into motion</td></tr>
-                                        <tr><td data-i18n="fb9019b9"><strong class="glossary-term" data-i18n="d180e785">LiDAR</strong></td><td data-i18n="042ebd3a">Light Detection and Ranging — a laser-based distance sensor</td></tr>
-                                        <tr><td data-i18n="6e8aaf79"><strong class="glossary-term" data-i18n="a6479266">Gyro</strong></td><td data-i18n="9f95afc5">Gyroscope sensor measuring angular velocity and orientation</td></tr>
-                                        <tr><td data-i18n="adf8a538"><strong class="glossary-term" data-i18n="e08e5744">Joint</strong></td><td data-i18n="7bc98b6d">A connection point between robot body segments allowing movement</td></tr>
-                                        <tr><td data-i18n="6aad1269"><strong class="glossary-term" data-i18n="9101fc17">Sensor</strong></td><td data-i18n="fc13bac3">A device that detects physical properties (light, distance, force)</td></tr>
-                                        <tr><td data-i18n="59715c57"><strong class="glossary-term" data-i18n="40b0906c">Vision</strong></td><td data-i18n="0319f529">Computer vision — enabling robots to interpret visual data</td></tr>
-                                        <tr><td data-i18n="b5c3b73b"><strong class="glossary-term" data-i18n="69ad5545">Neural</strong></td><td data-i18n="31708a0e">Related to neural networks — AI models inspired by the brain</td></tr>
-                                        <tr><td data-i18n="f3a7ec3d"><strong class="glossary-term" data-i18n="8c12e3b7">Torque</strong></td><td data-i18n="17d349bd">Rotational force applied by a motor to a joint</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="7cd45b9c">Robot</strong></td><td data-i18n="9fb9978f">A programmable machine capable of autonomous actions</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="d08c1f2d">Servo</strong></td><td data-i18n="2553dc7d">A motor with precise position control for robot joints</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="ceaed797">Motor</strong></td><td data-i18n="ba6dcaec">An electric actuator that converts energy into motion</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="d180e785">LiDAR</strong></td><td data-i18n="042ebd3a">Light Detection and Ranging — a laser-based distance sensor</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="a6479266">Gyro</strong></td><td data-i18n="9f95afc5">Gyroscope sensor measuring angular velocity and orientation</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="e08e5744">Joint</strong></td><td data-i18n="7bc98b6d">A connection point between robot body segments allowing movement</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="9101fc17">Sensor</strong></td><td data-i18n="fc13bac3">A device that detects physical properties (light, distance, force)</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="40b0906c">Vision</strong></td><td data-i18n="0319f529">Computer vision — enabling robots to interpret visual data</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="69ad5545">Neural</strong></td><td data-i18n="31708a0e">Related to neural networks — AI models inspired by the brain</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="8c12e3b7">Torque</strong></td><td data-i18n="17d349bd">Rotational force applied by a motor to a joint</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -447,19 +455,19 @@
                             <div class="glossary-table-wrap">
                                 <table class="table table-dark table-borderless mb-0 glossary-table">
                                     <thead>
-                                        <tr><th class="glossary-th">TERM</th><th class="glossary-th">DEFINITION</th></tr>
+                                        <tr><th class="glossary-th" data-i18n="770bce19">Term</th><th class="glossary-th" data-i18n="bf1be2b7">Definition</th></tr>
                                     </thead>
                                     <tbody class="glossary-tbody">
-                                        <tr><td data-i18n="4b23bf70"><strong class="glossary-term" data-i18n="0a24920c">Humanoid</strong></td><td data-i18n="b0595717">A robot with a human-like body structure</td></tr>
-                                        <tr><td data-i18n="dadc29bb"><strong class="glossary-term" data-i18n="529410bb">RoboCup</strong></td><td data-i18n="9d425bd6">International robot soccer competition promoting AI research</td></tr>
-                                        <tr><td data-i18n="19651367"><strong class="glossary-term" data-i18n="5178b8ee">Actuator</strong></td><td data-i18n="45d08332">A component that converts control signals into physical motion</td></tr>
-                                        <tr><td data-i18n="562055f1"><strong class="glossary-term" data-i18n="7d553661">Dynamics</strong></td><td data-i18n="c7123787">The study of forces and motion in mechanical systems</td></tr>
-                                        <tr><td data-i18n="9878c772"><strong class="glossary-term" data-i18n="0dc5f6c7">Firmware</strong></td><td data-i18n="c8724e94">Low-level software embedded directly in hardware</td></tr>
-                                        <tr><td data-i18n="e8215c8f"><strong class="glossary-term" data-i18n="1ed77c3f">Protocol</strong></td><td data-i18n="d4566116">A set of rules for data communication between devices</td></tr>
-                                        <tr><td data-i18n="07409ff3"><strong class="glossary-term" data-i18n="02f02485">Algorithm</strong></td><td data-i18n="1f417b7c">A step-by-step procedure for solving a computational problem</td></tr>
-                                        <tr><td data-i18n="091bd02b"><strong class="glossary-term" data-i18n="95fced98">Kinematic</strong></td><td data-i18n="9fe0b206">The study of motion without considering forces</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="0a24920c">Humanoid</strong></td><td data-i18n="b0595717">A robot with a human-like body structure</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="529410bb">RoboCup</strong></td><td data-i18n="9d425bd6">International robot soccer competition promoting AI research</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="5178b8ee">Actuator</strong></td><td data-i18n="45d08332">A component that converts control signals into physical motion</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="7d553661">Dynamics</strong></td><td data-i18n="c7123787">The study of forces and motion in mechanical systems</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="0dc5f6c7">Firmware</strong></td><td data-i18n="c8724e94">Low-level software embedded directly in hardware</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="1ed77c3f">Protocol</strong></td><td data-i18n="d4566116">A set of rules for data communication between devices</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="02f02485">Algorithm</strong></td><td data-i18n="1f417b7c">A step-by-step procedure for solving a computational problem</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="95fced98">Kinematic</strong></td><td data-i18n="9fe0b206">The study of motion without considering forces</td></tr>
                                         <tr><td><strong class="glossary-term">Python</strong></td><td data-i18n="390ba32f">A popular programming language used in robotics and AI</td></tr>
-                                        <tr><td data-i18n="972afaf1"><strong class="glossary-term" data-i18n="66639f7d">Binary</strong></td><td data-i18n="b51396f5">Base-2 number system (0s and 1s) used by computers</td></tr>
+                                        <tr><td><strong class="glossary-term" data-i18n="66639f7d">Binary</strong></td><td data-i18n="b51396f5">Base-2 number system (0s and 1s) used by computers</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -480,15 +488,15 @@
                     </div>
                     <div class="col-md-4 text-center">
                         <ul class="footer-nav">
-                            <li data-i18n="ad1c2ae0"><a href="home.html" data-i18n="70f8bb9a">Home</a></li>
-                            <li data-i18n="58129bff"><a href="about.html" data-i18n="6b21fb79">About</a></li>
-                            <li data-i18n="d202b04a"><a href="activities.html" data-i18n="e58f7f88">Activities</a></li>
-                            <li data-i18n="6741e613"><a href="achievements.html" data-i18n="a6634f24">Achievements</a></li>
-                            <li data-i18n="98448677"><a href="connect.html" data-i18n="b65463cb">Connect</a></li>
+                            <li><a href="home.html" data-i18n="70f8bb9a">Home</a></li>
+                            <li><a href="about.html" data-i18n="6b21fb79">About</a></li>
+                            <li><a href="activities.html" data-i18n="e58f7f88">Activities</a></li>
+                            <li><a href="achievements.html" data-i18n="a6634f24">Achievements</a></li>
+                            <li><a href="connect.html" data-i18n="b65463cb">Connect</a></li>
                         </ul>
                         <div class="footer-social">
                             <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i class="bi bi-instagram"></i></a>
-                            <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" aria-label="YouTube Channel" title="YouTube Channel"><i class="bi bi-youtube"></i></a>
+                            <a href="https://www.youtube.com/@pcms-hrg" target="_blank" rel="noopener" aria-label="YouTube Channel" title="YouTube Channel"><i class="bi bi-youtube"></i></a>
                             <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" aria-label="Learning Notes" title="Learning Notes"><i class="bi bi-journal-text"></i></a>
                         </div>
                     </div>
@@ -504,223 +512,6 @@
         <script src="../assets/js/interface.js" defer></script>
         <script src="../assets/js/animations.js" defer></script>
         <script src="../assets/js/site.js" defer></script>
-        <script>
-        // ============================================================
-        // HACKER DECODE GAME
-        // ============================================================
-        (function () {
-            'use strict';
-
-            var words = [
-                // Level 1 — Easy (4-5 letters)
-                { word: 'ROBOT', category: 'Robotics' },
-                { word: 'SERVO', category: 'Hardware' },
-                { word: 'MOTOR', category: 'Hardware' },
-                { word: 'LIDAR', category: 'Sensor' },
-                { word: 'JOINT', category: 'Mechanics' },
-                { word: 'GYRO', category: 'Sensor' },
-                { word: 'KICK', category: 'Soccer' },
-                { word: 'WALK', category: 'Motion' },
-                { word: 'BALL', category: 'Soccer' },
-                { word: 'GOAL', category: 'Soccer' },
-                // Level 2 — Medium (5-7 letters)
-                { word: 'SENSOR', category: 'Hardware' },
-                { word: 'VISION', category: 'AI' },
-                { word: 'NEURAL', category: 'AI' },
-                { word: 'TORQUE', category: 'Physics' },
-                { word: 'STRIDE', category: 'Motion' },
-                { word: 'CAMERA', category: 'Sensor' },
-                { word: 'PYTHON', category: 'Code' },
-                { word: 'MATRIX', category: 'Math' },
-                { word: 'DECODE', category: 'Hacking' },
-                { word: 'BINARY', category: 'Code' },
-                // Level 3 — Hard (7-10 letters)
-                { word: 'HUMANOID', category: 'Robotics' },
-                { word: 'ROBOCUP', category: 'Competition' },
-                { word: 'BALANCE', category: 'Motion' },
-                { word: 'INVERSE', category: 'Math' },
-                { word: 'ACTUATOR', category: 'Hardware' },
-                { word: 'DYNAMICS', category: 'Physics' },
-                { word: 'FIRMWARE', category: 'Code' },
-                { word: 'PROTOCOL', category: 'Network' },
-                { word: 'ALGORITHM', category: 'Code' },
-                { word: 'KINEMATIC', category: 'Robotics' }
-            ];
-
-            var levelNames = ['INITIATE', 'OPERATIVE', 'ELITE', 'MASTER', 'LEGENDARY'];
-            var score = 0, combo = 0, level = 1, highScore = parseInt(localStorage.getItem('pcmshrg_highscore') || '0');
-            var currentWord = null, timer = null, timeLeft = 0, maxTime = 0;
-            var isPlaying = false;
-
-            var scoreEl = document.getElementById('scoreDisplay');
-            var comboEl = document.getElementById('comboDisplay');
-            var levelEl = document.getElementById('levelDisplay');
-            var levelBadge = document.getElementById('levelBadge');
-            var timerBar = document.getElementById('timerBar');
-            var scrambleEl = document.getElementById('scrambleDisplay');
-            var inputEl = document.getElementById('gameInput');
-            var startBtn = document.getElementById('startBtn');
-            var restartBtn = document.getElementById('restartBtn');
-            var gameOver = document.getElementById('gameOver');
-            var finalScoreEl = document.getElementById('finalScore');
-            var highScoreEl = document.getElementById('highScoreDisplay');
-
-            // Matrix rain
-            var matrixRain = document.getElementById('matrixRain');
-            function initMatrix() {
-                var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                for (var i = 0; i < 20; i++) {
-                    var col = document.createElement('div');
-                    col.className = 'matrix-col';
-                    col.style.left = (Math.random() * 100) + '%';
-                    col.style.animationDuration = (3 + Math.random() * 5) + 's';
-                    col.style.animationDelay = (Math.random() * 3) + 's';
-                    var text = '';
-                    for (var j = 0; j < 30; j++) text += chars.charAt(Math.floor(Math.random() * chars.length)) + '\n';
-                    col.textContent = text;
-                    matrixRain.appendChild(col);
-                }
-            }
-            initMatrix();
-
-            function scrambleWord(word) {
-                var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
-                var result = '';
-                for (var i = 0; i < word.length; i++) {
-                    if (Math.random() < 0.4) {
-                        result += word[i];
-                    } else {
-                        result += chars.charAt(Math.floor(Math.random() * chars.length));
-                    }
-                }
-                return result;
-            }
-
-            function getTimeForLevel() {
-                return Math.max(3000, 8000 - (level - 1) * 800);
-            }
-
-            function getWordsForLevel() {
-                if (level <= 2) return words.filter(function (w) { return w.word.length <= 5; });
-                if (level <= 4) return words.filter(function (w) { return w.word.length <= 7; });
-                return words;
-            }
-
-            function updateDisplay() {
-                scoreEl.textContent = score;
-                comboEl.textContent = combo + 'x';
-                levelEl.textContent = level;
-                var lvlName = levelNames[Math.min(level - 1, levelNames.length - 1)];
-                levelBadge.textContent = 'LEVEL ' + level + ' — ' + lvlName;
-            }
-
-            function nextWord() {
-                var pool = getWordsForLevel();
-                currentWord = pool[Math.floor(Math.random() * pool.length)];
-                maxTime = getTimeForLevel();
-                timeLeft = maxTime;
-
-                // Animate scramble reveal
-                var revealCount = 0;
-                var revealInterval = setInterval(function () {
-                    scrambleEl.textContent = scrambleWord(currentWord.word);
-                    scrambleEl.className = 'scramble-display';
-                    revealCount++;
-                    if (revealCount > 8) {
-                        clearInterval(revealInterval);
-                        scrambleEl.textContent = scrambleWord(currentWord.word);
-                    }
-                }, 60);
-
-                inputEl.value = '';
-                inputEl.focus();
-
-                // Start timer
-                clearInterval(timer);
-                timer = setInterval(function () {
-                    timeLeft -= 50;
-                    var pct = (timeLeft / maxTime) * 100;
-                    timerBar.style.width = pct + '%';
-                    timerBar.className = pct < 25 ? 'timer-bar danger' : 'timer-bar';
-
-                    // Keep scrambling
-                    if (Math.random() < 0.3) {
-                        scrambleEl.textContent = scrambleWord(currentWord.word);
-                    }
-
-                    if (timeLeft <= 0) {
-                        endGame();
-                    }
-                }, 50);
-            }
-
-            function checkAnswer() {
-                if (!currentWord || !isPlaying) return;
-                var answer = inputEl.value.trim().toUpperCase();
-                if (answer === currentWord.word) {
-                    // Correct!
-                    combo++;
-                    var points = 100 + (combo * 20) + Math.floor(timeLeft / 100);
-                    score += points;
-
-                    // Level up every 3 correct
-                    if (combo % 3 === 0) level++;
-
-                    scrambleEl.textContent = currentWord.word;
-                    scrambleEl.className = 'scramble-display correct';
-
-                    updateDisplay();
-
-                    setTimeout(function () {
-                        nextWord();
-                    }, 400);
-                }
-            }
-
-            function startGame() {
-                score = 0;
-                combo = 0;
-                level = 1;
-                isPlaying = true;
-                gameOver.classList.remove('show');
-                startBtn.style.display = 'none';
-                inputEl.disabled = false;
-                updateDisplay();
-                nextWord();
-            }
-
-            function endGame() {
-                isPlaying = false;
-                clearInterval(timer);
-                inputEl.disabled = true;
-
-                scrambleEl.textContent = currentWord.word;
-                scrambleEl.className = 'scramble-display wrong';
-
-                if (score > highScore) {
-                    highScore = score;
-                    localStorage.setItem('pcmshrg_highscore', highScore.toString());
-                }
-
-                finalScoreEl.textContent = score;
-                highScoreEl.textContent = 'HIGH SCORE: ' + highScore;
-
-                setTimeout(function () {
-                    gameOver.classList.add('show');
-                }, 600);
-            }
-
-            // Event listeners
-            startBtn.addEventListener('click', startGame);
-            restartBtn.addEventListener('click', startGame);
-            inputEl.addEventListener('input', checkAnswer);
-            inputEl.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') checkAnswer();
-            });
-
-            // Show high score on load
-            highScoreEl.textContent = 'HIGH SCORE: ' + highScore;
-        })();
-        </script>
+        <script src="../assets/js/game.js" defer></script>
     </body>
 </html>

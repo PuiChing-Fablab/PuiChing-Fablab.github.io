@@ -298,16 +298,6 @@ a:hover { color: #67e8f9; text-decoration: none; }
     transition: opacity 0.3s ease-in, transform 0.3s ease-in !important;
 }
 
-/* ---- TYPEWRITER CURSOR ---- */
-.typewriter-active::after {
-    content: '▌';
-    color: var(--neon-cyan);
-    animation: blink 0.7s step-end infinite;
-    font-weight: 400;
-    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
-}
-.section-title.typewriter-done::after { content: none; }
-
 /* ---- NEON RIPPLE ---- */
 .neon-ripple {
     position: absolute;
@@ -1278,7 +1268,7 @@ button:focus-visible,
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    filter: brightness(0.86) saturate(1.04);
+    filter: brightness(0.98);
 }
 .hero::after {
     content: '';
@@ -1893,8 +1883,8 @@ button:focus-visible,
     color: var(--neon-cyan);
     margin-bottom: 0.5rem;
 }
-.honour-card.is-gold .honour-rank { color: #fde047; text-shadow: 0 0 20px rgba(250,204,21,0.35); }
-.honour-card.is-world .honour-rank { text-shadow: 0 0 20px rgba(0,240,255,0.4); }
+.honour-card.is-gold .honour-rank { color: #fde047; text-shadow: none; }
+.honour-card.is-world .honour-rank { text-shadow: none; }
 .honour-card.is-robocup .honour-rank {
     width: fit-content;
     max-width: 100%;
@@ -2344,8 +2334,8 @@ button:focus-visible,
 .member-card:hover .member-joined {
     color: #e9d5ff;
     border-color: rgba(168, 85, 247, 0.6);
-    box-shadow: 0 0 14px rgba(168, 85, 247, 0.3);
-    text-shadow: 0 0 12px rgba(168, 85, 247, 0.75);
+    box-shadow: none;
+    text-shadow: none;
 }
 
 /* ---------- Competition roster ---------- */
@@ -2471,7 +2461,7 @@ a.line-card:hover { color: inherit; }
 @media (max-width: 767.98px) {
     .hero::after {
         background:
-            linear-gradient(180deg, rgba(6,9,16,0.62) 0%, rgba(6,9,16,0.3) 32%, rgba(6,9,16,0.94) 100%);
+            linear-gradient(180deg, transparent 65%, rgba(6,9,16,0.5) 100%);
     }
     .hero-bg { object-position: center 38%; }
 }
@@ -2837,91 +2827,6 @@ a.line-card:hover { color: inherit; }
 }
 .team-preview-item:hover img { transform: scale(1.05); }
 
-/* JavaScript promotes the static, accessible grid into a free-drifting cluster
-   over a meteor shower. DOM order stays unchanged while only visual positions
-   move, so keyboard and screen-reader navigation remain predictable. A rAF
-   loop writes --drift-x/y every frame, so nothing here may transition on
-   transform — a transition would fight the per-frame writes and smear it. */
-.team-preview-grid.is-drifting {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    border-radius: var(--r-md);
-    background:
-        radial-gradient(circle at 50% 42%, rgba(0, 240, 255, 0.10), transparent 60%),
-        radial-gradient(circle at 16% 84%, rgba(139, 92, 246, 0.13), transparent 52%),
-        #05070f;
-}
-
-/* Starfield. Three tiled dot layers on one element, panned by a multiple of
-   every tile size (600px) so the loop is seamless without shipping an image. */
-.team-preview-grid.is-drifting::before {
-    content: '';
-    position: absolute;
-    inset: -600px 0 0 -600px;
-    pointer-events: none;
-    background-image:
-        radial-gradient(1.1px 1.1px at 20% 30%, rgba(255, 255, 255, 0.55), transparent 100%),
-        radial-gradient(1px 1px at 68% 62%, rgba(148, 163, 184, 0.42), transparent 100%),
-        radial-gradient(1.6px 1.6px at 44% 78%, rgba(0, 240, 255, 0.38), transparent 100%);
-    background-size: 100px 100px, 150px 150px, 200px 200px;
-    animation: teamStarDrift 120s linear infinite;
-}
-
-/* Meteors. Each is one hairline gradient rotated to the shower's angle and
-   translated along its own length, so the streak always travels head-first.
-   Transform and opacity only — the whole shower stays on the compositor. */
-.team-preview-meteor {
-    position: absolute;
-    top: var(--meteor-top, 0);
-    left: var(--meteor-left, 0);
-    z-index: 0;
-    width: var(--meteor-len, 120px);
-    height: 1px;
-    pointer-events: none;
-    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.75) 62%, rgba(226, 250, 255, 0.95));
-    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.6));
-    opacity: 0;
-    animation: teamMeteorFall var(--meteor-dur, 3.4s) linear infinite;
-    animation-delay: calc(var(--meteor-delay, 0) * -1s);
-}
-
-.team-preview-grid.is-drifting .team-preview-item {
-    --drift-x: 0px;
-    --drift-y: 0px;
-    --drift-size: 64px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: var(--drift-size);
-    height: var(--drift-size);
-    aspect-ratio: auto;
-    transform: translate3d(var(--drift-x), var(--drift-y), 0);
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    will-change: transform;
-    z-index: 1;
-}
-
-/* Hover restates the drift transform: the base .team-preview-item:hover lift
-   would otherwise replace translate3d() and snap the item to the origin. */
-.team-preview-grid.is-drifting .team-preview-item:hover,
-.team-preview-grid.is-drifting .team-preview-item:focus-visible {
-    transform: translate3d(var(--drift-x), var(--drift-y), 0);
-    z-index: 5;
-}
-
-@keyframes teamStarDrift {
-    from { transform: translate3d(0, 0, 0); }
-    to { transform: translate3d(600px, 600px, 0); }
-}
-
-@keyframes teamMeteorFall {
-    0% { opacity: 0; transform: rotate(32deg) translate3d(-160px, 0, 0); }
-    10% { opacity: 1; }
-    72% { opacity: 1; }
-    100% { opacity: 0; transform: rotate(32deg) translate3d(560px, 0, 0); }
-}
-
 .team-preview-links {
     display: flex;
     flex-wrap: wrap;
@@ -2963,7 +2868,7 @@ a.line-card:hover { color: inherit; }
 #who-we-are strong {
     color: var(--neon-cyan);
     font-weight: 600;
-    text-shadow: 0 0 14px rgba(0, 240, 255, 0.42);
+    text-shadow: none;
 }
 
 @media (max-width: 575.98px) {

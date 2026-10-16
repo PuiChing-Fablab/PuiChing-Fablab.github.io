@@ -42,7 +42,6 @@
     </head>
     <body>
         <a class="skip-link" href="#page-main" data-i18n="be504f61">Skip to main content</a>
-        <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
         <!-- Top Bar -->
         <div class="top-bar">
@@ -53,9 +52,9 @@
                     <span class="brand-name" data-i18n="7442115c">Pui Ching Middle School (Macau) Humanoid Robot Group</span>
                 </a>
                 <div class="d-flex gap-2 align-items-center flex-wrap">
-                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-instagram"></i> <span data-i18n="5721bbef">Instagram</span></a>
-                    <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-youtube"></i> <span data-i18n="d5633ec1">YouTube Channel</span></a>
-                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named"><i class="bi bi-journal-text"></i> <span data-i18n="bab7f859">Learning Notes</span></a>
+                    <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" class="social-link-named" aria-label="Instagram" data-i18n-aria-label="5721bbef"><i class="bi bi-instagram" aria-hidden="true"></i> <span data-i18n="5721bbef">Instagram</span></a>
+                    <a href="https://www.youtube.com/@pcms-hrg" target="_blank" rel="noopener" class="social-link-named" aria-label="YouTube Channel" data-i18n-aria-label="d5633ec1"><i class="bi bi-youtube" aria-hidden="true"></i> <span data-i18n="d5633ec1">YouTube Channel</span></a>
+                    <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" class="social-link-named" aria-label="Learning Notes" data-i18n-aria-label="bab7f859"><i class="bi bi-journal-text" aria-hidden="true"></i> <span data-i18n="bab7f859">Learning Notes</span></a>
                     <div class="lang-switch">
                         <button type="button" class="lang-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Change language" data-i18n-aria-label="789b14df">
                             <i class="bi bi-translate" aria-hidden="true"></i><span class="lang-current">EN</span>
@@ -88,7 +87,11 @@
                 <h1 class="section-title" data-i18n="e58f7f88">Activities</h1>
                 <p class="section-intro" data-i18n="f4ef0b00">Every competition, training camp and outreach event since the team was formed &mdash; newest first. Filter by type or by programme line.</p>
 
-                <div class="filter-bar" role="group" aria-label="Filter activities by type" data-i18n-aria-label="4d9196df">
+                <div class="activity-view-links">
+                    <a href="#activity-records" class="btn btn-tab-link" data-i18n="b14111a0">Activity stories</a>
+                    <a href="#videos" class="btn btn-tab-link" data-i18n="cde52e3c"><i class="bi bi-play-circle me-1" aria-hidden="true"></i>Video library</a>
+                </div>
+                <div id="activity-records" class="filter-bar" role="group" aria-label="Filter activities by type" data-i18n-aria-label="4d9196df">
                     <button type="button" class="filter-chip" data-filter="all" aria-pressed="true" data-i18n="6a720856">All</button>
                     <button type="button" class="filter-chip" data-filter="competition" aria-pressed="false" data-i18n="db98a68a">Competitions</button>
                     <button type="button" class="filter-chip" data-filter="training" aria-pressed="false" data-i18n="b6fe7f5e">Training</button>
@@ -98,6 +101,78 @@
                     <button type="button" class="filter-chip is-k1" data-filter="k1" aria-pressed="false" data-i18n="ab8a20dd">K1 Line</button>
                 </div>
 
+                <article class="activity-block" id="act-gdte" data-category="competition k1">
+                    <div class="activity-header">
+                        <span class="activity-date" data-i18n="c924971d">23–25 September 2026</span>
+                        <h2 class="activity-title" data-i18n="00586870">GDTE 2026 — Humanoid Robot Soccer 3v3</h2>
+                    </div>
+                    <div class="activity-meta">
+                        <span class="meta-item" data-i18n="7df1ee51"><i class="bi bi-geo-alt"></i>Hangzhou Grand Convention and Exhibition Center</span>
+                    </div>
+                    <div class="pill-row mb-3"><span class="pill pill-gold">K1 Line</span> <span class="pill">Competition</span> <span class="pill">Soccer 3v3</span></div>
+                    <div class="activity-result">
+                        <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                        <p class="activity-result-text mb-0" data-i18n="14543a04"><strong>2nd Place — PCMS-HRG-1</strong> and <strong>3rd Place — PCMS-HRG-2</strong> in autonomous humanoid robot soccer 3v3.</p>
+                    </div>
+                    <p data-i18n="f5d2b521">From 23 to 25 September, PCMS-HRG was invited to compete in the <strong>2026 Global Digital Trade Innovation Competition (Embodied Intelligent Robot Challenge)</strong> at Hangzhou Grand Convention and Exhibition Center. The two teams, PCMS-HRG-1 and PCMS-HRG-2, won second and third place respectively in humanoid robot soccer 3v3.</p>
+                    <p data-i18n="92fcbfa6">Robots had to pass, shoot and make attacking and defensive decisions autonomously, identify teammates' positions and coordinate in real time, with no human remote control. The event tested code, reliable robot operation, tactical design and multi-robot teamwork.</p>
+                    <p data-i18n="1feac5c8">Pui Ching was the <strong>only secondary school invited to compete</strong>; the other entries came from universities and companies. Both school teams finished in the top three. PCMS-HRG-1 reached the final against a university team and took second place, while PCMS-HRG-2 finished third.</p>
+                    <p data-i18n="066d4233">The delegation also entered humanoid and legged-robot shuttle-run events. Trying different challenges and exchanging ideas with university and industry teams gave students a broader view of embodied intelligence in practice.</p>
+                    <div class="roster">
+                        <p class="roster-title" data-i18n="5c7d6011">PCMS-HRG invited teams — Humanoid Robot Soccer 3v3</p>
+                        <div class="roster-group">
+                            <p class="roster-label" data-i18n="181feb68">Coaches</p>
+                            <ul class="roster-names is-coach"><li>Lao Kun Wa<span class="rn-cn">劉冠華</span></li><li>Lam Kin Un<span class="rn-cn">林建源</span></li><li>Lei Mou Hong<span class="rn-cn">李武鴻</span></li></ul>
+                        </div>
+                        <div class="roster-group">
+                            <p class="roster-label" data-i18n="7ec20db4">PCMS-HRG-1 — 2nd Place</p>
+                            <ul class="roster-names"><li>Wu Iat Cheng<span class="rn-cn">胡溢晴</span></li><li>Hoi Wai Kio<span class="rn-cn">許惠喬</span></li><li>Yao Yi Chen<span class="rn-cn">姚怡辰</span></li><li>U Hong Nei<span class="rn-cn">余康妮</span></li><li>Lei Ut Ieng<span class="rn-cn">李悅瑩</span></li><li>Kwan Chi Cheng<span class="rn-cn">關芷晴</span></li></ul>
+                        </div>
+                        <div class="roster-group">
+                            <p class="roster-label" data-i18n="b3f11b6b">PCMS-HRG-2 — 3rd Place</p>
+                            <ul class="roster-names"><li>Deng Son Ian<span class="rn-cn">鄧淳甄</span></li><li>Wang Chi Hang<span class="rn-cn">王梓行</span></li><li>Un Hao Him<span class="rn-cn">阮孝謙</span></li><li>Shi Yuluo<span class="rn-cn">施予洛</span></li><li>Ieong Wan Long<span class="rn-cn">楊允瀧</span></li></ul>
+                        </div>
+                    </div>
+                    <div class="gallery gallery--natural">
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_1.jpeg?v=eb8cb203e709" alt="Award ceremony for the humanoid robot soccer competition" loading="lazy" decoding="async" width="3519" height="2345" data-i18n-alt="fdab88b5">
+                            <figcaption class="gallery-caption" data-i18n="fdab88b5">Award ceremony for the humanoid robot soccer competition</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_2.jpeg?v=54162889bccf" alt="The team and robots together after the competition" loading="lazy" decoding="async" width="3907" height="2604" data-i18n-alt="138da6f2">
+                            <figcaption class="gallery-caption" data-i18n="138da6f2">The team and robots together after the competition</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_3.jpeg?v=b5b6bb514315" alt="Group photo outside the competition venue in Hangzhou" loading="lazy" decoding="async" width="5712" height="4284" data-i18n-alt="7d1f97ec">
+                            <figcaption class="gallery-caption" data-i18n="7d1f97ec">Group photo outside the competition venue in Hangzhou</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_4.jpeg?v=b1456377fcd4" alt="Students tuning the robots beside the pitch" loading="lazy" decoding="async" width="4000" height="2666" data-i18n-alt="c77bece8">
+                            <figcaption class="gallery-caption" data-i18n="c77bece8">Students tuning the robots beside the pitch</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_5.jpeg?v=0ab35df7e78e" alt="The team working together on robot setup and testing" loading="lazy" decoding="async" width="4000" height="2666" data-i18n-alt="4fef0eb3">
+                            <figcaption class="gallery-caption" data-i18n="4fef0eb3">The team working together on robot setup and testing</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_6.jpeg?v=2c896931e651" alt="Preparing the robots before the match" loading="lazy" decoding="async" width="4000" height="2666" data-i18n-alt="1f242dd0">
+                            <figcaption class="gallery-caption" data-i18n="1f242dd0">Preparing the robots before the match</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_7.jpeg?v=4956d43ed44b" alt="Final robot checks and preparations before the match" loading="lazy" decoding="async" width="1600" height="1066" data-i18n-alt="91d97b50">
+                            <figcaption class="gallery-caption" data-i18n="91d97b50">Final robot checks and preparations before the match</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_8.jpeg?v=e822472004a5" alt="Students being interviewed before the match" loading="lazy" decoding="async" width="5712" height="4284" data-i18n-alt="c39acbd6">
+                            <figcaption class="gallery-caption" data-i18n="c39acbd6">Students being interviewed before the match</figcaption>
+                        </figure>
+                        <figure class="gallery-item">
+                            <img src="../assets/img/events/2026-09-gdte/gdte2026_9.jpeg?v=69dc3cdff8e4" alt="Spectators gathered around the robot soccer competition" loading="lazy" decoding="async" width="4000" height="2666" data-i18n-alt="6b8695b4">
+                            <figcaption class="gallery-caption" data-i18n="6b8695b4">Spectators gathered around the robot soccer competition</figcaption>
+                        </figure>
+                    </div>
+
+                </article>
                 <article class="activity-block" id="act-whrg" data-category="competition k1">
                     <div class="activity-header">
                         <span class="activity-date" data-i18n="092efc81">22–26 August 2026</span>
@@ -109,13 +184,13 @@
                     <div class="pill-row mb-3"><span class="pill pill-gold">K1 Line</span> <span class="pill pill">Competition</span> <span class="pill pill-purple">International</span> <span class="pill pill">Soccer 3v3 U19</span></div>
                     <div class="activity-result">
                         <i class="bi bi-trophy-fill" aria-hidden="true"></i>
-                        <p class="activity-result-text mb-0" data-i18n="7cb40696"><strong>Quarter-finals (Top 8)</strong> in Soccer 3v3 U19 &mdash; Macau's first team at the World Humanoid Robot Games.</p>
+                        <p class="activity-result-text mb-0" data-i18n="94770165"><strong>Quarter-finals (Top 8)</strong> in Soccer 3v3 U19 at the World Humanoid Robot Games.</p>
                     </div>
-                    <p data-i18n="2c197a19">The second World Humanoid Robot Games brought <strong>666 teams and 2,056 robots from 16 countries across six continents</strong> to Beijing to compete in 51 events. Pui Ching entered two teams &mdash; PCMS-HRG in the Soccer 3v3 U19 competition, and FAMBOT in the Retail Service scenario event &mdash; making this Macau's first appearance at the Games.</p>
+                    <p data-i18n="89633beb">The second World Humanoid Robot Games brought <strong>666 teams and 2,056 robots from 16 countries across six continents</strong> to Beijing to compete in 51 events. Pui Ching was invited to compete with two teams: PCMS-HRG in Soccer 3v3 U19 and FAMBOT in the Retail Service scenario event.</p>
                     <p data-i18n="5ade28ee">Soccer 3v3 U19 was new this year and set aside specifically for secondary school students. Robots must move, find the ball, choose between attacking and defending, and coordinate with teammates entirely on their own. PCMS-HRG kept its nerve through the group stage and reached the quarter-finals, adjusting robot settings and match strategy between games against far more experienced opposition.</p>
                     <p data-i18n="ea9fc753">In the parallel Retail Service scenario event, FAMBOT's robot had to pick products, restock shelves and patrol back to its station in sequence &mdash; a test of perception, navigation, grasping, system integration and sustained task execution. Sixty-six teams entered and only the top 16 advanced; competing as school students against corporate and university entries, the team held its own and gained rare experience under pressure. During the Games both teams were interviewed by Beijing Radio and Television Station.</p>
                     <div class="roster">
-                        <p class="roster-title" data-i18n="2384a121">PCMS-HRG entry — Soccer 3v3 U19</p>
+                        <p class="roster-title" data-i18n="4476273f">PCMS-HRG invited team — Soccer 3v3 U19</p>
                         <div class="roster-group">
                             <p class="roster-label" data-i18n="181feb68">Coaches</p>
                             <ul class="roster-names is-coach"><li>Lao Kun Wa<span class="rn-cn">劉冠華</span></li><li>Lam Kin Un<span class="rn-cn">林建源</span></li><li>Lei Mou Hong<span class="rn-cn">李武鴻</span></li></ul>
@@ -166,10 +241,10 @@
                         <p class="activity-result-text mb-0" data-i18n="6594bba7"><strong>1st Place</strong> &mdash; RCAP CoSpace Humanoid OnStage U12.</p>
                     </div>
                     <p data-i18n="1231a5e1">The second RCAP Asia-Pacific Robot World Cup Beijing Masters drew 24 international teams from 16 countries and regions, with competitors from 28 countries and regions in total. Teams from the United States, South Korea and Russia entered for the first time, while Brazil and Australia fielded national squads assembled from several universities and RoboCup teams.</p>
-                    <p data-i18n="1f49953a">PCMS-HRG entered the <strong>RCAP CoSpace Humanoid OnStage U12</strong> event, which judges programming, motion choreography, creative expression and teamwork. Two team members split programming, robot operation, performance design and live presentation between them, testing motions and refining the show repeatedly in the run-up to the competition &mdash; and took first place.</p>
+                    <p data-i18n="2812813e">PCMS-HRG was invited to compete in the <strong>RCAP CoSpace Humanoid OnStage U12</strong> individual event, which judges programming, motion choreography, creative expression and teamwork. Two team members split programming, robot operation, performance design and live presentation between them, testing motions and refining the show repeatedly in the run-up to the competition &mdash; and won the individual title.</p>
                     <p data-i18n="ad33786c">Every junior team also had to join the Humanoid OnStage SuperTeam challenge, creating and performing a joint routine with teams from other regions. Working across languages and toolchains under time pressure turned out to be as instructive as the competition itself.</p>
                     <div class="roster">
-                        <p class="roster-title" data-i18n="b3331628">PCMS-HRG entry — CoSpace Humanoid OnStage U12</p>
+                        <p class="roster-title" data-i18n="385e7ee9">PCMS-HRG invited team — CoSpace Humanoid OnStage U12</p>
                         <div class="roster-group">
                             <p class="roster-label" data-i18n="181feb68">Coaches</p>
                             <ul class="roster-names is-coach"><li>Lao Kun Wa<span class="rn-cn">劉冠華</span></li><li>Lam Kin Un<span class="rn-cn">林建源</span></li><li>Lei Mou Hong<span class="rn-cn">李武鴻</span></li></ul>
@@ -211,7 +286,7 @@
                         <i class="bi bi-trophy-fill" aria-hidden="true"></i>
                         <p class="activity-result-text mb-0" data-i18n="d3f9ae0d"><strong>Cleared the qualifying round</strong> &mdash; PCMS-HRG beat the AI benchmark team to pass qualification for Season 1 of the 3v3 championship.</p>
                     </div>
-                    <p data-i18n="182b5601">Between the RoboCup finals and the summer competitions in Beijing, the team entered Booster Robotics' first Champion Night season &mdash; a 3v3 simulated soccer league played entirely in Booster Studio, with code submitted for automated matches.</p>
+                    <p data-i18n="598e4ed4">Between the RoboCup finals and the summer competitions in Beijing, the team was invited to compete in Booster Robotics' first Champion Night season &mdash; a 3v3 simulated soccer league played entirely in Booster Studio, with code submitted for automated matches.</p>
                     <p data-i18n="7831dcba">Simulation strips away hardware failures and battery limits and leaves nothing but strategy: behaviour-tree design, role assignment, positioning and ball pursuit. It is the cheapest place to fail, and the fastest place to iterate, so improvements found here fed straight back into the physical robots' match code.</p>
                         <div class="gallery">
                             <figure class="gallery-item">
@@ -233,11 +308,11 @@
                         <i class="bi bi-trophy-fill" aria-hidden="true"></i>
                         <p class="activity-result-text mb-0" data-i18n="91c8ad42"><strong>5th in the world</strong> &mdash; RoboCup Humanoid Soccer League, Large Division (Major bracket).</p>
                     </div>
-                    <p data-i18n="cedc6d2f">RoboCup is the largest robotics and AI competition in the world. In 2026 the Humanoid League and the Standard Platform League merged into the new <strong>Humanoid Soccer League (HSL)</strong>, and PCMS-HRG entered its <strong>Large Division</strong> &mdash; the tier for robots up to 190&nbsp;cm and 80&nbsp;kg &mdash; in the Major bracket, competing against university and research laboratory teams.</p>
-                    <p data-i18n="fe974748">The HSL is deliberately unforgiving. Robots must play with a human-like body plan and human-like senses; there are no shortcuts through range sensors or external tracking. Over five intensive days the students handled unfamiliar lighting, hardware faults and mid-match strategy changes on their own.</p>
+                    <p data-i18n="897b7af6">PCMS-HRG was invited to compete in the <strong>RoboCup Humanoid Soccer League (HSL), Large Division</strong>, in the Major bracket alongside university and research teams. The event gave students experience with humanoid robotics at a high international level.</p>
+                    <p data-i18n="cecfc773">The competition brings together robot hardware, gait control, visual recognition, real-time decisions and teamwork. Over five intensive days, students adjusted software and hardware, tested strategies and responded to changing match conditions.</p>
                     <p data-i18n="69b5c643">PCMS-HRG reached the quarter-finals before being eliminated, finishing <strong>5th in the world</strong> in its first appearance at this level.</p>
                     <div class="roster">
-                        <p class="roster-title" data-i18n="b6af456a">PCMS-HRG entry — Humanoid Soccer League, Large Division</p>
+                        <p class="roster-title" data-i18n="72ab2398">PCMS-HRG invited team — Humanoid Soccer League, Large Division</p>
                         <div class="roster-group">
                             <p class="roster-label" data-i18n="181feb68">Coaches</p>
                             <ul class="roster-names is-coach"><li>Lao Kun Wa<span class="rn-cn">劉冠華</span></li><li>Lam Kin Un<span class="rn-cn">林建源</span></li><li>Lei Mou Hong<span class="rn-cn">李武鴻</span></li></ul>
@@ -317,7 +392,7 @@
                     </div>
                     <div class="pill-row mb-3"><span class="pill pill-gold">K1 Line</span> <span class="pill pill">Competition</span> <span class="pill pill-purple">International</span> <span class="pill pill-muted">Joint teams</span></div>
                     <p data-i18n="350dbd45">The 2026 Beijing Yizhuang Half Marathon and Humanoid Robot Half Marathon put robots and human runners on the same 21.0975&nbsp;km course &mdash; over a hundred teams, 105 humanoid robots, five international entries and some 12,000 human runners. Organisers announced they would submit the event for a Guinness World Record for the most autonomous humanoid robots in a half marathon.</p>
-                    <p data-i18n="c14914d5">Pui Ching was the <strong>only secondary school in the world</strong> to take part, entering through two joint teams built with Macau University of Science and Technology and international partners:</p>
+                    <p data-i18n="070d936b">Pui Ching was the <strong>only secondary school in the world</strong> invited to compete, through two joint teams built with Macau University of Science and Technology and international partners:</p>
                     <ul class="about-list">
                         <li data-i18n="e8684fd1"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i><strong>Portugal&ndash;Macau joint team</strong> (No. 065), with Instituto Superior Técnico, Lisbon &mdash; running the Tien Kung Ultra-2026 humanoid (approx. 175&nbsp;cm, 75&nbsp;kg), tuned for gait stability, pace control and wet or sloped road surfaces.</li>
                         <li data-i18n="371d2003"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i><strong>Brazil&ndash;Macau joint team</strong> (No. 068), with Brazilian education and research partners &mdash; running the Booster K1 (0.95&nbsp;m, 19.5&nbsp;kg), with upgraded real-time gait planning and adaptive compliance control to hold posture as joints heat up over distance.</li>
@@ -394,8 +469,8 @@
                     </div>
                     <div class="pill-row mb-3"><span class="pill pill-gold">K1 Line</span> <span class="pill pill">Competition</span> <span class="pill pill-muted">Invited team</span> <span class="pill pill">5-a-side</span></div>
                     <p data-i18n="4145586a">The first Beijing (Haidian) Middle School Humanoid Robot Soccer League was an embodied-AI proving ground built specifically for secondary school students. No remote control and no outside intervention are permitted &mdash; results come purely from student-written code and how the robots behave on the day.</p>
-                    <p data-i18n="a5f912ad">The format was a full competition ladder: eligibility check, Swiss-round qualifiers, group stage and finals. <strong>Each team fields five humanoid robots at once</strong>, following referee-machine commands through kick-off, attack-defence transitions, substitutions and foul handling, with defined state commands, substitution rules and penalty standards throughout.</p>
-                    <p data-i18n="f780b643">What the students remember most is everything around the ninety seconds of play: version checks, configuration, network connections, camera and main-program start-up, log inspection, then localisation tests, equipment checks, battery swaps and pitch acclimatisation right before walking on. When a robot fell, lost localisation or a module misbehaved mid-match, they had to read the situation and fix it within the competition's procedures. Humanoid robot soccer is not a technology demonstration &mdash; it is software development, system debugging, hands-on engineering and teamwork, all at once.</p>
+                    <p data-i18n="213148ca">The competition included eligibility checks, qualifiers, a group stage and finals. <strong>Each team fields five humanoid robots at once</strong>, following referee commands for kick-off, attack-defence transitions, substitutions and penalties.</p>
+                    <p data-i18n="76b7b5d8">Before each match, students checked software versions, configuration, network connections, cameras and logs, then tested localisation and changed batteries. During play, they diagnosed falls, localisation errors and module faults under the competition procedures. Each match put programming, system debugging, practical engineering and teamwork to the test.</p>
                     <div class="roster">
                         <p class="roster-title" data-i18n="1f70d215">PCMS-HRG squad</p>
                         <div class="roster-group">
@@ -438,8 +513,8 @@
                     <p data-i18n="be97593a">To mark the Lunar New Year, PCMS-HRG staged a special humanoid robot performance for the school &mdash; a festive showcase, and a genuine test of the team's progress in motion programming and choreography.</p>
                         <div class="gallery">
                             <figure class="gallery-item">
-                                <img src="../assets/img/events/2026-02-cny-performance/202602_新年表演.jpg" alt="The humanoid robot performing a Chinese New Year routine" loading="lazy" decoding="async" width="700" height="525" data-i18n-alt="569ab228">
-                                <figcaption class="gallery-caption" data-i18n="569ab228">The humanoid robot performing a Chinese New Year routine</figcaption>
+                                <img src="../assets/img/events/2026-02-cny-performance/202602_新年表演.jpg" alt="Students and humanoid robots after the Chinese New Year performance" loading="lazy" decoding="async" width="700" height="525" data-i18n-alt="db2b11e1">
+                                <figcaption class="gallery-caption" data-i18n="db2b11e1">Students and humanoid robots after the Chinese New Year performance</figcaption>
                             </figure>
                         </div>
                 </article>
@@ -476,14 +551,6 @@
                                 <figcaption class="gallery-caption" data-i18n="119668b0">Arriving at the training venue on the first day</figcaption>
                             </figure>
                             <figure class="gallery-item">
-                                <img src="../assets/img/events/2026-02-beijing-camp/202602_北京培訓_聯賽場地.jpg" alt="The league training pitch" loading="lazy" decoding="async" width="700" height="525" data-i18n-alt="fe30e8fb">
-                                <figcaption class="gallery-caption" data-i18n="fe30e8fb">The league training pitch</figcaption>
-                            </figure>
-                            <figure class="gallery-item">
-                                <img src="../assets/img/events/2026-02-beijing-camp/202602_北京培訓_簡介會.jpg" alt="Opening briefing before the training sessions" loading="lazy" decoding="async" width="700" height="142" data-i18n-alt="56c87345">
-                                <figcaption class="gallery-caption" data-i18n="56c87345">Opening briefing before the training sessions</figcaption>
-                            </figure>
-                            <figure class="gallery-item">
                                 <img src="../assets/img/events/2026-02-beijing-camp/202602_北京培訓_上課_1.jpg" alt="Learning advanced robot control techniques" loading="lazy" decoding="async" width="700" height="525" data-i18n-alt="c3c8b6b7">
                                 <figcaption class="gallery-caption" data-i18n="c3c8b6b7">Learning advanced robot control techniques</figcaption>
                             </figure>
@@ -498,10 +565,6 @@
                             <figure class="gallery-item">
                                 <img src="../assets/img/events/2026-02-beijing-camp/202602_北京培訓_上課_4.jpg" alt="Concentrating through a technical lecture" loading="lazy" decoding="async" width="700" height="525" data-i18n-alt="991f587b">
                                 <figcaption class="gallery-caption" data-i18n="991f587b">Concentrating through a technical lecture</figcaption>
-                            </figure>
-                            <figure class="gallery-item">
-                                <img src="../assets/img/events/2026-02-beijing-camp/202602_北京培訓_隊伍交流.jpg" alt="Exchanging ideas with other secondary school teams" loading="lazy" decoding="async" width="700" height="525" data-i18n-alt="0ef49afd">
-                                <figcaption class="gallery-caption" data-i18n="0ef49afd">Exchanging ideas with other secondary school teams</figcaption>
                             </figure>
                             <figure class="gallery-item">
                                 <img src="../assets/img/events/2026-02-beijing-camp/202602_北京培訓_培訓場地.jpg" alt="The training venue during a practice session" loading="lazy" decoding="async" width="700" height="394" data-i18n-alt="4cfa852a">
@@ -608,6 +671,26 @@
 
                 <p class="filter-empty" data-i18n="fac0231d">No activities match this filter.</p>
 
+                <section class="section video-library" id="videos" aria-labelledby="video-library-title">
+                    <span class="section-eyebrow" data-i18n="83d59f7b">Watch the team</span>
+                    <h2 class="section-title" id="video-library-title" data-i18n="f2538ed8">Video library</h2>
+                    <p class="section-intro" data-i18n="349d8bb1">Competition highlights and moments from the team’s journey, collected in one place.</p>
+                    <div class="video-library__grid">
+                        <article class="video-card">
+                            <video controls playsinline preload="none" width="1280" height="720" poster="../assets/img/events/2026-09-gdte/gdte-highlights-poster.jpg" aria-labelledby="video-gdte-title">
+                                <source src="../assets/video/events/2026-09-gdte/gdte-highlights.mp4?v=292aba9d0ce6" type="video/mp4">
+                                <a href="../assets/video/events/2026-09-gdte/gdte-highlights.mp4?v=292aba9d0ce6" download data-i18n="68fe63a6">Download the highlights video</a>
+                            </video>
+                            <div class="video-card__body">
+                                <span class="activity-date" data-i18n="c924971d">23–25 September 2026</span>
+                                <h3 class="subsection-title" id="video-gdte-title" data-i18n="00586870">GDTE 2026 — Humanoid Robot Soccer 3v3</h3>
+                                <p data-i18n="01036c35">From the sidelines to the match action — highlights from the GDTE football competition.</p>
+                                <a href="#act-gdte" class="btn btn-tab-link" data-i18n="6b2afacb">Read the event story</a>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
             </div>
         </main>
 
@@ -629,7 +712,7 @@
                         </ul>
                         <div class="footer-social">
                             <a href="https://www.instagram.com/pcms_humanoid_robot" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i class="bi bi-instagram"></i></a>
-                            <a href="https://www.youtube.com/@pcms_humanoid_robot" target="_blank" rel="noopener" aria-label="YouTube Channel" title="YouTube Channel"><i class="bi bi-youtube"></i></a>
+                            <a href="https://www.youtube.com/@pcms-hrg" target="_blank" rel="noopener" aria-label="YouTube Channel" title="YouTube Channel"><i class="bi bi-youtube"></i></a>
                             <a href="https://www.notion.so/PCMS-HRG-30fe9098ca83804c86dbfef9d9f2c575?source=copy_link" target="_blank" rel="noopener" aria-label="Learning Notes" title="Learning Notes"><i class="bi bi-journal-text"></i></a>
                         </div>
                     </div>

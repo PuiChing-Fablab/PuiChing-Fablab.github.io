@@ -6,6 +6,7 @@
     'use strict';
 
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var text = window.PCMSI18n.text;
 
     /* ---------------------------------------------------------------------
        Lightbox — driven by any [data-lightbox] gallery on the page.
@@ -30,6 +31,14 @@
             '<span class="lightbox-counter"></span>' +
             '</figure>';
         document.body.appendChild(box);
+        function translateViewer() {
+            box.setAttribute('aria-label', text('Photo viewer'));
+            box.querySelector('.lightbox-close').setAttribute('aria-label', text('Close viewer'));
+            box.querySelector('.lightbox-prev').setAttribute('aria-label', text('Previous photo'));
+            box.querySelector('.lightbox-next').setAttribute('aria-label', text('Next photo'));
+        }
+        translateViewer();
+        document.addEventListener('i18n:applied', translateViewer);
 
         var img = box.querySelector('.lightbox-img');
         var cap = box.querySelector('.lightbox-caption');
@@ -133,8 +142,8 @@
 
     /* ---------------------------------------------------------------------
        Home activity reel — clone one complete set for a mathematically exact
-       seamless loop. The clone is inert, so assistive technology and keyboard
-       users encounter each activity only once.
+       seamless loop. Copies stay clickable, but are omitted from the tab
+       order and accessibility tree to avoid repeating every activity.
        --------------------------------------------------------------------- */
     function initActivityLoop() {
         var loop = document.querySelector('.activity-loop');
@@ -151,7 +160,6 @@
             clone.classList.add('activity-loop__group--clone');
             clone.removeAttribute('role');
             clone.setAttribute('aria-hidden', 'true');
-            clone.setAttribute('inert', '');
             Array.prototype.forEach.call(clone.querySelectorAll('[id]'), function (el) {
                 el.removeAttribute('id');
             });
@@ -161,51 +169,6 @@
             track.appendChild(clone);
         }
 
-        // Only the result plates near the horizontal viewport need their
-        // chromatic sweep running. Pausing the off-screen copies avoids two
-        // dozen simultaneous paint animations while preserving the visible
-        // reel exactly as designed.
-        var sweepSlides = Array.prototype.slice.call(track.querySelectorAll('.activity-slide'));
-        var sweepTimer = 0;
-
-        if (!reduceMotion) {
-
-            function refreshVisibleSweeps() {
-                sweepTimer = 0;
-                var viewportRect = viewport.getBoundingClientRect();
-                if (viewportRect.bottom <= 0 || viewportRect.top >= window.innerHeight) {
-                    sweepSlides.forEach(function (slide) { slide.classList.remove('is-sweep-visible'); });
-                    sweepTimer = window.setTimeout(refreshVisibleSweeps, 600);
-                    return;
-                }
-                var preload = Math.min(240, viewportRect.width * 0.18);
-                var visibleStates = sweepSlides.map(function (slide) {
-                    var rect = slide.getBoundingClientRect();
-                    return rect.right > viewportRect.left - preload && rect.left < viewportRect.right + preload;
-                });
-                sweepSlides.forEach(function (slide, index) {
-                    slide.classList.toggle('is-sweep-visible', visibleStates[index]);
-                });
-                sweepTimer = window.setTimeout(refreshVisibleSweeps, 400);
-            }
-
-            function startVisibleSweeps() {
-                if (!sweepTimer) refreshVisibleSweeps();
-            }
-
-            function stopVisibleSweeps() {
-                window.clearTimeout(sweepTimer);
-                sweepTimer = 0;
-                sweepSlides.forEach(function (slide) { slide.classList.remove('is-sweep-visible'); });
-            }
-
-            document.addEventListener('visibilitychange', function () {
-                if (document.hidden) stopVisibleSweeps();
-                else startVisibleSweeps();
-            });
-            startVisibleSweeps();
-        }
-
         var paused = reduceMotion;
 
         function setPaused(value) {
@@ -213,13 +176,15 @@
             loop.classList.toggle('is-paused', paused);
             if (!toggle) return;
             toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
-            toggle.setAttribute('aria-label', paused ? 'Resume automatic activity movement' : 'Pause automatic activity movement');
-            toggle.setAttribute('title', paused ? 'Resume automatic activity movement' : 'Pause automatic activity movement');
+            var label = text(paused ? 'Resume automatic activity movement' : 'Pause automatic activity movement');
+            toggle.setAttribute('aria-label', label);
+            toggle.setAttribute('title', label);
             var icon = toggle.querySelector('.bi');
             if (icon) icon.className = paused ? 'bi bi-play-fill' : 'bi bi-pause-fill';
         }
 
         setPaused(paused);
+        document.addEventListener('i18n:applied', function () { setPaused(paused); });
         if (toggle) {
             if (reduceMotion) {
                 toggle.hidden = true;
@@ -287,7 +252,9 @@
         var btn = document.createElement('button');
         btn.className = 'to-top';
         btn.type = 'button';
-        btn.setAttribute('aria-label', 'Back to top');
+        function translateButton() { btn.setAttribute('aria-label', text('Back to top')); }
+        translateButton();
+        document.addEventListener('i18n:applied', translateButton);
         btn.innerHTML = '<i class="bi bi-arrow-up"></i>';
         document.body.appendChild(btn);
 

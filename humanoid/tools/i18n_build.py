@@ -28,6 +28,7 @@ IDENTITY = re.compile(
     r"Lao Kun Wa|Lam Kin Un|Lei Mou Hong|Wu Iat Cheng|Lam Si Ioi|Hoi Wai Kio|"
     r"Yao Yi Chen|Lei Pui Weng|Lei Ut Ieng|Mui Lek Hou|Kwan Chi Cheng|"
     r"Kong Ngai Lam|U Hong Nei|Fong Cheng In|"
+    r"Li Cheng Da|Deng Son Ian|Un Hao Him|Ieong Wan Long|Shi Yuluo|Mak Chun Ngai|Wang Chi Hang|"
     r"Instagram|YouTube|PCMS-HRG|Booster T1|Booster K1|"
     # Glossary head-words stay English — they are the vocabulary being taught;
     # only their definitions are translated.
@@ -91,6 +92,10 @@ def build(lang):
     with open(path, "w", encoding="utf-8") as fh:
         fh.write("window.__I18N__=window.__I18N__||{};\nwindow.__I18N__['" + code + "']=")
         json.dump(out, fh, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+        fh.write(";\n")
+        ui = json.load(open(os.path.join(HERE, "ui_strings.json"), encoding="utf-8"))
+        fh.write("window.__I18N_UI__=window.__I18N_UI__||{};\nwindow.__I18N_UI__['" + code + "']=")
+        json.dump({text: translate(text) or text for text in ui}, fh, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
         fh.write(";\n")
 
     total = len(en)

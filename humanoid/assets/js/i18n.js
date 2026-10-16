@@ -17,6 +17,15 @@
     var base = document.documentElement.getAttribute('data-i18n-base') || '../assets/i18n/';
 
     window.__I18N__ = window.__I18N__ || {};
+    window.PCMSI18n = {
+        text: function (english, values) {
+            var code = document.documentElement.getAttribute('data-lang') || 'en';
+            var dict = (window.__I18N_UI__ || {})[code] || {};
+            return (dict[english] || english).replace(/\{(\w+)\}/g, function (match, key) {
+                return values && values[key] != null ? values[key] : match;
+            });
+        }
+    };
 
     function stored() {
         try { return localStorage.getItem(STORE); } catch (e) { return null; }
@@ -45,7 +54,7 @@
         });
     }
 
-    var ATTRS = ['alt', 'title', 'aria-label', 'data-caption', 'data-phrases', 'content'];
+    var ATTRS = ['alt', 'title', 'aria-label', 'placeholder', 'data-caption', 'data-phrases', 'content'];
 
     function apply(code) {
         captureSource();
@@ -85,18 +94,23 @@
 
     /* ---- load a dictionary on demand, then apply ---- */
     var loading = {};
+    var requestedLang = 'en';
     function setLang(code) {
         if (!known(code)) code = 'en';
+        requestedLang = code;
         remember(code);
         if (code === 'en' || window.__I18N__[code]) { apply(code); return; }
         if (loading[code]) return;
         loading[code] = true;
         var s = document.createElement('script');
         s.src = base + code + '.js';
-        s.onload = function () { loading[code] = false; apply(code); };
+        s.onload = function () {
+            loading[code] = false;
+            if (requestedLang === code) apply(code);
+        };
         s.onerror = function () {
             loading[code] = false;
-            document.documentElement.classList.remove('i18n-pending');
+            if (requestedLang === code) apply('en');
             console.warn('[i18n] dictionary not available:', code);
         };
         document.head.appendChild(s);
@@ -144,6 +158,8 @@
     }
 
     function init() {
+        // Capture before other scripts format the brand or create live UI.
+        captureSource();
         buildSwitcher();
         var pick = stored();
         if (!pick) {
