@@ -440,7 +440,8 @@
         var ctx = canvas.getContext('2d');
         if (!ctx) return;
         document.body.prepend(canvas);
-        var width = 0, height = 0, frame = 0, previous = 0, elapsed = 0, suspended = false;
+        var width = 0, height = 0, frame = 0, previous = 0, timer = 0, suspended = false;
+        var burst = null, burstNumber = 0;
         var circuits = [];
         var backdrop = document.createElement('canvas');
         var trace = backdrop.getContext('2d');
@@ -516,6 +517,41 @@
                 drawTrace(path, false);
             });
         }
+        function paintBolt(points, strength, branch) {
+            var a = points[0], b = points[points.length - 1];
+            var gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+            gradient.addColorStop(0, branch ? '#8fffee' : 'rgba(68,130,255,0)');
+            gradient.addColorStop(.25, '#688cff'); gradient.addColorStop(.52, '#ca83ff');
+            gradient.addColorStop(.78, '#ff9bdf');
+            gradient.addColorStop(1, branch ? 'rgba(151,190,255,0)' : '#8bfff1');
+            ctx.beginPath(); points.forEach(function (p, i) { if (i) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); });
+            ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+            ctx.strokeStyle = gradient; ctx.shadowColor = '#777dff'; ctx.shadowBlur = branch ? 9 : 16;
+            ctx.globalAlpha = strength * .35; ctx.lineWidth = branch ? 2.2 : 4.5; ctx.stroke();
+            ctx.shadowBlur = branch ? 4 : 8; ctx.globalAlpha = strength; ctx.lineWidth = branch ? .85 : 1.5; ctx.stroke();
+            ctx.shadowBlur = 0; ctx.strokeStyle = '#e4faff'; ctx.globalAlpha = strength * (branch ? .34 : .6);
+            ctx.lineWidth = branch ? .25 : .45; ctx.stroke();
+        }
+        function discharge(a, b, seed, time, strength, split) {
+            var points = [a];
+            function subdivide(from, to, roughness, depth, key) {
+                if (!depth) { points.push(to); return; }
+                var dx = to.x - from.x, dy = to.y - from.y, length = Math.hypot(dx, dy) || 1;
+                var offset = noise(key, time * 12, seed) * roughness;
+                var middle = { x: (from.x + to.x) / 2 - dy / length * offset,
+                    y: (from.y + to.y) / 2 + dx / length * offset };
+                subdivide(from, middle, roughness * .56, depth - 1, key * 2 + 1);
+                subdivide(middle, to, roughness * .56, depth - 1, key * 2 + 2);
+            }
+            subdivide(a, b, Math.hypot(b.x - a.x, b.y - a.y) * .24, 4, 1);
+            paintBolt(points, strength, true);
+            if (split) {
+                var root = points[6], dx = b.x - a.x, dy = b.y - a.y;
+                var side = hash(seed + 17) > 0 ? 1 : -1;
+                discharge(root, { x: root.x + dx * .4 - dy * side * .36,
+                    y: root.y + dy * .4 + dx * side * .36 }, seed + 71, time, strength * .65, false);
+            }
+        }
         function filament(path, head, tail, seed, time, strength, branch) {
             var start = Math.max(0, head - tail), end = Math.min(path.length, head);
             if (end - start < 2) return;
@@ -531,55 +567,77 @@
                 // Fine irregular filaments hug the conductor, including at corners.
                 var jitter = (noise(Math.floor(distance / 23), time * 11, seed) * 6
                     + noise(Math.floor(distance / 5), time * 19, seed + 53) * 3) * spread;
-                return { x: p.x + p.nx * jitter, y: p.y + p.ny * jitter };
+                return { x: p.x + p.nx * jitter, y: p.y + p.ny * jitter, distance: distance };
             });
-            var a = points[0], b = points[points.length - 1];
-            var gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-            gradient.addColorStop(0, 'rgba(68,130,255,0)'); gradient.addColorStop(.22, '#577fff');
-            gradient.addColorStop(.48, '#c471ff'); gradient.addColorStop(.72, '#ff8bda');
-            gradient.addColorStop(1, '#8bfff1');
-            ctx.beginPath(); points.forEach(function (p, i) { if (i) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); });
-            ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-            ctx.strokeStyle = gradient; ctx.shadowColor = '#777dff'; ctx.shadowBlur = branch ? 6 : 13;
-            ctx.globalAlpha = strength * .35; ctx.lineWidth = branch ? 2 : 4; ctx.stroke();
-            ctx.shadowBlur = branch ? 3 : 7; ctx.globalAlpha = strength; ctx.lineWidth = branch ? .7 : 1.3; ctx.stroke();
-            ctx.shadowBlur = 0; ctx.strokeStyle = '#e4faff'; ctx.globalAlpha = strength * .65; ctx.lineWidth = .4; ctx.stroke();
+            paintBolt(points, strength, branch);
+            if (!branch) {
+                var spacing = width < 768 ? 50 : 80;
+                for (var anchor = Math.ceil(start / spacing) * spacing; anchor < end; anchor += spacing) {
+                    var age = (head - anchor) / tail;
+                    var power = Math.sin(Math.min(1, age) * Math.PI) * strength;
+                    if (power < .08) continue;
+                    var origin = points.find(function (p) { return Math.abs(p.distance - anchor) < .01; });
+                    if (!origin) continue;
+                    var at = position(path, anchor), key = Math.round(anchor / spacing), side = key % 2 ? 1 : -1;
+                    var reach = Math.min(112, width * .22) * (.55 + Math.abs(hash(seed + key)) * .45);
+                    var forward = reach * (.22 + Math.abs(hash(key + 37)) * .35);
+                    // Branches leave the moving trunk on both sides, then split again.
+                    discharge(origin, { x: origin.x + at.nx * reach * side + at.ny * forward,
+                        y: origin.y + at.ny * reach * side - at.nx * forward }, seed + key * 29, time, power * .88, true);
+                }
+            }
+            var b = points[points.length - 1];
             if (head <= path.length) {
                 ctx.fillStyle = '#cefff6'; ctx.shadowColor = '#65f8ff'; ctx.shadowBlur = 9;
                 ctx.globalAlpha = strength; ctx.beginPath(); ctx.arc(b.x, b.y, branch ? 1 : 1.6, 0, Math.PI * 2); ctx.fill();
             }
         }
-        function render() {
+        function render(now) {
             ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.shadowBlur = 0;
             ctx.clearRect(0, 0, width, height);
             ctx.drawImage(backdrop, 0, 0, width, height);
+            if (!burst || !burst.started) return;
             ctx.globalCompositeOperation = 'lighter';
-            var time = elapsed / 1000, speed = width < 768 ? 460 : 760;
-            var tail = Math.min(260, width * .28);
-            circuits.forEach(function (path, index) {
-                var head = (time * speed + path.length * (index ? .63 : .12)) % (path.length + tail);
-                filament(path, head, tail, 13 + index * 71, time, .85, false);
-                path.branches.forEach(function (spur, branchIndex) {
-                    // A junction discharges only after the main pulse reaches it.
-                    filament(spur, head - spur.junction, tail * .45, 91 + index * 19 + branchIndex * 31, time, .55, true);
-                });
+            var progress = Math.max(0, Math.min(1, (now - burst.started) / burst.duration));
+            var strength = Math.min(1, progress / .08, (1 - progress) / .2);
+            var path = circuits[burst.route], tail = Math.min(380, width * .48);
+            var head = progress * (path.length + tail), time = now / 1000;
+            filament(path, head, tail, burst.seed, time, strength, false);
+            path.branches.forEach(function (spur, branchIndex) {
+                filament(spur, head - spur.junction, tail * .45, burst.seed + branchIndex * 31, time, strength * .55, true);
             });
             ctx.globalAlpha = 1; ctx.shadowBlur = 0;
         }
         function canRun() { return motionEnabled() && !document.hidden && !suspended; }
+        function schedule(delay) {
+            if (!canRun() || timer || frame) return;
+            timer = setTimeout(function () {
+                timer = 0;
+                if (!canRun()) return;
+                burst = { route: burstNumber++ % circuits.length, seed: 13 + burstNumber * 71,
+                    started: 0, duration: 1350 + Math.random() * 300 };
+                frame = requestAnimationFrame(tick);
+            }, delay);
+        }
         function tick(now) {
             frame = 0;
             if (!canRun()) return;
-            if (!previous || now - previous >= 48) {
-                elapsed += previous ? Math.min(now - previous, 100) : 0;
-                previous = now; render();
+            if (!burst.started) burst.started = now;
+            if (now - burst.started >= burst.duration) {
+                burst = null; previous = 0; render(now);
+                schedule(4200 + Math.random() * 2400);
+                return;
             }
+            if (!previous || now - previous >= 40) { previous = now; render(now); }
             frame = requestAnimationFrame(tick);
         }
         function sync() {
             canvas.hidden = !motionEnabled();
-            if (canRun()) { if (!frame) { previous = 0; frame = requestAnimationFrame(tick); } }
-            else { cancelAnimationFrame(frame); frame = 0; previous = 0; }
+            if (canRun()) schedule(1600);
+            else {
+                cancelAnimationFrame(frame); clearTimeout(timer);
+                frame = 0; timer = 0; previous = 0; burst = null; render(performance.now());
+            }
         }
         function resize() {
             width = document.documentElement.clientWidth; height = innerHeight;
@@ -587,7 +645,7 @@
             canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
             backdrop.width = canvas.width; backdrop.height = canvas.height;
             trace.setTransform(ratio, 0, 0, ratio, 0, 0); buildCircuits();
-            ctx.setTransform(ratio, 0, 0, ratio, 0, 0); render();
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0); render(performance.now());
         }
         window.addEventListener('resize', resize);
         document.addEventListener('visibilitychange', sync);
@@ -597,38 +655,44 @@
     }
 
     function initScrollCharge() {
-        // The browser owns the only scrollbar. This edge light never handles input.
-        var edge = document.createElement('div');
-        edge.className = 'scroll-charge'; edge.setAttribute('aria-hidden', 'true');
-        var flow = document.createElement('span'); flow.className = 'scroll-charge__flow'; edge.appendChild(flow);
-        document.body.appendChild(edge);
-        var frame = 0, timer = 0, lastY = scrollY;
-        function settle() {
-            clearTimeout(timer);
-            edge.classList.remove('is-charging');
-            edge.style.setProperty('--scroll-energy', '0');
+        // Update the native thumb's paint only; there is no overlay or extra control.
+        var root = document.documentElement;
+        var frame = 0, previous = 0, phase = 0, energy = 0, direction = 1, lastY = scrollY, until = 0, suspended = false;
+        function canRun() { return motionEnabled() && finePointer.matches && !document.hidden && !suspended; }
+        function rest() {
+            cancelAnimationFrame(frame); frame = 0; previous = 0; until = 0;
+            root.style.setProperty('--scroll-charge-alpha', '.18');
+            root.style.setProperty('--scroll-charge-energy', '0');
+            root.style.setProperty('--scroll-charge-hue', '260');
         }
-        function update() {
+        function tick(now) {
             frame = 0;
+            if (!canRun() || now >= until) { rest(); return; }
+            if (!previous || now - previous >= 40) {
+                var fade = Math.min(1, (until - now) / 500), power = energy * fade;
+                phase = (phase + (previous ? Math.min(now - previous, 80) : 0) * direction * (.1 + power * .38) + 96) % 96;
+                root.style.setProperty('--scroll-charge-phase', phase.toFixed(1) + 'px');
+                root.style.setProperty('--scroll-charge-alpha', (.18 + power * .82).toFixed(2));
+                root.style.setProperty('--scroll-charge-energy', power.toFixed(2));
+                root.style.setProperty('--scroll-charge-hue', String(Math.round(180 + phase * 1.5)));
+                previous = now;
+            }
+            frame = requestAnimationFrame(tick);
+        }
+        function charge() {
             var delta = scrollY - lastY;
             lastY = scrollY;
-            edge.hidden = !motionEnabled() || document.documentElement.scrollHeight <= innerHeight;
-            if (edge.hidden || document.hidden) { settle(); return; }
-            if (Math.abs(delta) < .5) return;
-            var energy = Math.min(1, .18 + Math.abs(delta) / 80);
-            edge.style.setProperty('--scroll-energy', energy.toFixed(2));
-            edge.style.setProperty('--charge-speed', (1.2 - energy * .55).toFixed(2) + 's');
-            edge.classList.toggle('is-reversing', delta < 0);
-            edge.classList.add('is-charging');
-            clearTimeout(timer); timer = setTimeout(settle, 560);
+            if (!canRun() || Math.abs(delta) < .5) return;
+            energy = Math.min(1, .3 + Math.abs(delta) / 90); direction = delta < 0 ? -1 : 1;
+            until = performance.now() + 1100;
+            if (!frame) { previous = 0; frame = requestAnimationFrame(tick); }
         }
-        function schedule() { if (!frame) frame = requestAnimationFrame(update); }
-        window.addEventListener('scroll', schedule, { passive: true });
-        window.addEventListener('resize', schedule);
-        window.addEventListener('pagehide', function () { cancelAnimationFrame(frame); frame = 0; settle(); });
-        document.addEventListener('i18n:applied', schedule);
-        if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.body);
-        motionListeners.push(schedule); update();
+        function sync() { if (!canRun()) rest(); lastY = scrollY; }
+        window.addEventListener('scroll', charge, { passive: true });
+        window.addEventListener('pagehide', function () { suspended = true; rest(); });
+        window.addEventListener('pageshow', function () { suspended = false; sync(); });
+        finePointer.addEventListener('change', sync);
+        motionListeners.push(sync); sync();
     }
 
     function init() {

@@ -1671,8 +1671,23 @@ html.motion-suspended .robot-stage img { animation-play-state: paused !important
 ::-webkit-scrollbar-thumb:horizontal {
     background: repeating-linear-gradient(90deg, transparent 0 12px, rgba(5, 11, 24, .6) 12px 14px), linear-gradient(90deg, #82fff0, #58b9ff 32%, #ad7cff 65%, #ff80c9);
 }
+/* Paint the charging wave inside the native viewport thumb. The viewport
+   scrollbar may take its styles from either html or body. */
+:root::-webkit-scrollbar-thumb:vertical,
+body::-webkit-scrollbar-thumb:vertical {
+    background-image:
+        repeating-linear-gradient(180deg, transparent 0 10px, rgba(5, 11, 24, .58) 10px 12px),
+        linear-gradient(180deg, transparent 20%, rgba(106, 255, 224, var(--scroll-charge-alpha, .18)) 40%, rgba(244, 255, 255, var(--scroll-charge-alpha, .18)) 49%, rgba(224, 154, 255, var(--scroll-charge-alpha, .18)) 57%, transparent 76%),
+        linear-gradient(180deg, #69ffe3, #5c9cff 32%, #b774ff 66%, #ff8fcd);
+    background-size: 100% 100%, 100% 96px, 100% 100%;
+    background-position: 0 0, 0 var(--scroll-charge-phase, 0px), 0 0;
+    box-shadow: inset 0 0 calc(2px + var(--scroll-charge-energy, 0) * 3px) rgba(230, 255, 255, .85);
+}
 ::-webkit-scrollbar-corner { background: #050b18; }
-@supports not selector(::-webkit-scrollbar) { * { scrollbar-color: #9c8aff #091426; scrollbar-width: thin; } }
+@supports not selector(::-webkit-scrollbar) {
+    * { scrollbar-color: #9c8aff #091426; scrollbar-width: thin; }
+    :root { scrollbar-color: hsl(var(--scroll-charge-hue, 260) 85% 75%) #091426; }
+}
 
 /* Deep-space instrument texture: quiet central reading area, detail at the edges. */
 body {
@@ -1698,68 +1713,22 @@ body::before { opacity: .85; background-size: cover; }
 .team-portrait { width: calc(16.666% - .45rem); }
 .team-portrait img { width: 60px; height: 60px; }
 .team-coach-portraits .team-portrait img { width: 54px; height: 54px; }
-.team-watermarks { inset: 22% 0 1rem; overflow: hidden; }
-.team-watermarks img { height: 285px; bottom: 0; left: 6%; opacity: .15; filter: grayscale(.4) drop-shadow(0 0 12px rgba(92, 245, 255, .2)); }
-.team-watermarks img + img { height: 245px; right: 8%; left: auto; }
+.team-watermarks { inset: 2% 0 .65rem; overflow: hidden; }
+.team-watermarks img { height: 94%; bottom: 0; left: 6%; opacity: .19; filter: grayscale(.4) drop-shadow(0 0 12px rgba(92, 245, 255, .2)); }
+.team-watermarks img + img { height: 88%; right: 6%; left: auto; }
 @media (max-width: 575.98px) {
     .team-console { padding-inline: .5rem; }
     .team-portrait { width: calc(25% - .45rem); }
     .team-portrait img { width: 54px; height: 54px; }
-    .team-watermarks img { height: 255px; }
-    .team-watermarks img + img { height: 220px; }
+    .team-watermarks img { height: 90%; left: 2%; }
+    .team-watermarks img + img { height: 84%; right: 2%; }
 }
 .science-lightning { position: fixed; z-index: 1; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .science-lightning[hidden] { display: none; }
 
-/* The former perimeter's charging light, confined to the native scrollbar side.
-   No extra rail, thumb, reserved gutter or input handling. */
-.scroll-charge {
-    --scroll-energy: 0;
-    position: fixed; z-index: 1045; inset: 0 0 0 auto; width: 28px;
-    overflow: hidden; contain: paint; pointer-events: none;
-    opacity: .48; transition: opacity .32s ease;
-    background: linear-gradient(to left, rgba(67, 175, 255, .14), transparent 65%);
-}
-.scroll-charge[hidden] { display: none; }
-.scroll-charge::before {
-    content: ''; position: absolute; inset: 0 0 0 auto; width: 1px;
-    background: linear-gradient(180deg, #39f5ed, #537aff 22%, #b765ff 46%, #ff66bd 68%, #ffc57c 84%, #39f5ed) 0 0 / 100% 300%;
-    box-shadow: -2px 0 8px rgba(102, 137, 255, .5);
-    animation: scroll-charge-spectrum 9s linear infinite;
-}
-.scroll-charge::after {
-    content: ''; position: absolute; inset: 0 1px 0 auto; width: 4px;
-    background: repeating-linear-gradient(180deg, transparent 0 15px, #8addff 15px 17px, transparent 17px 29px, #c48aff 29px 30px);
-    mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
-    opacity: .32; animation: scroll-charge-cells 2.4s linear infinite;
-}
-.scroll-charge__flow {
-    position: absolute; top: -38%; right: 0; width: 100%; height: 36%;
-    background: linear-gradient(180deg, transparent, rgba(92, 118, 255, .25) 20%, #c16bff 54%, #ff93d4 74%, #b0fff4 88%, transparent);
-    mask-image: linear-gradient(to left, #000, rgba(0, 0, 0, .25) 28%, transparent 85%);
-    animation: scroll-charge-flow 4.6s linear infinite;
-}
-.scroll-charge.is-charging { opacity: calc(.74 + var(--scroll-energy) * .26); }
-.scroll-charge.is-charging::before { box-shadow: -2px 0 12px #8195ff, -3px 0 24px rgba(211, 102, 255, .55); }
-.scroll-charge.is-charging::after { opacity: .75; animation-duration: var(--charge-speed, .9s); }
-.scroll-charge.is-charging .scroll-charge__flow { animation-duration: var(--charge-speed, .9s); }
-.scroll-charge.is-reversing::after,
-.scroll-charge.is-reversing .scroll-charge__flow { animation-direction: reverse; }
-@keyframes scroll-charge-spectrum { to { background-position: 0 300%; } }
-@keyframes scroll-charge-cells { to { background-position: 0 60px; } }
-@keyframes scroll-charge-flow {
-    from { transform: translateY(0); opacity: 0; }
-    12%, 85% { opacity: 1; }
-    to { transform: translateY(390%); opacity: 0; }
-}
-html.motion-suspended .scroll-charge::before,
-html.motion-suspended .scroll-charge::after,
-html.motion-suspended .scroll-charge__flow { animation-play-state: paused; }
-@media (max-width: 767.98px) { .scroll-charge { width: 16px; opacity: .35; } }
 :root .site-footer p.footer-copy { text-align: right; }
 #who-we-are p { font-size: clamp(1.06rem, 0.38vw + 0.94rem, 1.18rem); }
-body:has(.lightbox.is-open) .scroll-charge { visibility: hidden; }
-@media print { .science-lightning, .hero-network, .scroll-charge { display: none !important; } }
+@media print { .science-lightning, .hero-network { display: none !important; } }
 @media (prefers-reduced-motion: reduce) {
-    .science-lightning, .hero-network, .scroll-charge { display: none !important; }
+    .science-lightning, .hero-network { display: none !important; }
 }
