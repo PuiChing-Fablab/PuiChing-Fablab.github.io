@@ -657,24 +657,29 @@
     function initScrollCharge() {
         // Update the native thumb's paint only; there is no overlay or extra control.
         var root = document.documentElement;
-        var frame = 0, previous = 0, phase = 0, energy = 0, direction = 1, lastY = scrollY, until = 0, suspended = false;
+        var frame = 0, previous = 0, phase = 0, hue = 185, energy = 0, direction = 1;
+        var lastY = scrollY, lastInput = performance.now(), until = 0, suspended = false;
         function canRun() { return motionEnabled() && finePointer.matches && !document.hidden && !suspended; }
         function rest() {
-            cancelAnimationFrame(frame); frame = 0; previous = 0; until = 0;
-            root.style.setProperty('--scroll-charge-alpha', '.18');
+            cancelAnimationFrame(frame); frame = 0; previous = 0; until = 0; energy = 0;
+            root.style.setProperty('--scroll-charge-alpha', '0');
             root.style.setProperty('--scroll-charge-energy', '0');
-            root.style.setProperty('--scroll-charge-hue', '260');
         }
         function tick(now) {
             frame = 0;
             if (!canRun() || now >= until) { rest(); return; }
-            if (!previous || now - previous >= 40) {
-                var fade = Math.min(1, (until - now) / 500), power = energy * fade;
-                phase = (phase + (previous ? Math.min(now - previous, 80) : 0) * direction * (.1 + power * .38) + 96) % 96;
+            if (!previous || now - previous >= 32) {
+                var fade = Math.min(1, (until - now) / 1200);
+                var power = energy * fade * fade * (3 - 2 * fade);
+                var delta = previous ? Math.min(now - previous, 80) : 0;
+                // The paired ribbons counter-rotate while the brighter pulse
+                // follows scrolling. All tile periods divide this 192px cycle.
+                phase = (phase + delta * direction * (.045 + power * .28) + 192) % 192;
+                hue = (hue + delta * (.022 + power * .04)) % 360;
                 root.style.setProperty('--scroll-charge-phase', phase.toFixed(1) + 'px');
-                root.style.setProperty('--scroll-charge-alpha', (.18 + power * .82).toFixed(2));
+                root.style.setProperty('--scroll-charge-alpha', power.toFixed(2));
                 root.style.setProperty('--scroll-charge-energy', power.toFixed(2));
-                root.style.setProperty('--scroll-charge-hue', String(Math.round(180 + phase * 1.5)));
+                root.style.setProperty('--scroll-charge-hue', hue.toFixed(1));
                 previous = now;
             }
             frame = requestAnimationFrame(tick);
@@ -683,8 +688,10 @@
             var delta = scrollY - lastY;
             lastY = scrollY;
             if (!canRun() || Math.abs(delta) < .5) return;
-            energy = Math.min(1, .3 + Math.abs(delta) / 90); direction = delta < 0 ? -1 : 1;
-            until = performance.now() + 1100;
+            var now = performance.now(), speed = Math.abs(delta) / Math.max(16, Math.min(80, now - lastInput));
+            energy = Math.min(1, Math.max(energy * .7, .38 + speed * .32));
+            direction = delta < 0 ? -1 : 1; lastInput = now;
+            until = now + 1800;
             if (!frame) { previous = 0; frame = requestAnimationFrame(tick); }
         }
         function sync() { if (!canRun()) rest(); lastY = scrollY; }
