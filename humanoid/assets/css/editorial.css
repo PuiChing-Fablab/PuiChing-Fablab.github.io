@@ -1727,9 +1727,10 @@ body::-webkit-scrollbar-thumb:vertical {
         linear-gradient(rgba(6, 15, 29, calc(1 - var(--scroll-charge-alpha, 0))), rgba(6, 15, 29, calc(1 - var(--scroll-charge-alpha, 0)))),
         url('../img/brand/charge-arcs.svg'),
         linear-gradient(90deg, #07111f, #16263c 48%, #07111f);
-    background-size: 100% 100%, 100% 100%, 100% 100%, 2400% 100%, 100% 100%;
+    /* Keep electric branches at the same scale on short and long pages. */
+    background-size: 100% 100%, 100% 100%, 100% 100%, 2400% 128px, 100% 100%;
     background-position: 0 0, 0 0, 0 0, var(--scroll-charge-frame, 0%) 0, 0 0;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat-y, no-repeat;
     background-clip: padding-box;
     box-shadow: none;
 }
