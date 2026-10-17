@@ -752,7 +752,6 @@ T.update({
     "Team photo during the camp": "集訓期間隊伍合照",
     "Team dinner after a long day of training": "長時間訓練後的隊伍聚餐",
     "Celebrating a team member's birthday during the camp": "集訓期間為隊員慶祝生日",
-    "Completion ceremony at the end of the training camp": "集訓結業儀式",
     "A regular training session — programming and motion tuning": "一節恆常訓練課&mdash;&mdash;編程與動作調校",
     "Introducing the humanoid robot to primary school students": "向小學生介紹人形機器人",
     "Explaining the robot's movements and capabilities": "講解機器人的動作與能力",
@@ -819,8 +818,8 @@ T.update({
         "澳門培正代表團在運動會的合照",
     "All the Humanoid OnStage teams together":
         "所有 Humanoid OnStage 受邀參賽隊伍合照",
-    "The team after the competition":
-        "隊伍賽後合照",
+    "Team photo":
+        "隊伍合照",
     "The team at the airport on the way to Beijing":
         "前往北京途中，隊伍在機場合照",
 })

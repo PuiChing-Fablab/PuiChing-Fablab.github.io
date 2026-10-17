@@ -753,7 +753,6 @@ T.update({
     "Team photo during the camp": "Foto di squadra durante il ritiro",
     "Team dinner after a long day of training": "Cena di squadra dopo una lunga giornata di allenamento",
     "Celebrating a team member's birthday during the camp": "Festa di compleanno per un membro della squadra durante il ritiro",
-    "Completion ceremony at the end of the training camp": "Cerimonia conclusiva al termine del ritiro",
     "A regular training session — programming and motion tuning": "Una sessione di allenamento ordinaria — programmazione e messa a punto dei movimenti",
     "Introducing the humanoid robot to primary school students": "Presentazione del robot umanoide agli alunni delle elementari",
     "Explaining the robot's movements and capabilities": "Spiegazione dei movimenti e delle capacità del robot",
@@ -820,8 +819,8 @@ T.update({
         "La delegazione di Pui Ching (Macao) ai Games",
     "All the Humanoid OnStage teams together":
         "Tutte le squadre di Humanoid OnStage insieme",
-    "The team after the competition":
-        "La squadra dopo la competizione",
+    "Team photo":
+        "Foto di squadra",
     "The team at the airport on the way to Beijing":
         "La squadra in aeroporto, in viaggio verso Pechino",
 })
