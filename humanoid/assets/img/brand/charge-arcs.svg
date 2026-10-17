@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="384" height="128" viewBox="0 0 384 128">
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="128" viewBox="0 0 384 128" preserveAspectRatio="none">
   <desc>Twenty-four frames of branching electric discharges for the native scrollbar.</desc>
   <defs>
     <clipPath id="cell">
