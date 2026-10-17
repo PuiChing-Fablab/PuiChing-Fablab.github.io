@@ -104,19 +104,11 @@
         loading[code] = true;
         var s = document.createElement('script');
         s.src = base + code + '.js';
-        // A slow dictionary must not leave the whole page (including the
-        // language switcher) hidden. Keep the requested language so a late
-        // response can still apply it unless the reader has chosen another.
-        var fallback = setTimeout(function () {
-            if (requestedLang === code && document.documentElement.classList.contains('i18n-pending')) apply('en');
-        }, 1500);
         s.onload = function () {
-            clearTimeout(fallback);
             loading[code] = false;
             if (requestedLang === code) apply(code);
         };
         s.onerror = function () {
-            clearTimeout(fallback);
             loading[code] = false;
             if (requestedLang === code) apply('en');
             console.warn('[i18n] dictionary not available:', code);

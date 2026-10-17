@@ -152,7 +152,6 @@
         var track = loop.querySelector('.activity-loop__track');
         var group = track && track.querySelector('.activity-loop__group');
         var viewport = loop.querySelector('.activity-loop__viewport');
-        var toggle = loop.querySelector('.activity-loop__toggle');
         if (!track || !group || !viewport) return;
 
         if (!track.querySelector('.activity-loop__group--clone')) {
@@ -167,30 +166,6 @@
                 el.setAttribute('tabindex', '-1');
             });
             track.appendChild(clone);
-        }
-
-        var paused = reduceMotion;
-
-        function setPaused(value) {
-            paused = value;
-            loop.classList.toggle('is-paused', paused);
-            if (!toggle) return;
-            toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
-            var label = text(paused ? 'Resume automatic activity movement' : 'Pause automatic activity movement');
-            toggle.setAttribute('aria-label', label);
-            toggle.setAttribute('title', label);
-            var icon = toggle.querySelector('.bi');
-            if (icon) icon.className = paused ? 'bi bi-play-fill' : 'bi bi-pause-fill';
-        }
-
-        setPaused(paused);
-        document.addEventListener('i18n:applied', function () { setPaused(paused); });
-        if (toggle) {
-            if (reduceMotion) {
-                toggle.hidden = true;
-            } else {
-                toggle.addEventListener('click', function () { setPaused(!paused); });
-            }
         }
 
         if (!reduceMotion) {

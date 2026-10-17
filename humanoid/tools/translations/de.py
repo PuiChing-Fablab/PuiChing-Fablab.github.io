@@ -846,8 +846,6 @@ T.update({
     "Close viewer": "Fotoansicht schließen",
     "Previous photo": "Vorheriges Foto",
     "Next photo": "Nächstes Foto",
-    "Resume automatic activity movement": "Automatische Bewegung der Aktivitäten fortsetzen",
-    "Pause automatic activity movement": "Automatische Bewegung der Aktivitäten pausieren",
     "LEVEL {level} — {name}": "LEVEL {level} — {name}",
     "Initiate": "Einsteiger",
     "Operative": "Fortgeschritten",

@@ -831,8 +831,6 @@ T.update({
     "Close viewer": "關閉照片",
     "Previous photo": "上一張照片",
     "Next photo": "下一張照片",
-    "Resume automatic activity movement": "繼續自動輪播活動",
-    "Pause automatic activity movement": "暫停自動輪播活動",
     "LEVEL {level} — {name}": "等級 {level} — {name}",
     "Initiate": "入門",
     "Operative": "進階",

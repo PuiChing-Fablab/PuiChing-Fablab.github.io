@@ -832,8 +832,6 @@ T.update({
     "Close viewer": "Chiudi il visualizzatore",
     "Previous photo": "Foto precedente",
     "Next photo": "Foto successiva",
-    "Resume automatic activity movement": "Riprendi lo scorrimento automatico delle attività",
-    "Pause automatic activity movement": "Sospendi lo scorrimento automatico delle attività",
     "LEVEL {level} — {name}": "LIVELLO {level} — {name}",
     "Initiate": "Principiante",
     "Operative": "Operativo",

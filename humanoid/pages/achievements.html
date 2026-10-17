@@ -33,8 +33,20 @@
         <link href="../assets/css/style.css" rel="stylesheet">
         <link href="../assets/css/editorial.css" rel="stylesheet">
         <script>
-        (function(){try{var l=localStorage.getItem('pcms-hrg-lang');
-        if(l&&l!=='en'){document.documentElement.classList.add('i18n-pending');}}catch(e){}})();
+        (function () {
+            try {
+                var lang = localStorage.getItem('pcms-hrg-lang');
+                if (!lang || lang === 'en') return;
+                var root = document.documentElement;
+                root.classList.add('i18n-pending');
+                // Keep the original English readable even if page scripts are slow.
+                setTimeout(function () {
+                    if (!root.classList.contains('i18n-pending')) return;
+                    root.setAttribute('data-lang', 'en');
+                    root.classList.remove('i18n-pending');
+                }, 1500);
+            } catch (e) { /* Storage may be unavailable in private mode. */ }
+        })();
         </script>
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSS0BVTYRK"></script>
@@ -374,7 +386,6 @@
             </div>
         </footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous" defer></script>
         <script src="../assets/js/i18n.js" defer></script>
         <script src="../assets/js/interface.js" defer></script>
         <script src="../assets/js/animations.js" defer></script>

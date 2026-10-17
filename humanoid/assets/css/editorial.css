@@ -356,7 +356,7 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
     left: 50%;
     width: min(1440px, calc(100vw - 1.5rem));
     transform: translateX(-50%);
-    padding: 2.7rem 0 2.2rem;
+    padding: 1.5rem 0;
     border-top: 1px solid rgba(92, 245, 255, 0.34);
     border-bottom: 1px solid rgba(165, 123, 255, 0.25);
     background:
@@ -380,30 +380,6 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 }
 .activity-loop::before { left: 0; background: linear-gradient(90deg, #050914, rgba(5, 9, 20, 0.82) 28%, transparent); }
 .activity-loop::after { right: 0; background: linear-gradient(-90deg, #050914, rgba(5, 9, 20, 0.82) 28%, transparent); }
-
-.activity-loop__toggle {
-    position: absolute;
-    z-index: 5;
-    top: 0.42rem;
-    right: clamp(1rem, 5vw, 5rem);
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 36px;
-    padding: 0;
-    color: var(--interface-cyan);
-    background: rgba(6, 13, 25, 0.72);
-    border: 1px solid rgba(92, 245, 255, 0.28);
-    border-radius: 0;
-    box-shadow: 0 0 12px rgba(92, 245, 255, 0.06);
-}
-.activity-loop__toggle:hover,
-.activity-loop__toggle:focus-visible {
-    color: #fff;
-    border-color: rgba(92, 245, 255, 0.76);
-    box-shadow: 0 0 16px rgba(92, 245, 255, 0.2);
-    outline: 0;
-}
 
 .activity-loop__viewport {
     width: 100%;
@@ -543,10 +519,11 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 }
 .activity-slide:hover .activity-slide__arrow { color: #fff; transform: translate(2px, -2px); }
 
-.activity-loop.is-paused .activity-loop__track,
 .activity-loop.is-dragging .activity-loop__track,
-.activity-loop:has(.activity-slide:hover) .activity-loop__track,
 .activity-loop:has(.activity-slide:focus) .activity-loop__track { animation-play-state: paused; }
+@media (hover: hover) {
+    .activity-loop:hover .activity-loop__track { animation-play-state: paused; }
+}
 
 .activity-loop:has(.activity-slide:focus-visible) .activity-loop__track {
     animation: none;
@@ -668,6 +645,8 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 
 .pill { padding: 0.24rem 0.1rem; border-width: 0 0 1px; }
 .line-tag { border-width: 0 0 1px; padding: 0.12rem 0; }
+.member-lines { gap: 0.45rem; }
+.member-lines .line-tag { font-size: 0.75rem; padding: 0.18rem; }
 .member-joined { border-width: 0; padding: 0.1rem 0; font-size: 0.7rem; text-shadow: none; box-shadow: none; }
 
 /* ---------- Robot and team visual stages ---------- */
@@ -836,6 +815,12 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 .team-preview-placeholder:hover { color: #fff; }
 
 .coach-email {
+    max-width: 100%;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    word-break: normal;
     border-radius: 0;
     background: transparent;
     border-width: 0 0 1px;
@@ -1548,7 +1533,6 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 @media (max-width: 575.98px) {
     .brand-name { display: none; }
     .tab-btn { padding-inline: 0.72rem; font-size: 0.76rem; }
-    .activity-loop { padding-top: 2.55rem; }
     .activity-loop::before,
     .activity-loop::after { width: 24px; }
     .activity-slide {
@@ -1575,7 +1559,6 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 
 @media (prefers-reduced-motion: reduce) {
     .activity-loop__track { animation: none !important; }
-    .activity-loop__toggle { display: none; }
 }
 
 /* Team photographs share one stable frame; crops are non-destructive. */
@@ -1593,11 +1576,11 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 .hero-slideshow-nav {
     position: absolute; z-index: 4; right: 0.75rem; bottom: 0.75rem;
     display: flex; gap: 0.6rem; align-items: center; padding: 0.2rem;
-    background: rgba(4, 10, 22, 0.8); border: 1px solid rgba(142, 218, 255, 0.3);
-    backdrop-filter: blur(12px); color: #e5f8ff;
+    background: rgba(210, 237, 255, 0.12); border: 1px solid rgba(200, 232, 251, 0.24);
+    backdrop-filter: blur(8px); color: #e5f8ff;
 }
 .hero-slideshow-nav button { width: 44px; height: 44px; color: inherit; border: 0; background: transparent; }
-.hero-slideshow-nav button:hover { background: rgba(92, 245, 255, 0.14); color: #fff; }
+.hero-slideshow-nav button:hover { background: rgba(222, 246, 255, 0.18); color: #fff; }
 .hero-slideshow-nav button:focus-visible { outline: 2px solid var(--interface-cyan); outline-offset: -2px; }
 .hero-inner { padding-bottom: 5.4rem; }
 @media (max-width: 767.98px) {
