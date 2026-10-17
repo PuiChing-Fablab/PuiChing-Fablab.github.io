@@ -229,8 +229,16 @@
     <path id="arc237" d="M4.84 73.74L3.86 74.81L3.90 76.16L2.61 77.30L1.30 78.58" />
     <path id="arc238" d="M6.52 98.50L6.70 99.22L7.06 99.68L8.50 100.33L9.04 100.99L10.40 101.55L11.73 102.31L13.35 103.20L14.70 103.92" />
     <path id="arc239" d="M9.04 100.99L10.77 102.86L11.70 105.05L12.67 107.00L14.70 108.74" />
+    <linearGradient id="return-spectrum" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff65da" />
+      <stop offset=".35" stop-color="#b879ff" />
+      <stop offset=".7" stop-color="#43bcff" />
+      <stop offset="1" stop-color="#82fff1" />
+    </linearGradient>
   </defs>
   <g transform="translate(0)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc1" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc1" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc1" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc1" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc1" />
@@ -257,6 +265,8 @@
     <circle cx="6.96" cy="35.31" r=".7" fill="#fff" />
   </g>
   <g transform="translate(16)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc11" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc11" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc11" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc11" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc11" />
@@ -283,6 +293,8 @@
     <circle cx="10.93" cy="47.39" r=".7" fill="#fff" />
   </g>
   <g transform="translate(32)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc21" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc21" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc21" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc21" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc21" />
@@ -309,6 +321,8 @@
     <circle cx="4.14" cy="59.18" r=".7" fill="#fff" />
   </g>
   <g transform="translate(48)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc31" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc31" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc31" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc31" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc31" />
@@ -335,6 +349,8 @@
     <circle cx="8.96" cy="72.74" r=".7" fill="#fff" />
   </g>
   <g transform="translate(64)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc41" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc41" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc41" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc41" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc41" />
@@ -361,6 +377,8 @@
     <circle cx="4.97" cy="85.27" r=".7" fill="#fff" />
   </g>
   <g transform="translate(80)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc51" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc51" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc51" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc51" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc51" />
@@ -387,6 +405,8 @@
     <circle cx="8.68" cy="98.05" r=".7" fill="#fff" />
   </g>
   <g transform="translate(96)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc61" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc61" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc61" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc61" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc61" />
@@ -413,6 +433,8 @@
     <circle cx="6.45" cy="35.66" r=".7" fill="#fff" />
   </g>
   <g transform="translate(112)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc71" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc71" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc71" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc71" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc71" />
@@ -439,6 +461,8 @@
     <circle cx="3.46" cy="48.00" r=".7" fill="#fff" />
   </g>
   <g transform="translate(128)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc81" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc81" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc81" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc81" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc81" />
@@ -465,6 +489,8 @@
     <circle cx="8.98" cy="59.96" r=".7" fill="#fff" />
   </g>
   <g transform="translate(144)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc91" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc91" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc91" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc91" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc91" />
@@ -491,6 +517,8 @@
     <circle cx="14.17" cy="73.73" r=".7" fill="#fff" />
   </g>
   <g transform="translate(160)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc101" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc101" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc101" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc101" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc101" />
@@ -517,6 +545,8 @@
     <circle cx="9.23" cy="85.14" r=".7" fill="#fff" />
   </g>
   <g transform="translate(176)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc111" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc111" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc111" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc111" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc111" />
@@ -543,6 +573,8 @@
     <circle cx="4.50" cy="98.29" r=".7" fill="#fff" />
   </g>
   <g transform="translate(192)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc121" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc121" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc121" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc121" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc121" />
@@ -569,6 +601,8 @@
     <circle cx="13.07" cy="35.11" r=".7" fill="#fff" />
   </g>
   <g transform="translate(208)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc131" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc131" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc131" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc131" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc131" />
@@ -595,6 +629,8 @@
     <circle cx="4.35" cy="46.95" r=".7" fill="#fff" />
   </g>
   <g transform="translate(224)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc141" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc141" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc141" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc141" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc141" />
@@ -621,6 +657,8 @@
     <circle cx="11.67" cy="60.34" r=".7" fill="#fff" />
   </g>
   <g transform="translate(240)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc151" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc151" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc151" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc151" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc151" />
@@ -647,6 +685,8 @@
     <circle cx="10.94" cy="72.15" r=".7" fill="#fff" />
   </g>
   <g transform="translate(256)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc161" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc161" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc161" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc161" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc161" />
@@ -673,6 +713,8 @@
     <circle cx="9.92" cy="84.16" r=".7" fill="#fff" />
   </g>
   <g transform="translate(272)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc171" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc171" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc171" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc171" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc171" />
@@ -699,6 +741,8 @@
     <circle cx="7.73" cy="98.21" r=".7" fill="#fff" />
   </g>
   <g transform="translate(288)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc181" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc181" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc181" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc181" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc181" />
@@ -725,6 +769,8 @@
     <circle cx="8.54" cy="35.87" r=".7" fill="#fff" />
   </g>
   <g transform="translate(304)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc191" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc191" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc191" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc191" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc191" />
@@ -751,6 +797,8 @@
     <circle cx="2.73" cy="48.22" r=".7" fill="#fff" />
   </g>
   <g transform="translate(320)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc201" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc201" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc201" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc201" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc201" />
@@ -777,6 +825,8 @@
     <circle cx="3.04" cy="60.05" r=".7" fill="#fff" />
   </g>
   <g transform="translate(336)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc211" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc211" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc211" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc211" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc211" />
@@ -803,6 +853,8 @@
     <circle cx="9.57" cy="73.46" r=".7" fill="#fff" />
   </g>
   <g transform="translate(352)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc221" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc221" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc221" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc221" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc221" />
@@ -829,6 +881,8 @@
     <circle cx="6.95" cy="86.17" r=".7" fill="#fff" />
   </g>
   <g transform="translate(368)" clip-path="url(#cell)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#arc231" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="3" opacity=".55" filter="url(#halo)" />
+    <use href="#arc231" transform="translate(16 0) scale(-1 1)" stroke="url(#return-spectrum)" stroke-width="1.1" opacity=".8" />
     <use stroke="url(#spectrum)" stroke-width="4" opacity=".85" filter="url(#halo)" href="#arc231" />
     <use stroke="url(#spectrum)" stroke-width="1.8" href="#arc231" />
     <use stroke="#e6fbff" stroke-width=".55" opacity=".75" href="#arc231" />

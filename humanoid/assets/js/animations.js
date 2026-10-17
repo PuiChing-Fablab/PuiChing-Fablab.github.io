@@ -688,7 +688,7 @@
             lastY = scrollY;
             if (!canRun() || Math.abs(delta) < .5) return;
             var now = performance.now(), speed = Math.abs(delta) / Math.max(16, Math.min(80, now - lastInput));
-            energy = Math.min(1, Math.max(energy * .7, .38 + speed * .32));
+            energy = Math.min(1, Math.max(energy, .38 + speed * .32));
             direction = delta < 0 ? -1 : 1; lastInput = now;
             until = now + 1800;
             if (!frame) { previous = 0; frame = requestAnimationFrame(tick); }
