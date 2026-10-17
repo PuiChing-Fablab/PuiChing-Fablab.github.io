@@ -1,4 +1,4 @@
-/* Chromatic titles, hero slideshow, circuit pulses and scroll control. */
+/* Chromatic titles, hero slideshow, circuit pulses and scroll charging. */
 (function () {
     'use strict';
 
@@ -441,74 +441,130 @@
         if (!ctx) return;
         document.body.prepend(canvas);
         var width = 0, height = 0, frame = 0, previous = 0, elapsed = 0, suspended = false;
+        var circuits = [];
+        var backdrop = document.createElement('canvas');
+        var trace = backdrop.getContext('2d');
         function hash(n) { var value = Math.sin(n * 127.1 + 311.7) * 43758.5453; return (value - Math.floor(value)) * 2 - 1; }
         function noise(index, time, seed) {
             var step = Math.floor(time), blend = time - step;
             blend = blend * blend * (3 - 2 * blend);
             return hash(index + step * 97 + seed) * (1 - blend) + hash(index + (step + 1) * 97 + seed) * blend;
         }
-        function filament(x1, y1, x2, y2, seed, time, strength, branch) {
-            var dx = x2 - x1, dy = y2 - y1, length = Math.hypot(dx, dy);
-            var count = Math.max(18, Math.round(length / 7));
-            var points = [];
-            for (var i = 0; i <= count; i++) {
-                var t = i / count, envelope = Math.sin(t * Math.PI);
-                // Multiple spatial scales create fine, irregular electrical branches.
-                var coarse = noise(Math.floor(i / 11), time * 1.3, seed) * (branch ? 9 : 31);
-                var medium = noise(Math.floor(i / 3), time * 2.1, seed + 53) * (branch ? 5 : 13);
-                var fine = noise(i, time * 3.2, seed + 107) * (branch ? 3 : 7);
-                var offset = (coarse + medium + fine) * envelope;
-                points.push({ x: x1 + dx * t - dy / length * offset, y: y1 + dy * t + dx / length * offset });
+        function route(points) {
+            var segments = [], stops = [0], length = 0;
+            for (var i = 1; i < points.length; i++) {
+                var a = points[i - 1], b = points[i];
+                var distance = Math.hypot(b[0] - a[0], b[1] - a[1]);
+                segments.push({ a: a, dx: b[0] - a[0], dy: b[1] - a[1], start: length, length: distance });
+                length += distance; stops.push(length);
             }
-            var gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-            gradient.addColorStop(0, '#61f4ff'); gradient.addColorStop(.32, '#639bff');
-            gradient.addColorStop(.68, '#b66aff'); gradient.addColorStop(1, '#ff83d4');
-            ctx.beginPath(); points.forEach(function (p, j) { if (j) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); });
+            return { points: points, segments: segments, stops: stops, length: length, branches: [] };
+        }
+        function position(path, distance) {
+            var segment = path.segments.find(function (part) { return distance <= part.start + part.length; }) || path.segments[path.segments.length - 1];
+            var along = Math.max(0, Math.min(segment.length, distance - segment.start));
+            var fraction = along / segment.length;
+            return { x: segment.a[0] + segment.dx * fraction, y: segment.a[1] + segment.dy * fraction,
+                nx: -segment.dy / segment.length, ny: segment.dx / segment.length,
+                corner: Math.min(along, segment.length - along) };
+        }
+        function drawTrace(path, branch) {
+            trace.strokeStyle = branch ? 'rgba(111,146,199,.14)' : 'rgba(100,169,204,.21)';
+            trace.lineWidth = .75;
+            trace.beginPath();
+            path.points.forEach(function (p, i) { if (i) trace.lineTo(p[0], p[1]); else trace.moveTo(p[0], p[1]); });
+            trace.stroke();
+            if (branch) {
+                var end = path.points[path.points.length - 1];
+                trace.strokeRect(end[0] - 3, end[1] - 3, 6, 6);
+            } else {
+                path.branches.forEach(function (spur) {
+                    var start = spur.points[0];
+                    trace.strokeRect(start[0] - 2.5, start[1] - 2.5, 5, 5);
+                    drawTrace(spur, true);
+                });
+            }
+        }
+        function buildCircuits() {
+            var w = width, h = height, bevel = Math.min(36, w * .04, h * .055);
+            // The visible copper traces and the pulses share these exact paths.
+            // Horizontal buses, 45-degree bends and return legs replace falling bolts.
+            circuits = [
+                route([[-24, h * .84], [w * .08, h * .84], [w * .08 + bevel, h * .84 - bevel],
+                    [w * .08 + bevel, h * .55 + bevel], [w * .08 + bevel * 2, h * .55],
+                    [w * .30, h * .55], [w * .30 + bevel, h * .55 - bevel],
+                    [w * .30 + bevel, h * .30 + bevel], [w * .30 + bevel * 2, h * .30],
+                    [w * .84, h * .30], [w * .84 + bevel, h * .30 - bevel],
+                    [w * .84 + bevel, h * .16], [w + 24, h * .16]]),
+                route([[w + 24, h * .43], [w * .78, h * .43], [w * .78 - bevel, h * .43 + bevel],
+                    [w * .78 - bevel, h * .72 - bevel], [w * .78 - bevel * 2, h * .72],
+                    [w * .45, h * .72], [w * .45 - bevel, h * .72 + bevel],
+                    [w * .45 - bevel, h * .86 - bevel], [w * .45 - bevel * 2, h * .86],
+                    [w * .17, h * .86], [w * .17 - bevel, h * .86 - bevel],
+                    [w * .17 - bevel, h * .65 + bevel], [w * .17 - bevel * 2, h * .65], [-24, h * .65]])
+            ];
+            circuits.forEach(function (path, index) {
+                [4, 8].forEach(function (joint, branchIndex) {
+                    var p = path.points[joint], direction = index ? -1 : 1;
+                    var reach = Math.min(100, w * .13) * (branchIndex ? -1 : 1);
+                    var spur = route([p, [p[0], p[1] - direction * bevel],
+                        [p[0] + direction * bevel, p[1] - direction * bevel * 2],
+                        [p[0] + direction * bevel + reach, p[1] - direction * bevel * 2]]);
+                    spur.junction = path.stops[joint];
+                    path.branches.push(spur);
+                });
+                drawTrace(path, false);
+            });
+        }
+        function filament(path, head, tail, seed, time, strength, branch) {
+            var start = Math.max(0, head - tail), end = Math.min(path.length, head);
+            if (end - start < 2) return;
+            var samples = [start, end];
+            for (var d = Math.ceil(start / 5) * 5; d < end; d += 5) samples.push(d);
+            // Include every corner so a bolt cannot cut diagonally across a bend.
+            path.stops.forEach(function (stop) { if (stop > start && stop < end) samples.push(stop); });
+            samples.sort(function (a, b) { return a - b; });
+            var points = samples.map(function (distance) {
+                var p = position(path, distance);
+                var envelope = Math.sin((distance - start) / (end - start) * Math.PI);
+                var spread = Math.min(1, p.corner / 14) * envelope * (branch ? .6 : 1);
+                // Fine irregular filaments hug the conductor, including at corners.
+                var jitter = (noise(Math.floor(distance / 23), time * 11, seed) * 6
+                    + noise(Math.floor(distance / 5), time * 19, seed + 53) * 3) * spread;
+                return { x: p.x + p.nx * jitter, y: p.y + p.ny * jitter };
+            });
+            var a = points[0], b = points[points.length - 1];
+            var gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+            gradient.addColorStop(0, 'rgba(68,130,255,0)'); gradient.addColorStop(.22, '#577fff');
+            gradient.addColorStop(.48, '#c471ff'); gradient.addColorStop(.72, '#ff8bda');
+            gradient.addColorStop(1, '#8bfff1');
+            ctx.beginPath(); points.forEach(function (p, i) { if (i) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); });
             ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-            ctx.strokeStyle = gradient; ctx.shadowColor = '#777dff'; ctx.shadowBlur = branch ? 7 : 17;
-            ctx.globalAlpha = strength * .4; ctx.lineWidth = branch ? 2 : 4; ctx.stroke();
-            ctx.shadowBlur = branch ? 4 : 9; ctx.globalAlpha = strength; ctx.lineWidth = branch ? .65 : 1.15; ctx.stroke();
-            ctx.shadowBlur = 0; ctx.strokeStyle = '#e0f5ff'; ctx.globalAlpha = strength * .8; ctx.lineWidth = branch ? .25 : .45; ctx.stroke();
-            if (!branch) {
-                for (var b = 1; b <= 3; b++) {
-                    var index = Math.floor(count * b / 5), p = points[index];
-                    var side = hash(seed + b * 7) > 0 ? 1 : -1;
-                    filament(p.x, p.y, p.x + side * (35 + Math.abs(hash(b + seed)) * 90), p.y + 40 + hash(b * 4 + seed) * 65, seed + b * 31, time, strength * .65, true);
-                }
+            ctx.strokeStyle = gradient; ctx.shadowColor = '#777dff'; ctx.shadowBlur = branch ? 6 : 13;
+            ctx.globalAlpha = strength * .35; ctx.lineWidth = branch ? 2 : 4; ctx.stroke();
+            ctx.shadowBlur = branch ? 3 : 7; ctx.globalAlpha = strength; ctx.lineWidth = branch ? .7 : 1.3; ctx.stroke();
+            ctx.shadowBlur = 0; ctx.strokeStyle = '#e4faff'; ctx.globalAlpha = strength * .65; ctx.lineWidth = .4; ctx.stroke();
+            if (head <= path.length) {
+                ctx.fillStyle = '#cefff6'; ctx.shadowColor = '#65f8ff'; ctx.shadowBlur = 9;
+                ctx.globalAlpha = strength; ctx.beginPath(); ctx.arc(b.x, b.y, branch ? 1 : 1.6, 0, Math.PI * 2); ctx.fill();
             }
         }
         function render() {
+            ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.shadowBlur = 0;
             ctx.clearRect(0, 0, width, height);
-            var time = elapsed / 1000;
-            var edge = width < 768 ? 11 : Math.max(24, (width - 1180) / 4);
-            var routes = [
-                [[edge, -35], [edge, height * .17], [edge + 34, height * .17 + 34], [edge + 34, height * .49], [edge + 8, height * .49 + 26], [edge + 8, height * .82], [edge + 52, height * .82 + 44], [edge + 52, height + 35]],
-                [[width - edge, -40], [width - edge, height * .3], [width - edge - 42, height * .3 + 42], [width - edge - 42, height * .68], [width - edge - 14, height * .68 + 28], [width - edge - 14, height + 40]]
-            ];
+            ctx.drawImage(backdrop, 0, 0, width, height);
             ctx.globalCompositeOperation = 'lighter';
-            routes.forEach(function (route, side) {
-                ctx.globalAlpha = 1; ctx.shadowBlur = 0;
-                ctx.strokeStyle = 'rgba(92,154,202,.22)'; ctx.lineWidth = .8;
-                ctx.beginPath(); route.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke();
-                route.slice(1, -1).forEach(function (p) { ctx.strokeRect(p[0] - 2, p[1] - 2, 4, 4); });
-                var lengths = [], total = 0;
-                for (var i = 1; i < route.length; i++) { var length = Math.hypot(route[i][0] - route[i - 1][0], route[i][1] - route[i - 1][1]); lengths.push(length); total += length; }
-                var head = ((time * .55 + side * .47) % 1) * total;
-                var tail = Math.min(190, total * .24);
-                [head, head + total].forEach(function (end) {
-                    var start = end - tail, distance = 0;
-                    lengths.forEach(function (length, i) {
-                        var from = Math.max(distance, start), to = Math.min(distance + length, end);
-                        if (to > from) {
-                            var a = route[i], b = route[i + 1];
-                            var t0 = (from - distance) / length, t1 = (to - distance) / length;
-                            filament(a[0] + (b[0] - a[0]) * t0, a[1] + (b[1] - a[1]) * t0, a[0] + (b[0] - a[0]) * t1, a[1] + (b[1] - a[1]) * t1, 13 + side * 71 + i * 9, time * 1.8, .85, false);
-                        }
-                        distance += length;
-                    });
+            var time = elapsed / 1000, speed = width < 768 ? 460 : 760;
+            var tail = Math.min(260, width * .28);
+            circuits.forEach(function (path, index) {
+                var head = (time * speed + path.length * (index ? .63 : .12)) % (path.length + tail);
+                filament(path, head, tail, 13 + index * 71, time, .85, false);
+                path.branches.forEach(function (spur, branchIndex) {
+                    // A junction discharges only after the main pulse reaches it.
+                    filament(spur, head - spur.junction, tail * .45, 91 + index * 19 + branchIndex * 31, time, .55, true);
                 });
             });
-            ctx.globalAlpha = 1;
+            ctx.globalAlpha = 1; ctx.shadowBlur = 0;
         }
         function canRun() { return motionEnabled() && !document.hidden && !suspended; }
         function tick(now) {
@@ -526,9 +582,11 @@
             else { cancelAnimationFrame(frame); frame = 0; previous = 0; }
         }
         function resize() {
-            width = innerWidth; height = innerHeight;
+            width = document.documentElement.clientWidth; height = innerHeight;
             var ratio = Math.min(devicePixelRatio || 1, 1.5);
             canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+            backdrop.width = canvas.width; backdrop.height = canvas.height;
+            trace.setTransform(ratio, 0, 0, ratio, 0, 0); buildCircuits();
             ctx.setTransform(ratio, 0, 0, ratio, 0, 0); render();
         }
         window.addEventListener('resize', resize);
@@ -538,58 +596,39 @@
         motionListeners.push(sync); resize(); sync();
     }
 
-    function initChargeScrollbar() {
-        var eligible = window.matchMedia('(min-width: 992px) and (pointer: fine)');
-        var rail = document.createElement('div');
-        rail.className = 'charge-scrollbar'; rail.tabIndex = 0;
-        rail.setAttribute('role', 'scrollbar'); rail.setAttribute('aria-controls', 'page-main');
-        rail.setAttribute('aria-orientation', 'vertical'); rail.setAttribute('aria-valuemin', '0'); rail.setAttribute('aria-valuemax', '100');
-        var thumb = document.createElement('span'); thumb.className = 'charge-scrollbar__thumb'; rail.appendChild(thumb);
-        document.body.appendChild(rail);
-        var frame = 0, drag = null, travel = 0, maximum = 0;
-        function label() { rail.setAttribute('aria-label', window.PCMSI18n ? window.PCMSI18n.text('Page position') : 'Page position'); }
+    function initScrollCharge() {
+        // The browser owns the only scrollbar. This edge light never handles input.
+        var edge = document.createElement('div');
+        edge.className = 'scroll-charge'; edge.setAttribute('aria-hidden', 'true');
+        var flow = document.createElement('span'); flow.className = 'scroll-charge__flow'; edge.appendChild(flow);
+        document.body.appendChild(edge);
+        var frame = 0, timer = 0, lastY = scrollY;
+        function settle() {
+            clearTimeout(timer);
+            edge.classList.remove('is-charging');
+            edge.style.setProperty('--scroll-energy', '0');
+        }
         function update() {
             frame = 0;
-            maximum = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-            var active = eligible.matches && maximum > 0;
-            document.documentElement.classList.toggle('has-charge-scrollbar', active);
-            rail.hidden = !active;
-            if (!active) return;
-            var height = rail.clientHeight;
-            var size = Math.min(height, Math.max(64, height * innerHeight / document.documentElement.scrollHeight));
-            travel = height - size;
-            var ratio = maximum ? Math.max(0, Math.min(1, scrollY / maximum)) : 0;
-            thumb.style.height = size + 'px'; thumb.style.transform = 'translateY(' + ratio * travel + 'px)';
-            rail.style.setProperty('--charge', ratio * 100 + '%');
-            rail.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
+            var delta = scrollY - lastY;
+            lastY = scrollY;
+            edge.hidden = !motionEnabled() || document.documentElement.scrollHeight <= innerHeight;
+            if (edge.hidden || document.hidden) { settle(); return; }
+            if (Math.abs(delta) < .5) return;
+            var energy = Math.min(1, .18 + Math.abs(delta) / 80);
+            edge.style.setProperty('--scroll-energy', energy.toFixed(2));
+            edge.style.setProperty('--charge-speed', (1.2 - energy * .55).toFixed(2) + 's');
+            edge.classList.toggle('is-reversing', delta < 0);
+            edge.classList.add('is-charging');
+            clearTimeout(timer); timer = setTimeout(settle, 560);
         }
         function schedule() { if (!frame) frame = requestAnimationFrame(update); }
-        rail.addEventListener('pointerdown', function (event) {
-            if (event.button !== 0) return;
-            event.preventDefault(); rail.focus({ preventScroll: true });
-            if (event.target !== thumb) {
-                var y = event.clientY - rail.getBoundingClientRect().top - thumb.clientHeight / 2;
-                window.scrollTo({ top: Math.max(0, Math.min(1, y / travel)) * maximum, behavior: 'instant' });
-            }
-            drag = { y: event.clientY, scroll: scrollY };
-            rail.classList.add('is-charging'); rail.setPointerCapture(event.pointerId);
-        });
-        rail.addEventListener('pointermove', function (event) {
-            if (!drag || !travel) return;
-            window.scrollTo({ top: drag.scroll + (event.clientY - drag.y) / travel * maximum, behavior: 'instant' });
-        });
-        function end() { drag = null; rail.classList.remove('is-charging'); }
-        rail.addEventListener('pointerup', end); rail.addEventListener('pointercancel', end); rail.addEventListener('lostpointercapture', end);
-        rail.addEventListener('keydown', function (event) {
-            var next = { ArrowDown: scrollY + 80, ArrowUp: scrollY - 80, PageDown: scrollY + innerHeight * .85, PageUp: scrollY - innerHeight * .85, Home: 0, End: maximum }[event.key];
-            if (next == null) return;
-            event.preventDefault(); window.scrollTo({ top: next, behavior: 'instant' });
-        });
         window.addEventListener('scroll', schedule, { passive: true });
-        window.addEventListener('resize', schedule); eligible.addEventListener('change', schedule);
-        document.addEventListener('i18n:applied', function () { label(); schedule(); });
+        window.addEventListener('resize', schedule);
+        window.addEventListener('pagehide', function () { cancelAnimationFrame(frame); frame = 0; settle(); });
+        document.addEventListener('i18n:applied', schedule);
         if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.body);
-        label(); update();
+        motionListeners.push(schedule); update();
     }
 
     function init() {
@@ -605,7 +644,7 @@
         initHeroCarousel();
         initVisibleEffects();
         initLightning();
-        initChargeScrollbar();
+        initScrollCharge();
     }
 
     if (document.readyState === 'loading') {

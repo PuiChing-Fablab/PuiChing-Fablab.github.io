@@ -1711,40 +1711,55 @@ body::before { opacity: .85; background-size: cover; }
 .science-lightning { position: fixed; z-index: 1; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .science-lightning[hidden] { display: none; }
 
-/* A draggable energy cell retains mouse, wheel and keyboard scrolling. */
-html.has-charge-scrollbar { scrollbar-width: none; }
-html.has-charge-scrollbar::-webkit-scrollbar { display: none; }
-html.has-charge-scrollbar body { padding-right: 18px; }
-.charge-scrollbar {
-    position: fixed; z-index: 1050; top: calc(var(--header-height, 70px) + 58px); bottom: 10px; right: 2px;
-    width: 14px; border: 1px solid rgba(96, 164, 208, .26); border-radius: 4px;
-    background: repeating-linear-gradient(180deg, rgba(123, 171, 209, .2) 0 1px, transparent 1px 10px), #050c19;
-    touch-action: none; cursor: pointer;
+/* The former perimeter's charging light, confined to the native scrollbar side.
+   No extra rail, thumb, reserved gutter or input handling. */
+.scroll-charge {
+    --scroll-energy: 0;
+    position: fixed; z-index: 1045; inset: 0 0 0 auto; width: 28px;
+    overflow: hidden; contain: paint; pointer-events: none;
+    opacity: .48; transition: opacity .32s ease;
+    background: linear-gradient(to left, rgba(67, 175, 255, .14), transparent 65%);
 }
-.charge-scrollbar[hidden] { display: none; }
-.charge-scrollbar::before { content: ''; position: absolute; inset: 0 auto auto 5px; width: 2px; height: var(--charge, 0%); background: linear-gradient(#53f8e0, #708aff, #d686ff); opacity: .55; }
-.charge-scrollbar:focus-visible { outline: 1px solid #89dcff; outline-offset: 1px; }
-.charge-scrollbar__thumb {
-    display: block; position: absolute; inset: 0 1px auto; min-height: 64px; border-radius: 3px; overflow: hidden;
-    border: 1px solid #a1e6ff; background: linear-gradient(180deg, #187c9c, #644ca6 60%, #b14499);
-    box-shadow: 0 0 10px rgba(97, 154, 255, .6), inset 0 0 3px #a8f6ff;
-    cursor: grab;
+.scroll-charge[hidden] { display: none; }
+.scroll-charge::before {
+    content: ''; position: absolute; inset: 0 0 0 auto; width: 1px;
+    background: linear-gradient(180deg, #39f5ed, #537aff 22%, #b765ff 46%, #ff66bd 68%, #ffc57c 84%, #39f5ed) 0 0 / 100% 300%;
+    box-shadow: -2px 0 8px rgba(102, 137, 255, .5);
+    animation: scroll-charge-spectrum 9s linear infinite;
 }
-.charge-scrollbar__thumb::before {
-    content: ''; position: absolute; inset: -100% 0;
-    background: linear-gradient(180deg, transparent 35%, #68edff 44%, #e8ffff 48%, #af88ff 53%, transparent 63%);
-    opacity: .9; animation: cell-charge 2s linear infinite;
+.scroll-charge::after {
+    content: ''; position: absolute; inset: 0 1px 0 auto; width: 4px;
+    background: repeating-linear-gradient(180deg, transparent 0 15px, #8addff 15px 17px, transparent 17px 29px, #c48aff 29px 30px);
+    mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+    opacity: .32; animation: scroll-charge-cells 2.4s linear infinite;
 }
-.charge-scrollbar__thumb::after { content: ''; position: absolute; inset: 3px 0; background: repeating-linear-gradient(180deg, transparent 0 8px, #070e21 8px 11px); border-block: 2px solid #e0ffff; }
-.charge-scrollbar.is-charging .charge-scrollbar__thumb { cursor: grabbing; border-color: #fff; box-shadow: 0 0 16px #ac88ff, 0 0 7px #62f5ff; }
-.charge-scrollbar.is-charging .charge-scrollbar__thumb::before { animation-duration: .85s; }
-@keyframes cell-charge { from { transform: translateY(34%); } to { transform: translateY(-34%); } }
-html.motion-suspended .charge-scrollbar__thumb::before { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) { .charge-scrollbar__thumb::before { animation: none; } }
+.scroll-charge__flow {
+    position: absolute; top: -38%; right: 0; width: 100%; height: 36%;
+    background: linear-gradient(180deg, transparent, rgba(92, 118, 255, .25) 20%, #c16bff 54%, #ff93d4 74%, #b0fff4 88%, transparent);
+    mask-image: linear-gradient(to left, #000, rgba(0, 0, 0, .25) 28%, transparent 85%);
+    animation: scroll-charge-flow 4.6s linear infinite;
+}
+.scroll-charge.is-charging { opacity: calc(.74 + var(--scroll-energy) * .26); }
+.scroll-charge.is-charging::before { box-shadow: -2px 0 12px #8195ff, -3px 0 24px rgba(211, 102, 255, .55); }
+.scroll-charge.is-charging::after { opacity: .75; animation-duration: var(--charge-speed, .9s); }
+.scroll-charge.is-charging .scroll-charge__flow { animation-duration: var(--charge-speed, .9s); }
+.scroll-charge.is-reversing::after,
+.scroll-charge.is-reversing .scroll-charge__flow { animation-direction: reverse; }
+@keyframes scroll-charge-spectrum { to { background-position: 0 300%; } }
+@keyframes scroll-charge-cells { to { background-position: 0 60px; } }
+@keyframes scroll-charge-flow {
+    from { transform: translateY(0); opacity: 0; }
+    12%, 85% { opacity: 1; }
+    to { transform: translateY(390%); opacity: 0; }
+}
+html.motion-suspended .scroll-charge::before,
+html.motion-suspended .scroll-charge::after,
+html.motion-suspended .scroll-charge__flow { animation-play-state: paused; }
+@media (max-width: 767.98px) { .scroll-charge { width: 16px; opacity: .35; } }
 :root .site-footer p.footer-copy { text-align: right; }
 #who-we-are p { font-size: clamp(1.06rem, 0.38vw + 0.94rem, 1.18rem); }
-body:has(.lightbox.is-open) .charge-scrollbar { visibility: hidden; }
-@media print { .science-lightning, .hero-network, .charge-scrollbar { display: none !important; } }
+body:has(.lightbox.is-open) .scroll-charge { visibility: hidden; }
+@media print { .science-lightning, .hero-network, .scroll-charge { display: none !important; } }
 @media (prefers-reduced-motion: reduce) {
-    .science-lightning, .hero-network { display: none !important; }
+    .science-lightning, .hero-network, .scroll-charge { display: none !important; }
 }
