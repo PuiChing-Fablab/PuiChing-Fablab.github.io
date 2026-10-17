@@ -655,7 +655,7 @@
     }
 
     function initScrollCharge() {
-        // Update the native thumb's paint only; there is no overlay or extra control.
+        // The native thumb and rail share one charging clock; no extra control.
         var root = document.documentElement;
         var frame = 0, previous = 0, phase = 0, hue = 185, energy = 0, direction = 1;
         var lastY = scrollY, lastInput = performance.now(), until = 0, suspended = false;
@@ -676,6 +676,7 @@
                 phase = (phase + delta * direction * (.007 + power * .02) + 24) % 24;
                 hue = (hue + delta * (.022 + power * .04)) % 360;
                 root.style.setProperty('--scroll-charge-frame', (Math.floor(phase) / 23 * 100).toFixed(3) + '%');
+                root.style.setProperty('--scroll-rail-phase', (phase * 3).toFixed(2) + 'px');
                 root.style.setProperty('--scroll-charge-alpha', power.toFixed(2));
                 root.style.setProperty('--scroll-charge-energy', power.toFixed(2));
                 root.style.setProperty('--scroll-charge-hue', hue.toFixed(1));

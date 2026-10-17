@@ -162,12 +162,12 @@ h1, h2, h3, h4,
 .hero-title {
     max-width: 760px;
     font-size: clamp(3rem, 5.8vw, 5.4rem);
-    font-weight: 300;
-    line-height: 0.96;
+    font-weight: 600;
+    line-height: 1.06;
     letter-spacing: -0.035em;
     text-wrap: balance;
-    -webkit-text-stroke: 0.25px rgba(214, 245, 255, 0.42);
-    text-shadow: 0 0 30px rgba(67, 208, 255, 0.18);
+    -webkit-text-stroke: 0.25px rgba(232, 252, 255, 0.35);
+    text-shadow: none;
 }
 .hero-title span {
     background-image: linear-gradient(100deg, #27eeff 0%, #5898ff 48%, #bd68ff 100%);
@@ -199,7 +199,10 @@ h1, h2, h3, h4,
     padding: 0.24rem 0.65rem;
     font-size: 0.7rem;
     letter-spacing: 0.16em;
-    background: transparent;
+    color: #d2fbff;
+    font-weight: 600;
+    background: rgba(3, 10, 20, 0.56);
+    text-shadow: 0 2px 3px #020710;
     border: 0;
     border-left: 2px solid var(--interface-cyan);
     border-radius: 0;
@@ -208,7 +211,9 @@ h1, h2, h3, h4,
     max-width: 680px;
     font-size: clamp(1rem, 1.25vw, 1.16rem);
     line-height: 1.68;
-    color: rgba(235, 244, 255, 0.83);
+    color: #edf6ff;
+    font-weight: 500;
+    text-shadow: 0 2px 3px #020710, 0 0 16px rgba(2, 7, 16, 0.65);
     text-align: left;
 }
 .home-intro-title {
@@ -243,7 +248,7 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 .title-type .title-character {
     position: relative;
     color: #c4f8ff;
-    background: linear-gradient(100deg, #bafaff, #69dbff 22%, #a3adff 43%, #eda5ff 62%, #ffb6df 80%, #bafaff) 0 50% / 600% 100%;
+    background: var(--title-ink, linear-gradient(100deg, #bafaff, #69dbff 22%, #a3adff 43%, #eda5ff 62%, #ffb6df 80%, #bafaff)) 0 50% / 600% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -251,6 +256,12 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
     animation-delay: var(--ink-delay, 0s);
     animation-play-state: paused;
     text-shadow: 0 0 0.35em rgba(100, 198, 255, 0.15);
+}
+.hero-title.title-type .title-type__visual {
+    filter: drop-shadow(0 3px 2px rgba(0, 3, 10, .9)) drop-shadow(0 0 12px rgba(81, 202, 255, .2));
+}
+.hero-title.title-type {
+    --title-ink: linear-gradient(100deg, #dfffff, #76e7ff 22%, #a2b4ff 43%, #dda7ff 62%, #ffb4e1 80%, #dfffff);
 }
 .title-type.is-title-running .title-character { animation-play-state: running; }
 .title-type.is-title-running .title-character:not(.is-revealed) { opacity: 0; }
@@ -273,6 +284,7 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
     .title-type .title-character { animation: none; opacity: 1 !important; background: none; -webkit-text-fill-color: currentColor; }
     .title-type .title-type__visual { opacity: 1 !important; }
     .title-type .is-cursor::after { display: none; }
+    .hero-title.title-type .title-type__visual { filter: none; }
 }
 
 .section-title::before {
@@ -750,7 +762,9 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 }
 .team-coach-portraits .team-portrait { width: 64px; }
 .team-coach-portraits .team-portrait img { width: 48px; height: 48px; border-radius: 50%; border-color: rgba(255, 200, 77, 0.45); }
-.team-portrait__name { font-size: 0.8rem; line-height: 1.4; white-space: nowrap; }
+.team-portrait__name { max-width: 100%; font-size: 0.8rem; line-height: 1.4; text-align: center; text-wrap: balance; }
+:root:not([data-lang="zh-Hant"]) .team-portrait__name [lang="zh-Hant"],
+:root[data-lang="zh-Hant"] .team-portrait__name [lang="en"] { display: none; }
 .team-portrait:hover { color: #fff; }
 .team-portrait:hover img { border-color: var(--interface-cyan); }
 .team-portrait:focus-visible { outline: 2px solid var(--interface-cyan); outline-offset: 4px; }
@@ -1568,8 +1582,14 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 .hero-media { overflow: hidden; background: #08111d; }
 .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1000ms ease; }
 .hero-slide.is-active { opacity: 1; }
-.hero-slide .hero-bg { position: absolute; width: 100%; height: 100%; object-position: var(--slide-position, center); }
+.hero-slide .hero-bg { position: absolute; width: 100%; height: 100%; object-position: var(--slide-position, center); filter: brightness(.72) saturate(.72); }
 .hero-slide--wide .hero-bg { object-fit: contain; }
+/* A stable dark reading area keeps the luminous title clear on every photo. */
+.hero::after {
+    background:
+        linear-gradient(90deg, rgba(4, 10, 20, .84), rgba(4, 10, 20, .7) 46%, rgba(4, 10, 20, .32) 76%, rgba(4, 10, 20, .22)),
+        linear-gradient(180deg, rgba(4, 10, 20, .08) 15%, rgba(4, 10, 20, .38) 65%, rgba(4, 10, 20, .94));
+}
 .hero-slideshow-nav {
     position: absolute; z-index: 4; right: 0.75rem; bottom: 0.75rem;
     display: flex; gap: 0.6rem; align-items: center; padding: 0.2rem;
@@ -1584,7 +1604,8 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
     .hero-media { position: relative; aspect-ratio: 1778 / 741; }
     .hero-inner { padding-bottom: 4.75rem; }
     .hero-slideshow-nav { bottom: 0.75rem; right: 0.75rem; }
-    .hero-slide .hero-bg { inset: 0; }
+    .hero-slide .hero-bg { inset: 0; filter: brightness(.82) saturate(.76); }
+    .hero::after { background: linear-gradient(180deg, rgba(4, 10, 20, .12), rgba(4, 10, 20, .18) 60%, #050a14); }
 }
 
 @keyframes rank-energy-sweep {
@@ -1618,7 +1639,7 @@ html.motion-suspended .robot-stage img { animation-play-state: paused !important
 #page-main .tech-card p, #page-main .about-list {
     font-size: clamp(1.06rem, 0.38vw + 0.94rem, 1.18rem); line-height: 1.78;
 }
-#page-main .hero-sub { font-size: clamp(1.06rem, 1.25vw, 1.2rem); }
+#page-main .hero-sub { font-size: clamp(1.08rem, 1.32vw, 1.23rem); color: #edf6ff; }
 .robot-role { font-size: 0.9rem; }
 .activity-view-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0 0 1.5rem; }
 #page-main .activity-view-links .btn {
@@ -1677,8 +1698,30 @@ html.motion-suspended .robot-stage img { animation-play-state: paused !important
 body::-webkit-scrollbar { width: 20px; }
 :root::-webkit-scrollbar-track:vertical,
 body::-webkit-scrollbar-track:vertical {
-    border-radius: 0;
-    background: linear-gradient(90deg, #07101f, #182a42 48%, #07101f);
+    --rail-charge: calc(var(--scroll-charge-energy, 0) * .85);
+    --rail-pulses: repeating-linear-gradient(180deg,
+        transparent 0 5px,
+        hsl(var(--scroll-charge-hue, 185) 100% 83% / var(--rail-charge)) 5px 6px,
+        hsl(calc(var(--scroll-charge-hue, 185) + 65) 100% 70% / var(--rail-charge)) 9px,
+        transparent 10px 29px,
+        hsl(calc(var(--scroll-charge-hue, 185) + 120) 100% 78% / var(--rail-charge)) 29px 30px,
+        hsl(calc(var(--scroll-charge-hue, 185) + 185) 100% 70% / var(--rail-charge)) 33px,
+        transparent 34px 53px,
+        hsl(calc(var(--scroll-charge-hue, 185) + 240) 100% 83% / var(--rail-charge)) 53px 54px,
+        hsl(calc(var(--scroll-charge-hue, 185) + 305) 100% 70% / var(--rail-charge)) 57px,
+        transparent 58px 72px);
+    border-width: 1px; border-radius: 0;
+    /* Paired contact pulses move within the native rail, sharing the thumb's
+       charging clock and fading completely when scrolling stops. */
+    background-image:
+        var(--rail-pulses), var(--rail-pulses),
+        radial-gradient(ellipse 2px 5px at 50% 50%, rgb(218 251 255 / var(--rail-charge)), hsl(calc(var(--scroll-charge-hue, 185) + 40) 100% 70% / calc(var(--rail-charge) * .55)) 45%, transparent 100%),
+        url('../img/brand/scroll-rail.svg'),
+        linear-gradient(90deg, #081322, #030914 48%, #101228);
+    background-size: 3px 72px, 3px 72px, 6px 72px, 18px 72px, 100% 100%;
+    background-position: left 2px top var(--scroll-rail-phase, 0px), right 2px top calc(var(--scroll-rail-phase, 0px) + 36px), center top var(--scroll-rail-phase, 0px), center top, 0 0;
+    background-repeat: repeat-y, repeat-y, repeat-y, repeat-y, no-repeat;
+    background-clip: padding-box;
 }
 :root::-webkit-scrollbar-thumb:vertical,
 body::-webkit-scrollbar-thumb:vertical {
@@ -1727,7 +1770,7 @@ body::before { opacity: .85; background-size: cover; }
 /* A gentle side crop makes the wide unboxing group larger without losing faces. */
 .hero-slide--wide .hero-bg { width: 113%; max-width: none; left: -6.5%; }
 
-.hero-kicker { font-size: clamp(.92rem, 1.1vw, 1.12rem); letter-spacing: .13em; }
+.hero-kicker { font-size: clamp(1.02rem, 1.12vw, 1.18rem); letter-spacing: .13em; }
 .site-footer .footer-copy { text-align: right; }
 @media (min-width: 992px) { #who-we-are .robot-stage:has(.robot-k1) { align-items: center; } }
 
