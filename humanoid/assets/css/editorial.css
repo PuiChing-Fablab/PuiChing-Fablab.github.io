@@ -1673,33 +1673,42 @@ html.motion-suspended .robot-stage img { animation-play-state: paused !important
 }
 /* Interwoven colour streams and a white pulse stay inside the native thumb.
    The viewport can inherit its scrollbar styles from either html or body. */
+:root::-webkit-scrollbar,
+body::-webkit-scrollbar { width: 16px; }
 :root::-webkit-scrollbar-track:vertical,
 body::-webkit-scrollbar-track:vertical {
+    border-radius: 0;
     background: linear-gradient(90deg, #07101f, #182a42 48%, #07101f);
 }
 :root::-webkit-scrollbar-thumb:vertical,
 body::-webkit-scrollbar-thumb:vertical {
-    min-height: 52px; border-width: 2px; border-radius: 8px;
+    min-height: 52px; border-width: 2px; border-radius: 0;
     background-color: #101a34;
+    /* Painted chamfers retain the browser's full rectangular drag target. */
     background-image:
-        linear-gradient(90deg, rgba(219, 251, 255, .35), transparent 36% 68%, rgba(180, 160, 255, .28)),
+        linear-gradient(135deg, #050b18 2.75px, rgba(179, 235, 255, var(--scroll-shell-alpha, .65)) 2.75px 3.5px, transparent 3.5px),
+        linear-gradient(225deg, #050b18 2.75px, rgba(179, 235, 255, var(--scroll-shell-alpha, .65)) 2.75px 3.5px, transparent 3.5px),
+        linear-gradient(45deg, #050b18 2.75px, rgba(179, 235, 255, var(--scroll-shell-alpha, .65)) 2.75px 3.5px, transparent 3.5px),
+        linear-gradient(315deg, #050b18 2.75px, rgba(179, 235, 255, var(--scroll-shell-alpha, .65)) 2.75px 3.5px, transparent 3.5px),
+        linear-gradient(180deg, rgba(195, 237, 255, var(--scroll-shell-alpha, .65)) 1px, transparent 1px calc(100% - 1px), rgba(160, 171, 255, var(--scroll-shell-alpha, .65)) calc(100% - 1px)),
+        linear-gradient(90deg, rgba(219, 251, 255, var(--scroll-shell-alpha, .65)), transparent 28% 72%, rgba(180, 160, 255, var(--scroll-shell-alpha, .65))),
         linear-gradient(180deg, transparent 28%, rgba(89, 255, 231, var(--scroll-charge-alpha, 0)) 44%, rgba(255, 255, 255, var(--scroll-charge-alpha, 0)) 49% 51%, rgba(255, 143, 234, var(--scroll-charge-alpha, 0)) 55%, transparent 72%),
         linear-gradient(135deg, transparent 24%, hsl(var(--scroll-charge-hue, 185) 100% 67% / .9) 44%, rgba(224, 255, 255, .8) 50%, hsl(var(--scroll-charge-hue, 185) 100% 65% / .8) 56%, transparent 76%),
         linear-gradient(45deg, transparent 24%, hsl(calc(var(--scroll-charge-hue, 185) + 125) 100% 70% / .9) 44%, rgba(255, 221, 255, .75) 50%, hsl(calc(var(--scroll-charge-hue, 185) + 125) 100% 65% / .8) 56%, transparent 76%),
         linear-gradient(180deg, hsl(var(--scroll-charge-hue, 185) 85% 33%), #17224c 48%, hsl(calc(var(--scroll-charge-hue, 185) + 90) 80% 35%));
-    background-size: 100% 100%, 100% 192px, 100% 48px, 100% 48px, 100% 100%;
-    background-position: 0 0, 0 var(--scroll-charge-phase, 0px), 0 calc(var(--scroll-charge-phase, 0px) * .5), 0 calc(24px - var(--scroll-charge-phase, 0px) * .5), 0 0;
-    background-repeat: no-repeat, repeat-y, repeat-y, repeat-y, no-repeat;
+    background-size: 50% 7px, 50% 7px, 50% 7px, 50% 7px, 100% 100%, 100% 100%, 100% 192px, 100% 48px, 100% 48px, 100% 100%;
+    background-position: left top, right top, left bottom, right bottom, 0 0, 0 0, 0 var(--scroll-charge-phase, 0px), 0 calc(var(--scroll-charge-phase, 0px) * .5), 0 calc(24px - var(--scroll-charge-phase, 0px) * .5), 0 0;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat-y, repeat-y, repeat-y, no-repeat;
     background-clip: padding-box;
-    box-shadow: inset 0 0 calc(1px + var(--scroll-charge-energy, 0) * 4px) rgba(222, 255, 255, .75);
+    box-shadow: none;
 }
 :root::-webkit-scrollbar-thumb:vertical:hover,
 body::-webkit-scrollbar-thumb:vertical:hover {
-    box-shadow: inset 0 0 3px rgba(234, 255, 255, .9);
+    --scroll-shell-alpha: .9;
 }
 :root::-webkit-scrollbar-thumb:vertical:active,
 body::-webkit-scrollbar-thumb:vertical:active {
-    box-shadow: inset 0 0 4px #eaffff;
+    --scroll-shell-alpha: 1;
 }
 ::-webkit-scrollbar-corner { background: #050b18; }
 @supports not selector(::-webkit-scrollbar) {
