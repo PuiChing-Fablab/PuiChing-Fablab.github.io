@@ -672,11 +672,10 @@
                 var fade = Math.min(1, (until - now) / 1200);
                 var power = energy * fade * fade * (3 - 2 * fade);
                 var delta = previous ? Math.min(now - previous, 80) : 0;
-                // The paired ribbons counter-rotate while the brighter pulse
-                // follows scrolling. All tile periods divide this 192px cycle.
-                phase = (phase + delta * direction * (.045 + power * .28) + 192) % 192;
+                // Scrub the branching arc frames faster under stronger charging.
+                phase = (phase + delta * direction * (.007 + power * .02) + 24) % 24;
                 hue = (hue + delta * (.022 + power * .04)) % 360;
-                root.style.setProperty('--scroll-charge-phase', phase.toFixed(1) + 'px');
+                root.style.setProperty('--scroll-charge-frame', (Math.floor(phase) / 23 * 100).toFixed(3) + '%');
                 root.style.setProperty('--scroll-charge-alpha', power.toFixed(2));
                 root.style.setProperty('--scroll-charge-energy', power.toFixed(2));
                 root.style.setProperty('--scroll-charge-hue', hue.toFixed(1));
