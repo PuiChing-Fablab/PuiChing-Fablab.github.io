@@ -2275,7 +2275,6 @@ button:focus-visible,
 }
 .software-stack .subsection-title { margin-bottom: 0.55rem; }
 .software-stack > p {
-    max-width: 880px;
     margin-bottom: 1rem;
     color: var(--text-secondary);
     text-align: left;

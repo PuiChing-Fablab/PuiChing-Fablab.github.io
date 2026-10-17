@@ -10,6 +10,7 @@
     --interface-line: rgba(126, 228, 255, 0.18);
     --interface-line-strong: rgba(126, 228, 255, 0.36);
     --editorial-max: 1180px;
+    --space-section: clamp(3.5rem, 6vw, 5rem);
     --font-display: 'Spectral', 'Noto Serif TC', Georgia, 'Times New Roman', serif;
     --font-data: 'IBM Plex Mono', ui-monospace, monospace;
     --font-tech: var(--font-display);
@@ -120,18 +121,18 @@ body::before {
 
 /* ---------- Editorial rhythm and type ---------- */
 .page-content { max-width: var(--editorial-max); padding-top: clamp(3rem, 6vw, 5.5rem); }
-.section { margin-bottom: clamp(4rem, 8vw, 7rem); }
+.section { margin-bottom: var(--space-section); }
 .section-divider {
-    margin: clamp(4rem, 8vw, 7rem) 0;
+    margin: calc(var(--space-section) / 2) 0;
     border: 0;
     height: 1px;
     opacity: 1;
     background: linear-gradient(90deg, rgba(92, 245, 255, 0.55), rgba(165, 123, 255, 0.18) 48%, transparent 90%);
 }
 
-/* About is a continuous team profile. Let its dividers own the spacing. */
-.page-content--about > .section { margin-bottom: 0; }
-.page-content--about > .section-divider { margin-block: clamp(1.75rem, 3vw, 2.5rem); }
+/* Match the compact About rhythm, with each boundary owning its spacing. */
+.page-content > .section { margin-bottom: 0; }
+.page-content > .section + .section { margin-top: var(--space-section); }
 
 p,
 :root[data-lang="en"] p {
@@ -208,7 +209,7 @@ h1, h2, h3, h4,
     border-radius: 0;
 }
 .hero-sub {
-    max-width: 680px;
+    max-width: 760px;
     font-size: clamp(1rem, 1.25vw, 1.16rem);
     line-height: 1.68;
     color: #edf6ff;
@@ -306,12 +307,12 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
     color: #a7b5ca;
 }
 
-/* Natural spacing keeps prose readable in every supported language. */
+/* Use the full text column before wrapping, without balancing prose lines. */
 #page-main .hero-sub,
 #page-main .page-content p:not(.text-center),
 #page-main .section-intro {
     text-align: left;
-    text-wrap: pretty;
+    text-wrap: wrap;
     hyphens: none;
     -webkit-hyphens: none;
     overflow-wrap: break-word;
@@ -924,8 +925,8 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 
 /* ---------- Activities as a mission log ---------- */
 .activity-block {
-    padding: clamp(2rem, 4vw, 3.5rem) 0 0 clamp(1rem, 2.6vw, 2.25rem);
-    margin-bottom: clamp(3.5rem, 7vw, 6rem);
+    padding: calc(var(--space-section) / 2) 0 0 clamp(1rem, 2.6vw, 2.25rem);
+    margin-bottom: calc(var(--space-section) / 2);
     background: transparent;
     border: 0;
     border-top: 1px solid var(--interface-line-strong);
@@ -1231,9 +1232,9 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 #page-main .page-content .group-photo figcaption p {
     text-align: left;
     text-align-last: auto;
-    text-wrap: pretty;
-    hyphens: auto;
-    -webkit-hyphens: auto;
+    text-wrap: wrap;
+    hyphens: none;
+    -webkit-hyphens: none;
 }
 
 /* ---------- Achievements as a ranked record ---------- */
@@ -1390,7 +1391,7 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 .honour-foot { grid-column: 2; }
 .honour-card > .pill { justify-self: start; }
 .honour-event { font-size: clamp(1.08rem, 2vw, 1.35rem); }
-.honour-detail { max-width: 780px; color: #a6b5c8; }
+.honour-detail { color: #a6b5c8; }
 .honour-foot { border-top: 1px solid rgba(148, 163, 184, 0.1); }
 
 .result-table-wrap {
@@ -1457,11 +1458,11 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 }
 /* These descriptions sit in one-third-width columns. Full justification
    stretches the few words on each line too far apart, so keep a natural
-   ragged edge while retaining balanced wrapping. */
+   ragged edge with normal wrapping. */
 #page-main .page-content .connect-card .connect-desc {
     text-align: left;
     text-align-last: auto;
-    text-wrap: pretty;
+    text-wrap: wrap;
     hyphens: none;
     -webkit-hyphens: none;
 }
@@ -1501,7 +1502,6 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 @media (max-width: 767.98px) {
     .top-bar { padding: 0.98rem 0 0.45rem; }
     .page-content { padding-top: 2.7rem; }
-    .section { margin-bottom: 4.2rem; }
     .activity-block { padding-left: 1rem; }
     .honour-card,
     .honour-card.is-gold,
@@ -1602,8 +1602,7 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
 .hero-inner { padding-bottom: 5.4rem; }
 @media (max-width: 767.98px) {
     .hero-media { position: relative; aspect-ratio: 1778 / 741; }
-    .hero-inner { padding-bottom: 4.75rem; }
-    .hero-slideshow-nav { bottom: 0.75rem; right: 0.75rem; }
+    .hero-inner { padding-bottom: 2rem; }
     .hero-slide .hero-bg { inset: 0; filter: brightness(.82) saturate(.76); }
     .hero::after { background: linear-gradient(180deg, rgba(4, 10, 20, .12), rgba(4, 10, 20, .18) 60%, #050a14); }
 }
@@ -1650,7 +1649,7 @@ html.motion-suspended .robot-stage img { animation-play-state: paused !important
     color: #d8f4ff; background: rgba(43, 105, 156, .12);
 }
 #page-main .activity-view-links .btn:hover { background: rgba(72, 130, 192, .24); border-color: var(--interface-cyan); }
-.video-library { padding-top: 2.2rem; border-top: 1px solid var(--interface-line-strong); scroll-margin-top: calc(var(--header-height, 70px) + 75px); }
+.video-library { padding-top: calc(var(--space-section) / 2); border-top: 1px solid var(--interface-line-strong); scroll-margin-top: calc(var(--header-height, 70px) + 75px); }
 .video-library__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap: 2rem; }
 .video-card { max-width: 760px; overflow: hidden; background: rgba(12, 24, 42, 0.65); border: 1px solid var(--interface-line); }
 .video-card video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
@@ -1696,32 +1695,40 @@ html.motion-suspended .robot-stage img { animation-play-state: paused !important
    The viewport can inherit its scrollbar styles from either html or body. */
 :root::-webkit-scrollbar,
 body::-webkit-scrollbar { width: 20px; }
+/* Recessed magnetic guide; light hugs the two ends of the moving thumb. */
 :root::-webkit-scrollbar-track:vertical,
 body::-webkit-scrollbar-track:vertical {
-    --rail-charge: calc(var(--scroll-charge-energy, 0) * .85);
-    --rail-pulses: repeating-linear-gradient(180deg,
-        transparent 0 5px,
-        hsl(var(--scroll-charge-hue, 185) 100% 83% / var(--rail-charge)) 5px 6px,
-        hsl(calc(var(--scroll-charge-hue, 185) + 65) 100% 70% / var(--rail-charge)) 9px,
-        transparent 10px 29px,
-        hsl(calc(var(--scroll-charge-hue, 185) + 120) 100% 78% / var(--rail-charge)) 29px 30px,
-        hsl(calc(var(--scroll-charge-hue, 185) + 185) 100% 70% / var(--rail-charge)) 33px,
-        transparent 34px 53px,
-        hsl(calc(var(--scroll-charge-hue, 185) + 240) 100% 83% / var(--rail-charge)) 53px 54px,
-        hsl(calc(var(--scroll-charge-hue, 185) + 305) 100% 70% / var(--rail-charge)) 57px,
-        transparent 58px 72px);
     border-width: 1px; border-radius: 0;
-    /* Paired contact pulses move within the native rail, sharing the thumb's
-       charging clock and fading completely when scrolling stops. */
-    background-image:
-        var(--rail-pulses), var(--rail-pulses),
-        radial-gradient(ellipse 2px 5px at 50% 50%, rgb(218 251 255 / var(--rail-charge)), hsl(calc(var(--scroll-charge-hue, 185) + 40) 100% 70% / calc(var(--rail-charge) * .55)) 45%, transparent 100%),
-        url('../img/brand/scroll-rail.svg'),
-        linear-gradient(90deg, #081322, #030914 48%, #101228);
-    background-size: 3px 72px, 3px 72px, 6px 72px, 18px 72px, 100% 100%;
-    background-position: left 2px top var(--scroll-rail-phase, 0px), right 2px top calc(var(--scroll-rail-phase, 0px) + 36px), center top var(--scroll-rail-phase, 0px), center top, 0 0;
-    background-repeat: repeat-y, repeat-y, repeat-y, repeat-y, no-repeat;
+    background: linear-gradient(90deg,
+        #030714 1px, #293b52 1px 2px, #0b1525 2px 4px,
+        #030813 6px calc(100% - 6px), #0e1427 calc(100% - 4px),
+        #37354f calc(100% - 2px) calc(100% - 1px), #030714 calc(100% - 1px));
     background-clip: padding-box;
+}
+:root::-webkit-scrollbar-track-piece:vertical,
+body::-webkit-scrollbar-track-piece:vertical {
+    --rail-end: top;
+    --rail-angle: 180deg;
+    --rail-strength: calc(var(--scroll-charge-energy, 0) * var(--scroll-rail-pulse, .7));
+    background-image:
+        radial-gradient(ellipse at center var(--rail-end),
+            rgb(229 251 255 / calc(var(--rail-strength) * .5)),
+            hsl(var(--scroll-charge-hue, 185) 100% 72% / calc(var(--rail-strength) * .42)) 25%,
+            hsl(calc(var(--scroll-charge-hue, 185) + 75) 100% 70% / calc(var(--rail-strength) * .2)) 50%, transparent 78%),
+        linear-gradient(var(--rail-angle),
+            hsl(var(--scroll-charge-hue, 185) 100% 85% / var(--rail-strength)),
+            hsl(calc(var(--scroll-charge-hue, 185) + 75) 100% 70% / calc(var(--rail-strength) * .6)) 35%, transparent 90%),
+        linear-gradient(var(--rail-angle),
+            hsl(calc(var(--scroll-charge-hue, 185) + 90) 100% 85% / var(--rail-strength)),
+            hsl(calc(var(--scroll-charge-hue, 185) + 165) 100% 70% / calc(var(--rail-strength) * .6)) 35%, transparent 90%);
+    background-size: 100% 120px, 1px 100px, 1px 100px;
+    background-position: center var(--rail-end), left 2px var(--rail-end), right 2px var(--rail-end);
+    background-repeat: no-repeat;
+}
+:root::-webkit-scrollbar-track-piece:vertical:start,
+body::-webkit-scrollbar-track-piece:vertical:start {
+    --rail-end: bottom;
+    --rail-angle: 0deg;
 }
 :root::-webkit-scrollbar-thumb:vertical,
 body::-webkit-scrollbar-thumb:vertical {
@@ -1787,8 +1794,12 @@ body::before { opacity: .85; background-size: cover; }
     .team-console { padding-inline: .5rem; }
     .team-portrait { width: calc(25% - .45rem); }
     .team-portrait img { width: 54px; height: 54px; }
-    .team-watermarks img { height: 90%; left: 2%; }
-    .team-watermarks img + img { height: 84%; right: 2%; }
+    /* Size by the available width, not the taller wrapped portrait list. */
+    .team-watermarks img {
+        width: 44%; height: auto; top: 50%; bottom: auto; left: 4%;
+        transform: translateY(-50%);
+    }
+    .team-watermarks img + img { width: 40%; height: auto; right: 4%; }
 }
 .science-lightning { position: fixed; z-index: 1; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .science-lightning[hidden] { display: none; }
