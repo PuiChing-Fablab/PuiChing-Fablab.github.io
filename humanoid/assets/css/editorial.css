@@ -166,7 +166,7 @@ h1, h2, h3, h4,
     font-weight: 600;
     line-height: 1.06;
     letter-spacing: -0.035em;
-    text-wrap: balance;
+    text-wrap: wrap;
     -webkit-text-stroke: 0.25px rgba(232, 252, 255, 0.35);
     text-shadow: none;
 }
@@ -489,7 +489,7 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
     line-height: 1.28;
     letter-spacing: -0.012em;
     color: #eef8ff;
-    text-wrap: balance;
+    text-wrap: wrap;
 }
 .activity-slide__line {
     display: flex;
@@ -934,7 +934,7 @@ h1.title-type { background: none; color: #eaf8ff; -webkit-text-fill-color: curre
     color: var(--interface-cyan);
     letter-spacing: 0.16em;
 }
-.activity-title { max-width: 850px; font-size: clamp(1.55rem, 3.2vw, 2.45rem); }
+.activity-title { font-size: clamp(1.55rem, 3.2vw, 2.45rem); }
 .activity-result {
     padding: 0.4rem 0 0.4rem 1rem;
     background: transparent;
